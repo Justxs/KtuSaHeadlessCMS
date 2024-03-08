@@ -1,0 +1,6 @@
+@model OrchardCore.Cms.KtuSaModule.ViewModels.ImageUploadFieldViewModel
+
+@if (!string.IsNullOrWhiteSpace(Model.FileId))
+{
+    <img src="https://drive.google.com/uc?export=view&id={@Model.FileId}" alt="Uploaded Image" />
+}

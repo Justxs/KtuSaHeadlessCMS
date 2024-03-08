@@ -1,0 +1,8 @@
+@model OrchardCore.Cms.KtuSaModule.ViewModels.ImageUploadFieldViewModel
+
+<fieldset class="form-group" asp-validation-class-for="UploadedFile">
+    <label asp-for="UploadedFile" class="control-label">
+        Choose Image to upload
+    </label>
+    <input asp-for="UploadedFile" type="file" class="form-control" required />
+</fieldset>
