@@ -11,16 +11,16 @@ public class ArticlePartDriver : ContentPartDisplayDriver<ArticlePart>
 {
     public override IDisplayResult Display(ArticlePart part, BuildPartDisplayContext context) =>
         Initialize<ArticlePartViewModel>(
-                GetDisplayShapeType(context),
-                viewModel => PopulateViewModel(part, viewModel))
-            .Location("Detail", "Content:5")
-            .Location("Summary", "Content:5");
+            GetDisplayShapeType(context),
+            viewModel => PopulateViewModel(part, viewModel))
+        .Location("Detail", "Content:5")
+        .Location("Summary", "Content:5");
 
     public override IDisplayResult Edit(ArticlePart part, BuildPartEditorContext context) =>
         Initialize<ArticlePartViewModel>(
-                GetEditorShapeType(context),
-                viewModel => PopulateViewModel(part, viewModel))
-            .Location("Content:5");
+            GetEditorShapeType(context),
+            viewModel => PopulateViewModel(part, viewModel))
+        .Location("Content:5");
 
     public override async Task<IDisplayResult> UpdateAsync(ArticlePart part, IUpdateModel updater, UpdatePartEditorContext context)
     {
@@ -43,5 +43,4 @@ public class ArticlePartDriver : ContentPartDisplayDriver<ArticlePart>
         viewModel.PreviewLt = part.PreviewLt;
         viewModel.PreviewEn = part.PreviewEn;
     }
-
 }

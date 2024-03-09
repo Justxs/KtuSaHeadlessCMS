@@ -4,5 +4,5 @@ namespace OrchardCore.Cms.KtuSaModule.Services;
 
 public interface IGoogleDriveService
 {
-    Task UploadFile(ImageUploadFieldViewModel viewModel);
+    Task<string> UploadImageAsync(ImageUploadFieldViewModel viewModel);
 }

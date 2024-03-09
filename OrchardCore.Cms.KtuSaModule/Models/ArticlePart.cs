@@ -16,4 +16,6 @@ public class ArticlePart : ContentPart
     public HtmlField HtmlContentLt { get; set; } = null!;
 
     public HtmlField HtmlContentEn { get; set;} = null!;
+
+    public ImageUploadField ImageUploadField { get; set; } = null!;
 }

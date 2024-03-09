@@ -20,6 +20,9 @@ public class ArticleMigrations(IContentDefinitionManager contentDefinitionManage
                 .OfType(nameof(HtmlField))
                 .WithDisplayName("EN Article Content")
                 .WithEditor("Wysiwyg"))
+            .WithField(nameof(ArticlePart.ImageUploadField), field => field
+                .OfType(nameof(ArticlePart.ImageUploadField))
+                .WithDisplayName("Upload image"))
         );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync("Article", type => type

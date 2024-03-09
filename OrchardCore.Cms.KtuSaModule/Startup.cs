@@ -20,10 +20,15 @@ public class Startup : StartupBase
         services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
 
         services
+            .AddContentField<ImageUploadField>()
+            .UseDisplayDriver<ImageUploadFieldDriver>();
+
+        services
             .AddContentPart<ArticlePart>()
             .UseDisplayDriver<ArticlePartDriver>()
             .AddHandler<ArticlePartHandler>();
 
+        services.AddScoped<IDataMigration, ImageUploadFieldMigrations>();
         services.AddScoped<IDataMigration, ArticleMigrations>();
     }
 
