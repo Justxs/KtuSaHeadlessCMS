@@ -397,5 +397,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-/KtuSaHeadlessCMS/appsettings.json
 /KtuSaHeadlessCMS/App_Data
+/OrchardCore.Cms.KtuSaModule/GoogleCredentials.json
