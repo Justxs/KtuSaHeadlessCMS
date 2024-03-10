@@ -1,19 +1,23 @@
 @model OrchardCore.Cms.KtuSaModule.ViewModels.ImageUploadFieldViewModel
 
-<fieldset class="form-group" asp-validation-class-for="UploadedFile">
-    <label asp-for="UploadedFile" class="control-label">
-        Choose Image to upload
-    </label>
+<fieldset class="form-group" asp-validation-class-for="UploadedFile" style="margin-bottom: 20px; display: flex; gap: 20px">
+    <div>
+        <label asp-for="UploadedFile" class="control-label">
+            Thumbnail image
+        </label>
 
-    <input 
-        asp-for="UploadedFile" 
-        name="ImageUploadField.UploadedFile" 
-        type="file" class="form-control" 
-        accept="image/png, image/jpeg" />
+        <input
+            asp-for="UploadedFile"
+            name="ImageUploadField.UploadedFile"
+            type="file" class="form-control"
+            accept="image/png, image/jpeg"/>
+    </div>
 
     @if (!string.IsNullOrWhiteSpace(Model.FileId))
     {
-        <P>This image is already uploaded if you want to change it upload a new one:</P>
-        <img src="https://drive.google.com/thumbnail?id=@Model.FileId" alt="Uploaded Image" />
+        <div>
+            <P>This image is already uploaded if you want to change it upload a new one.</P>
+            <img src="https://drive.google.com/thumbnail?id=@Model.FileId" alt="Uploaded Image"/>
+        </div>
     }
 </fieldset>

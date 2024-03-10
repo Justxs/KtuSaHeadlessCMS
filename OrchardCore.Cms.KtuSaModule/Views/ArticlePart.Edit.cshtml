@@ -1,7 +1,7 @@
 ﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.ArticlePartViewModel
 <!-- TODO add localization -->
 
-<fieldset class="form-group" asp-validation-class-for="TitleLt">
+<fieldset class="form-group" asp-validation-class-for="TitleLt" style="margin-bottom: 20px;">
     <label asp-for="TitleLt">
         Title LT
         <span asp-validation-for="TitleLt"></span>
@@ -19,7 +19,7 @@
     </span>
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="TitleEn">
+<fieldset class="form-group" asp-validation-class-for="TitleEn" style="margin-bottom: 20px;">
     <label asp-for="TitleEn">
         Title EN 
         <span asp-validation-for="TitleEn"></span>
@@ -37,7 +37,7 @@
     </span>
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="PreviewLt">
+<fieldset class="form-group" asp-validation-class-for="PreviewLt" style="margin-bottom: 20px;">
     <label asp-for="PreviewLt">
         Preview LT
         <span asp-validation-for="PreviewLt"></span>
@@ -50,13 +50,13 @@
     </span>
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="PreviewEn">
+<fieldset class="form-group" asp-validation-class-for="PreviewEn" style="margin-bottom: 20px;">
     <label asp-for="PreviewEn">
         Preview EN
         <span asp-validation-for="PreviewEn"></span>
     </label>
 
-    <textarea asp-for="PreviewEn" name="ArticlePart.PreviewEn" class="form-control" required>@Model.PreviewLt</textarea>
+    <textarea asp-for="PreviewEn" name="ArticlePart.PreviewEn" class="form-control" required>@Model.PreviewEn</textarea>
 
     <span class="hint">
         Article preview text in English language. This text will be shown in cards and will be the first paragraph in the article
