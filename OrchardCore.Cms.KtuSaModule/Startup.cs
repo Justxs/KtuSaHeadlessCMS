@@ -21,7 +21,8 @@ public class Startup : StartupBase
 
         services
             .AddContentField<ImageUploadField>()
-            .UseDisplayDriver<ImageUploadFieldDriver>();
+            .UseDisplayDriver<ImageUploadFieldDriver>()
+            .AddHandler<ImageUploadFieldHandler>();
 
         services
             .AddContentPart<ArticlePart>()

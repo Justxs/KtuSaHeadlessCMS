@@ -4,7 +4,13 @@
     <label asp-for="UploadedFile" class="control-label">
         Choose Image to upload
     </label>
-    <input asp-for="UploadedFile" name="ImageUploadField.UploadedFile" type="file" class="form-control" />
+
+    <input 
+        asp-for="UploadedFile" 
+        name="ImageUploadField.UploadedFile" 
+        type="file" class="form-control" 
+        accept="image/png, image/jpeg" />
+
     @if (!string.IsNullOrWhiteSpace(Model.FileId))
     {
         <P>This image is already uploaded if you want to change it upload a new one:</P>

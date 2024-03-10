@@ -30,13 +30,22 @@ public class ImageUploadFieldDriver(IGoogleDriveService googleDriveService) : Co
     public override async Task<IDisplayResult> UpdateAsync(ImageUploadField field, IUpdateModel updater, UpdateFieldEditorContext context)
     {
         var viewModel = new ImageUploadFieldViewModel();
-        var test = Prefix;
+
         await updater.TryUpdateModelAsync(viewModel, "ImageUploadField");
 
         if (viewModel.UploadedFile is null && field.FileId is not null)
         {
             updater.ModelState["ImageUploadField.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
             return await EditAsync(field, context);
+        }
+
+        if (viewModel.UploadedFile is not null)
+        {
+            var allowedContentTypes = new List<string> { "image/png", "image/jpeg" };
+            if (!allowedContentTypes.Contains(viewModel.UploadedFile.ContentType.ToLowerInvariant()))
+            {
+                updater.ModelState.AddModelError("ImageUploadField.UploadedFile", "Only PNG and JPEG files are allowed.");
+            }
         }
 
         if (viewModel.UploadedFile.Length != 0)

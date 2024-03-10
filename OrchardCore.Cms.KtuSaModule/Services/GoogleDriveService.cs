@@ -33,7 +33,7 @@ public class GoogleDriveService : IGoogleDriveService
     {
         if (viewModel.FileId is not null)
         {
-            await DeleteResourceAsync(viewModel.FileId);
+            await RemoveFileAsync(viewModel.FileId);
         }
 
         var fileMetadata = new Google.Apis.Drive.v3.Data.File
@@ -47,11 +47,9 @@ public class GoogleDriveService : IGoogleDriveService
         };
 
         CreateMediaUpload request;
-        await using (var memoryStream = new MemoryStream())
+        await using (var stream = viewModel.UploadedFile.OpenReadStream())
         {
-            await viewModel.UploadedFile.CopyToAsync(memoryStream);
-
-            request = _service.Files.Create(fileMetadata, memoryStream, fileMetadata.MimeType);
+            request = _service.Files.Create(fileMetadata, stream, fileMetadata.MimeType);
             request.Fields = "id";
 
             var response = await request.UploadAsync();
@@ -65,7 +63,7 @@ public class GoogleDriveService : IGoogleDriveService
         return request.ResponseBody.Id;
     }
 
-    private async Task DeleteResourceAsync(string fileId)
+    public async Task RemoveFileAsync(string fileId)
     {
         var command = _service.Files.Delete(fileId);
         await command.ExecuteAsync();
