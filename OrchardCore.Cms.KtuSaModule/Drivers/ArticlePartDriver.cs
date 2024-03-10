@@ -9,24 +9,32 @@ namespace OrchardCore.Cms.KtuSaModule.Drivers;
 
 public class ArticlePartDriver : ContentPartDisplayDriver<ArticlePart>
 {
-    public override IDisplayResult Display(ArticlePart part, BuildPartDisplayContext context) =>
-        Initialize<ArticlePartViewModel>(
-            GetDisplayShapeType(context),
-            viewModel => PopulateViewModel(part, viewModel))
-        .Location("Detail", "Content:5")
-        .Location("Summary", "Content:5");
+    public override IDisplayResult Display(ArticlePart part, BuildPartDisplayContext context)
+    {
+        return Initialize<ArticlePartViewModel>(
+                GetDisplayShapeType(context),
+                viewModel => PopulateViewModel(part, viewModel))
+            .Location("Detail", "Content:5")
+            .Location("Summary", "Content:5");
+    }
 
-    public override IDisplayResult Edit(ArticlePart part, BuildPartEditorContext context) =>
-        Initialize<ArticlePartViewModel>(
-            GetEditorShapeType(context),
-            viewModel => PopulateViewModel(part, viewModel))
-        .Location("Content:5");
+    public override IDisplayResult Edit(ArticlePart part, BuildPartEditorContext context)
+    {
+        var test = GetEditorShapeType(context);
+        return Initialize<ArticlePartViewModel>(
+                GetEditorShapeType(context),
+                viewModel => PopulateViewModel(part, viewModel))
+            .Location("Content:5");
+    }
 
     public override async Task<IDisplayResult> UpdateAsync(ArticlePart part, IUpdateModel updater, UpdatePartEditorContext context)
     {
         var viewModel = new ArticlePartViewModel();
 
-        await updater.TryUpdateModelAsync(viewModel, Prefix);
+        if (!await updater.TryUpdateModelAsync(viewModel, Prefix))
+        {
+            return await EditAsync(part, context);
+        }
 
         part.TitleLt = viewModel.TitleLt;
         part.TitleEn = viewModel.TitleEn;

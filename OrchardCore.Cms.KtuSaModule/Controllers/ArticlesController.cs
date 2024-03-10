@@ -46,6 +46,7 @@ public class ArticlesController(IContentManager contentManager, ISession session
                     : part?.HtmlContentEn.Html)!,
 
                 CreatedDate = (DateTime)item.CreatedUtc!,
+                ThumbnailImageId = part!.ImageUploadField.FileId,
             };
 
             dto.ReadingTime = CalculateReadingTime(dto.Preview , dto.HtmlBody);

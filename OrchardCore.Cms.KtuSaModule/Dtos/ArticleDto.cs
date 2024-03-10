@@ -11,4 +11,6 @@ public class ArticleDto
     public string ReadingTime { get; set; } = null!;
 
     public DateTime CreatedDate { get; set; }
+
+    public string ThumbnailImageId { get; set; } = null!;
 }

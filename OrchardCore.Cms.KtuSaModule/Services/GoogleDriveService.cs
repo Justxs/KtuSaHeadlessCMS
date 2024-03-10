@@ -9,13 +9,14 @@ namespace OrchardCore.Cms.KtuSaModule.Services;
 public class GoogleDriveService : IGoogleDriveService
 {
     private readonly DriveService _service;
+    private const string CredentialsFilePath = "../OrchardCore.Cms.KtuSaModule/GoogleCredentials.json";
+    private const string ImageFolder = "153RaNKRLtyEiPO95PpH2q4Jh-_jm_Djh";
 
     public GoogleDriveService()
     {
-        const string credentialsFilePath = "../OrchardCore.Cms.KtuSaModule/GoogleCredentials.json";
 
         GoogleCredential googleCredential;
-        using (var stream = new FileStream(credentialsFilePath, FileMode.Open, FileAccess.Read))
+        using (var stream = new FileStream(CredentialsFilePath, FileMode.Open, FileAccess.Read))
         {
             googleCredential = GoogleCredential.FromStream(stream)
                 .CreateScoped(DriveService.Scope.Drive);
@@ -30,18 +31,18 @@ public class GoogleDriveService : IGoogleDriveService
 
     public async Task<string> UploadImageAsync(ImageUploadFieldViewModel viewModel)
     {
-        if (viewModel.UploadedFile == null || viewModel.UploadedFile.Length == 0)
+        if (viewModel.FileId is not null)
         {
-            throw new ArgumentException("File is empty");
+            await DeleteResourceAsync(viewModel.FileId);
         }
 
-        var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+        var fileMetadata = new Google.Apis.Drive.v3.Data.File
         {
-            Name = viewModel.UploadedFile.FileName,
+            Name = viewModel.UploadedFile!.FileName,
             MimeType = viewModel.UploadedFile.ContentType,
             Parents = new List<string>
             {
-                "153RaNKRLtyEiPO95PpH2q4Jh-_jm_Djh",
+                ImageFolder,
             },
         };
 
@@ -62,5 +63,11 @@ public class GoogleDriveService : IGoogleDriveService
         }
 
         return request.ResponseBody.Id;
+    }
+
+    private async Task DeleteResourceAsync(string fileId)
+    {
+        var command = _service.Files.Delete(fileId);
+        await command.ExecuteAsync();
     }
 }

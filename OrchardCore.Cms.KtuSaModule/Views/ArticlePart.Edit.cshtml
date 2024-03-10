@@ -7,7 +7,12 @@
         <span asp-validation-for="TitleLt"></span>
     </label>
 
-    <input asp-for="TitleLt" name="ArticlePart.TitleLt" class="form-control" required />
+    <input 
+        asp-for="TitleLt" 
+        name="ArticlePart.TitleLt" 
+        class="form-control"
+        value="@Model.TitleLt"
+        required />
 
     <span class="hint">
         Article title in Lithuanian language
@@ -20,7 +25,12 @@
         <span asp-validation-for="TitleEn"></span>
     </label>
 
-    <input asp-for="TitleEn" name="ArticlePart.TitleEn" class="form-control" required />
+    <input 
+        asp-for="TitleEn" 
+        name="ArticlePart.TitleEn"
+        class="form-control" 
+        value="@Model.TitleEn" 
+        required />
     
     <span class="hint">
         Article title in English language
@@ -33,7 +43,7 @@
         <span asp-validation-for="PreviewLt"></span>
     </label>
 
-    <textarea asp-for="PreviewLt" name="ArticlePart.PreviewLt" class="form-control" required></textarea>
+    <textarea asp-for="PreviewLt" name="ArticlePart.PreviewLt" class="form-control" required>@Model.PreviewLt</textarea>
 
     <span class="hint">
         Article preview text in Lithuanian language. This text will be shown in cards and will be the first paragraph in the article
@@ -46,7 +56,7 @@
         <span asp-validation-for="PreviewEn"></span>
     </label>
 
-    <textarea asp-for="PreviewEn" name="ArticlePart.PreviewEn" class="form-control" required></textarea>
+    <textarea asp-for="PreviewEn" name="ArticlePart.PreviewEn" class="form-control" required>@Model.PreviewLt</textarea>
 
     <span class="hint">
         Article preview text in English language. This text will be shown in cards and will be the first paragraph in the article
