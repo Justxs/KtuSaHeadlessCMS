@@ -34,9 +34,14 @@ public class Startup : StartupBase
             .UseDisplayDriver<DukPartDriver>()
             .AddHandler<DukPartHandler>();
 
+        services
+            .AddContentPart<SponsorPart>()
+            .UseDisplayDriver<SponsorPartDriver>()
+            .AddHandler<SponsorPartHandler>();
+
         services.AddScoped<IDataMigration, ArticleMigrations>();
         services.AddScoped<IDataMigration, DukMigrations>();
-
+        services.AddScoped<IDataMigration, SponsorMigrations>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

@@ -1,0 +1,32 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.SponsorPartViewModel
+<!-- TODO add localization -->
+
+<fieldset class="form-group" asp-validation-class-for="Name" style="margin-bottom: 20px;">
+    <label asp-for="Name">
+        Company name
+    </label>
+
+    <input asp-for="Name"
+           name="SponsorPart.Name"
+           class="form-control"
+           value="@Model.Name"
+           required />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="WebsiteUrl" style="margin-bottom: 20px;">
+    <label asp-for="WebsiteUrl">
+        Company Website Url
+        <span asp-validation-for="TitleEn"></span>
+    </label>
+
+    <input asp-for="WebsiteUrl"
+           name="SponsorPart.WebsiteUrl"
+           class="form-control"
+           value="@Model.WebsiteUrl"
+           type="url"
+           required/>
+
+    <span class="hint">
+        Example: https://ktu.edu/
+    </span>
+</fieldset>
