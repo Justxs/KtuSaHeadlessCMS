@@ -41,20 +41,55 @@ public class ArticlesController(IContentManager contentManager, ISession session
                     ? part?.PreviewLt 
                     : part?.PreviewEn)!,
 
-                HtmlBody = (isLithuanian 
-                    ? part?.HtmlContentLt.Html 
-                    : part?.HtmlContentEn.Html)!,
-
+                Id = item.ContentItemId,
                 CreatedDate = (DateTime)item.CreatedUtc!,
                 ThumbnailImageId = part!.ImageUploadField.FileId,
             };
-
-            dto.ReadingTime = CalculateReadingTime(dto.Preview , dto.HtmlBody);
 
             return dto;
         }).ToList();
 
         return Ok(articleDtos);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetArticleById(string language, string id)
+    {
+        var article = await contentManager.GetAsync(id);
+
+        await contentManager.LoadAsync(article);
+
+        if (!article.Published)
+        {
+            return BadRequest("Article is not published yet.");
+        }
+
+        var isLithuanian = language.ToUpper() == Languages.LT.ToString();
+
+        var part = article.As<ArticlePart>();
+        var articleDto = new ArticleDto
+        {
+            Title = (isLithuanian
+                ? part?.TitleLt
+                : part?.TitleEn)!,
+
+            Preview = (isLithuanian
+                ? part?.PreviewLt
+                : part?.PreviewEn)!,
+
+            HtmlBody = (isLithuanian
+                ? part?.HtmlContentLt.Html
+                : part?.HtmlContentEn.Html)!,
+
+            Id = article.ContentItemId,
+            CreatedDate = (DateTime)article.CreatedUtc!,
+            ThumbnailImageId = part!.ImageUploadField.FileId,
+        };
+
+        articleDto.ReadingTime = CalculateReadingTime(articleDto.Preview, articleDto.HtmlBody);
+
+
+        return Ok(articleDto);
     }
 
     private static string CalculateReadingTime(string preview, string htmlBody)
