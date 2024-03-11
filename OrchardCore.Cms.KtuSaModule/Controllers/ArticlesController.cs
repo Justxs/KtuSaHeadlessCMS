@@ -14,7 +14,7 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 public class ArticlesController(IContentManager contentManager, ISession session) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ArticleDto>>> GetArticles(string language)
+    public async Task<ActionResult> GetArticles(string language)
     {
         var articles = await session
             .Query<ContentItem, ContentItemIndex>(index => index.ContentType == "Article" && index.Published)
