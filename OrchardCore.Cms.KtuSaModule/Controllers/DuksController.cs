@@ -12,11 +12,14 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class DuksController(IContentManager contentManager, ISession session) : ControllerBase
 {
+    private static readonly string DukContentType = Models.Enums.ContentTypes.Duk.ToString();
+
+
     [HttpGet]
     public async Task<ActionResult> GetDuks(string language, [FromQuery] int? limit)
     {
         var duks = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == "Duk" && index.Published)
+            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == DukContentType && index.Published)
             .OrderByDescending(index => index.ModifiedUtc)
             .ListAsync();
 
