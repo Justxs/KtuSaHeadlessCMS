@@ -13,12 +13,17 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 public class DuksController(IContentManager contentManager, ISession session) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult> GetDuks(string language)
+    public async Task<ActionResult> GetDuks(string language, [FromQuery] int? limit)
     {
         var duks = await session
             .Query<ContentItem, ContentItemIndex>(index => index.ContentType == "Duk" && index.Published)
-            .OrderByDescending(index => index.CreatedUtc)
+            .OrderByDescending(index => index.ModifiedUtc)
             .ListAsync();
+
+        if (limit is not null)
+        {
+            duks = duks.OrderBy(_ => Guid.NewGuid()).Take((int)limit).ToList();
+        }
 
         foreach (var duk in duks)
         {
