@@ -16,12 +16,17 @@ public class ArticlesController(IContentManager contentManager, ISession session
     private static readonly string ArticleContentType = Models.Enums.ContentTypes.Article.ToString();
 
     [HttpGet]
-    public async Task<ActionResult> GetArticles(string language)
+    public async Task<ActionResult> GetArticles(string language, [FromQuery] int? limit)
     {
         var articles = await session
             .Query<ContentItem, ContentItemIndex>(index => index.ContentType == ArticleContentType && index.Published)
             .OrderByDescending(index => index.CreatedUtc)
             .ListAsync();
+
+        if (limit is not null)
+        {
+            articles = articles.Take((int)limit).ToList();
+        }
 
         foreach (var article in articles)
         {

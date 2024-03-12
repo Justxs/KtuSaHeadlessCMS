@@ -9,7 +9,7 @@ using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers;
 
-public class ImageUploadFieldDriver(IGoogleDriveService googleDriveService) : ContentFieldDisplayDriver<ImageUploadField>
+public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : ContentFieldDisplayDriver<ImageUploadField>
 {
     public override IDisplayResult Display(ImageUploadField field, BuildFieldDisplayContext context)
     {
@@ -48,10 +48,10 @@ public class ImageUploadFieldDriver(IGoogleDriveService googleDriveService) : Co
             }
         }
 
-        if (viewModel.UploadedFile.Length != 0)
+        if (viewModel.UploadedFile is not null && viewModel.UploadedFile.Length != 0)
         {
             viewModel.FileId = field.FileId;
-            field.FileId = await googleDriveService.UploadImageAsync(viewModel);
+            field.FileId = await googleCloudService.UploadImageAsync(viewModel);
         }
 
         return await EditAsync(field, context);

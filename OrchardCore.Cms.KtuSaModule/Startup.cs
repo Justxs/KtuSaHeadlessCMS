@@ -17,7 +17,7 @@ public class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
+        services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
 
         services
             .AddContentField<ImageUploadField>()

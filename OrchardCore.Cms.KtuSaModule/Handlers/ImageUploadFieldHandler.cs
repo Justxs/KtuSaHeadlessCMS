@@ -4,10 +4,10 @@ using OrchardCore.ContentManagement.Handlers;
 
 namespace OrchardCore.Cms.KtuSaModule.Handlers;
 
-public class ImageUploadFieldHandler(IGoogleDriveService googleDriveService) : ContentFieldHandler<ImageUploadField>
+public class ImageUploadFieldHandler(IGoogleCloudService googleCloudService) : ContentFieldHandler<ImageUploadField>
 {
     public override async Task RemovedAsync(RemoveContentFieldContext context, ImageUploadField field)
     {
-        await googleDriveService.RemoveFileAsync(field.FileId);
+        await googleCloudService.RemoveFileAsync(field.FileId);
     }
 }

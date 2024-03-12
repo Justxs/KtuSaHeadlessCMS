@@ -2,9 +2,9 @@
 
 namespace OrchardCore.Cms.KtuSaModule.Services;
 
-public interface IGoogleDriveService
+public interface IGoogleCloudService
 {
     Task<string> UploadImageAsync(ImageUploadFieldViewModel viewModel);
 
-    Task RemoveFileAsync(string fileId);
+    Task RemoveFileAsync(string fileName);
 }
