@@ -1,0 +1,30 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.PositionPartViewModel
+<!-- TODO add localization -->
+
+<fieldset class="form-group" asp-validation-class-for="Name" style="margin-bottom: 20px;">
+    <label asp-for="Name">
+        Position name
+    </label>
+
+    <input asp-for="Name"
+           name="PositionPart.Name"
+           class="form-control"
+           value="@Model.Name"
+           required />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Description" style="margin-bottom: 20px;">
+    <label asp-for="Description">
+        Description
+    </label>
+
+    <input asp-for="Description"
+           name="PositionPart.Description"
+           class="form-control"
+           value="@Model.Description"
+           required />
+
+    <span class="hint">
+        Write here what does this position
+    </span>
+</fieldset>

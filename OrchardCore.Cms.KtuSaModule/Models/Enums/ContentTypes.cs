@@ -5,4 +5,6 @@ public enum ContentTypes
     Article,
     Duk,
     Sponsor,
+    MainContact,
+    Contact,
 }

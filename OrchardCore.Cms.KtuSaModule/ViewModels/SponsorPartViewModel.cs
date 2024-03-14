@@ -1,8 +1,12 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.ViewModels;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OrchardCore.Cms.KtuSaModule.ViewModels;
 
 public class SponsorPartViewModel
 {
-    public string Name { get; set; }
+    [Required(ErrorMessage = "The sponsor name is required.")]
+    public string Name { get; set; } = null!;
 
-    public string WebsiteUrl { get; set; }
+    [Required(ErrorMessage = "The website url is required.")]
+    public string WebsiteUrl { get; set; } = null!;
 }

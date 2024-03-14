@@ -1,0 +1,35 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.ContactPartViewModel
+<!-- TODO add localization -->
+
+<fieldset class="form-group" asp-validation-class-for="PhoneNumber" style="margin-bottom: 20px;">
+    <label asp-for="PhoneNumber">
+        Phone Number
+    </label>
+
+    <input asp-for="PhoneNumber"
+           name="ContactPart.PhoneNumber"
+           class="form-control"
+           value="@Model.PhoneNumber"
+           pattern="\+370[0-9]{8}"
+           placeholder="+37012345678"
+           type="tel"
+           title="Phone number must be in +370xxxxxxxx format!"
+           required />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
+    <label asp-for="Email">
+        Email address
+    </label>
+
+    <input asp-for="Email"
+           name="ContactPart.Email"
+           class="form-control"
+           value="@Model.Email"
+           type="email"
+           required />
+
+    <span class="hint">
+        Insert KTU SA email, it should not be a personal email
+    </span>
+</fieldset>

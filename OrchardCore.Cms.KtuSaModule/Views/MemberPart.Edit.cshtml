@@ -1,0 +1,29 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.MemberPartViewModel
+<!-- TODO add localization -->
+
+
+<fieldset class="form-group" asp-validation-class-for="Name" style="margin-bottom: 20px;">
+    <label asp-for="Name">
+        Member Name
+    </label>
+
+    <input asp-for="Name"
+           name="MemberPart.Name"
+           class="form-control"
+           value="@Model.Name"
+           required />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="SaUnit">
+    <label class="form-label" asp-for="SaUnit">
+        SA Unit
+    </label>
+
+    <select 
+        asp-for="SaUnit" 
+        name="MemberPart.SaUnit" 
+        asp-items="Html.GetEnumSelectList<saUnitOptions>()"
+            class="form-control">
+        @Model.SaUnit
+    </select>
+</fieldset>

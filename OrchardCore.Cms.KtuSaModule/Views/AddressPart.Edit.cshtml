@@ -1,0 +1,17 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.AddressPartViewModel
+
+<fieldset class="form-group" asp-validation-class-for="Address" style="margin-bottom: 20px;">
+    <label asp-for="Address">
+        Address
+    </label>
+
+    <input asp-for="Address"
+           name="ContactPart.Address"
+           class="form-control"
+           value="@Model.Address"
+    />
+
+    <span class="hint">
+        KTU CSA office location
+    </span>
+</fieldset>

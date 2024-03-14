@@ -30,6 +30,24 @@ public class Startup : StartupBase
             .AddHandler<ArticlePartHandler>();
 
         services
+            .AddContentPart<ContactPart>()
+            .UseDisplayDriver<ContactPartDriver>();
+
+        services
+            .AddContentPart<MemberPart>()
+            .UseDisplayDriver<MemberPartDriver>()
+            .AddHandler<MemberPartHandler>();
+
+        services
+            .AddContentPart<AddressPart>()
+            .UseDisplayDriver<AddressPartDriver>();
+
+        services
+            .AddContentPart<PositionPart>()
+            .UseDisplayDriver<PositionPartDriver>()
+            .AddHandler<MemberPartHandler>();
+
+        services
             .AddContentPart<DukPart>()
             .UseDisplayDriver<DukPartDriver>()
             .AddHandler<DukPartHandler>();
@@ -42,6 +60,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, ArticleMigrations>();
         services.AddScoped<IDataMigration, DukMigrations>();
         services.AddScoped<IDataMigration, SponsorMigrations>();
+        services.AddScoped<IDataMigration, ContactMigrations>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
