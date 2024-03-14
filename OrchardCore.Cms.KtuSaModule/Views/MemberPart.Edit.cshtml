@@ -1,4 +1,5 @@
 ﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.MemberPartViewModel
+
 <!-- TODO add localization -->
 
 
@@ -21,9 +22,10 @@
 
     <select 
         asp-for="SaUnit" 
-        name="MemberPart.SaUnit" 
-        asp-items="Html.GetEnumSelectList<saUnitOptions>()"
-            class="form-control">
-        @Model.SaUnit
+        name="MemberPart.SaUnit"
+        asp-items="Html.GetEnumSelectList<OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit>()"
+        class="form-control"
+        >
+            @Model.SaUnit
     </select>
 </fieldset>

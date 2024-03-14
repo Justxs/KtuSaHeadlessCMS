@@ -2,5 +2,5 @@
 
 public class AddressPart : ContactPart
 {
-    public string Address { get; set; }
+    public new string Address { get; set; } = null!;
 }

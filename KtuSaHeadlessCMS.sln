@@ -5,8 +5,6 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KtuSaHeadlessCMS", "KtuSaHeadlessCMS\KtuSaHeadlessCMS.csproj", "{B6A03552-8C9F-421E-A952-E906D53049E4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.KtuSaTheme", "OrchardCore.KtuSaTheme\OrchardCore.KtuSaTheme.csproj", "{24E8C246-8B57-45A6-A840-D44D2D3A26D4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.Cms.KtuSaModule", "OrchardCore.Cms.KtuSaModule\OrchardCore.Cms.KtuSaModule.csproj", "{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA29848C-52CB-4617-8E7D-14573235D27E}"
@@ -24,10 +22,6 @@ Global
 		{B6A03552-8C9F-421E-A952-E906D53049E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6A03552-8C9F-421E-A952-E906D53049E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6A03552-8C9F-421E-A952-E906D53049E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24E8C246-8B57-45A6-A840-D44D2D3A26D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24E8C246-8B57-45A6-A840-D44D2D3A26D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24E8C246-8B57-45A6-A840-D44D2D3A26D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24E8C246-8B57-45A6-A840-D44D2D3A26D4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}.Release|Any CPU.ActiveCfg = Release|Any CPU

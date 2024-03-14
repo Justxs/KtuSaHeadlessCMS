@@ -4,6 +4,7 @@
 <fieldset class="form-group" asp-validation-class-for="Name" style="margin-bottom: 20px;">
     <label asp-for="Name">
         Company name
+        <span asp-validation-for="Name"></span>
     </label>
 
     <input asp-for="Name"
@@ -16,7 +17,7 @@
 <fieldset class="form-group" asp-validation-class-for="WebsiteUrl" style="margin-bottom: 20px;">
     <label asp-for="WebsiteUrl">
         Company Website Url
-        <span asp-validation-for="TitleEn"></span>
+        <span asp-validation-for="WebsiteUrl"></span>
     </label>
 
     <input asp-for="WebsiteUrl"
