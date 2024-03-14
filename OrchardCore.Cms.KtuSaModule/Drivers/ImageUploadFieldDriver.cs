@@ -31,11 +31,11 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
     {
         var viewModel = new ImageUploadFieldViewModel();
 
-        await updater.TryUpdateModelAsync(viewModel, "ImageUploadField");
+        await updater.TryUpdateModelAsync(viewModel, Prefix);
 
         if (viewModel.UploadedFile is null && field.FileId is not null)
         {
-            updater.ModelState["ImageUploadField.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
+            updater.ModelState[$"{Prefix}.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
             return await EditAsync(field, context);
         }
 

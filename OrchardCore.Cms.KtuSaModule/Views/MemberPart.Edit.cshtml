@@ -9,7 +9,6 @@
     </label>
 
     <input asp-for="Name"
-           name="MemberPart.Name"
            class="form-control"
            value="@Model.Name"
            required />
@@ -22,7 +21,6 @@
 
     <select 
         asp-for="SaUnit" 
-        name="MemberPart.SaUnit"
         asp-items="Html.GetEnumSelectList<OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit>()"
         class="form-control"
         >

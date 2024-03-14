@@ -23,7 +23,6 @@
     </label>
 
     <input asp-for="QuestionEn"
-           name="DukPart.QuestionEn"
            class="form-control"
            value="@Model.QuestionEn"
            required />
@@ -38,7 +37,7 @@
         Answer LT
     </label>
 
-    <textarea asp-for="AnswerLt" name="DukPart.AnswerLt" class="form-control" required>@Model.AnswerLt</textarea>
+    <textarea asp-for="AnswerLt" class="form-control" required>@Model.AnswerLt</textarea>
 
     <span class="hint">
         Answer of the question in Lithuanian language
@@ -50,7 +49,7 @@
         Answer EN
     </label>
 
-    <textarea asp-for="AnswerEn" name="DukPart.AnswerEn" class="form-control" required>@Model.AnswerEn</textarea>
+    <textarea asp-for="AnswerEn" class="form-control" required>@Model.AnswerEn</textarea>
 
     <span class="hint">
         Answer of the question in English language
