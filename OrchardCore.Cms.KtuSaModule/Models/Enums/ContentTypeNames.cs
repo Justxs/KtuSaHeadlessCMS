@@ -1,6 +1,6 @@
 ﻿namespace OrchardCore.Cms.KtuSaModule.Models.Enums;
 
-public enum ContentTypes
+public enum ContentTypeNames
 {
     Article,
     Duk,

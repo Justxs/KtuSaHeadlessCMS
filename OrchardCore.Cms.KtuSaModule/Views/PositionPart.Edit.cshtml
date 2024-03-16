@@ -1,25 +1,51 @@
 ﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.PositionPartViewModel
 <!-- TODO add localization -->
 
-<fieldset class="form-group" asp-validation-class-for="Name" style="margin-bottom: 20px;">
-    <label asp-for="Name">
-        Position name
+<fieldset class="form-group" asp-validation-class-for="NameLT" style="margin-bottom: 20px;">
+    <label asp-for="NameLT">
+        Position name LT
     </label>
 
-    <input asp-for="Name"
+    <input asp-for="NameLT"
            class="form-control"
-           value="@Model.Name"
+           value="@Model.NameLT"
            required />
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="Description" style="margin-bottom: 20px;">
-    <label asp-for="Description">
-        Description
+<fieldset class="form-group" asp-validation-class-for="NameEN" style="margin-bottom: 20px;">
+    <label asp-for="NameEN">
+        Position name EN
     </label>
 
-    <input asp-for="Description"
+    <input asp-for="NameEN"
            class="form-control"
-           value="@Model.Description"
+           value="@Model.NameEN"
+           required />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="DescriptionLT" style="margin-bottom: 20px;">
+    <label asp-for="DescriptionLT">
+        Description LT
+    </label>
+
+    <input asp-for="DescriptionLT"
+           class="form-control"
+           value="@Model.DescriptionLT"
+           required />
+
+    <span class="hint">
+        Write here what does this position
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="DescriptionEN" style="margin-bottom: 20px;">
+    <label asp-for="DescriptionEN">
+        Description EN
+    </label>
+
+    <input asp-for="DescriptionEN"
+           class="form-control"
+           value="@Model.DescriptionEN"
            required />
 
     <span class="hint">

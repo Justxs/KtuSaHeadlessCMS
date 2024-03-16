@@ -13,7 +13,7 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class ArticlesController(IContentManager contentManager, ISession session) : ControllerBase
 {
-    private static readonly string ArticleContentType = Models.Enums.ContentTypes.Article.ToString();
+    private static readonly string ArticleContentType = ContentTypeNames.Article.ToString();
 
     [HttpGet]
     public async Task<ActionResult> GetArticles(string language, [FromQuery] int? limit)

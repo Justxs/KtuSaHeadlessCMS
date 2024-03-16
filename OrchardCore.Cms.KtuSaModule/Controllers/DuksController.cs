@@ -12,7 +12,7 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class DuksController(IContentManager contentManager, ISession session) : ControllerBase
 {
-    private static readonly string DukContentType = Models.Enums.ContentTypes.Duk.ToString();
+    private static readonly string DukContentType = ContentTypeNames.Duk.ToString();
 
 
     [HttpGet]

@@ -4,7 +4,11 @@ namespace OrchardCore.Cms.KtuSaModule.Models;
 
 public class PositionPart : ContentPart
 {
-    public string Name { get; set; } = null!;
+    public string NameLt { get; set; } = null!;
 
-    public string Description { get; set; } = null!;
+    public string DescriptionLt { get; set; } = null!;
+
+    public string NameEn { get; set; } = null!;
+
+    public string DescriptionEn { get; set; } = null!;
 }

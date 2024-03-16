@@ -1,8 +1,11 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models;
+﻿using OrchardCore.Cms.KtuSaModule.Indexes;
+using OrchardCore.Cms.KtuSaModule.Models;
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using YesSql.Sql;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -42,23 +45,25 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .WithDescription("All info about member")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync("MainContact", type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.MainContact.ToString(), type => type
             .Listable()
             .WithPart(nameof(ContactPart))
             .WithPart(nameof(AddressPart))
             .WithDescription("Main Contacts of KTU SA")
         );
 
-        var mainContactItem = await contentManager.NewAsync("MainContact");
+        var mainContactItem = await contentManager.NewAsync(ContentTypeNames.MainContact.ToString());
         mainContactItem.DisplayText = "Pagrindiniai kontaktai / Main contacts";
 
         var contactPart = mainContactItem.As<ContactPart>();
+        var addressPart = mainContactItem.As<AddressPart>();
+
 
         if (contactPart != null)
         {
             contactPart.PhoneNumber = "+37012345678";
             contactPart.Email = "info@example.com";
-            contactPart.Address = "Kaunas, Lithuania";
+            addressPart.Address = "Kaunas, Lithuania";
 
             mainContactItem.Apply(nameof(ContactPart), contactPart);
 
@@ -66,6 +71,33 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
         }
         await contentManager.CreateAsync(mainContactItem);
 
-        return 1;
+        await SchemaBuilder.CreateMapIndexTableAsync<MemberPartIndex>(table => table
+            .Column<string>(nameof(MemberPartIndex.ContentItemId), column => column.WithLength(26))
+            .Column<string>(nameof(MemberPartIndex.SaUnit), column => column.WithLength(10))
+        );
+
+        await SchemaBuilder.AlterTableAsync(nameof(MemberPartIndex), table => table
+            .CreateIndex(
+                $"IDX_{nameof(MemberPartIndex)}_{nameof(MemberPartIndex.SaUnit)}",
+                nameof(MemberPartIndex.SaUnit))
+        );
+
+        return 2;
+    }
+
+    public async Task<int> UpdateFrom1Async()
+    {
+        await SchemaBuilder.CreateMapIndexTableAsync<MemberPartIndex>(table => table
+            .Column<string>(nameof(MemberPartIndex.ContentItemId), column => column.WithLength(26))
+            .Column<string>(nameof(MemberPartIndex.SaUnit), column => column.WithLength(10))
+        );
+
+        await SchemaBuilder.AlterTableAsync(nameof(MemberPartIndex),table => table
+            .CreateIndex(
+            $"IDX_{nameof(MemberPartIndex)}_{nameof(MemberPartIndex.SaUnit)}",
+            nameof(MemberPartIndex.SaUnit))
+        );
+
+        return 2;
     }
 }

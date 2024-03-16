@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models;
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
@@ -12,7 +13,7 @@ public class DukMigrations(IContentDefinitionManager contentDefinitionManager) :
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(DukPart), part => 
             part.Attachable());
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync("Duk", type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Duk.ToString(), type => type
             .Draftable()
             .Creatable()
             .Listable()

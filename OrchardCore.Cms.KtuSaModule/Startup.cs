@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using OrchardCore.Cms.KtuSaModule.Drivers;
 using OrchardCore.Cms.KtuSaModule.Handlers;
+using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Migrations;
 using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Services;
@@ -10,6 +11,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
+using YesSql.Indexes;
 
 namespace OrchardCore.Cms.KtuSaModule;
 
@@ -61,6 +63,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, DukMigrations>();
         services.AddScoped<IDataMigration, SponsorMigrations>();
         services.AddScoped<IDataMigration, ContactMigrations>();
+        services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

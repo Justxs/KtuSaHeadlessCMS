@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models;
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
@@ -15,7 +16,7 @@ public class SponsorMigrations(IContentDefinitionManager contentDefinitionManage
                     .OfType(nameof(ArticlePart.ImageUploadField))
                     .WithDisplayName("Upload company Logo")));
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync("Sponsor", type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Sponsor.ToString(), type => type
             .Draftable()
             .Creatable()
             .Listable()

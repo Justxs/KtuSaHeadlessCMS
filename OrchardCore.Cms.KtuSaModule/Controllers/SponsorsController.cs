@@ -2,6 +2,7 @@
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Dtos;
 using OrchardCore.Cms.KtuSaModule.Models;
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.ContentManagement;
 
@@ -11,7 +12,7 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/[controller]")]
 public class SponsorsController(IContentManager contentManager, ISession session) : ControllerBase
 {
-    private static readonly string SponsorContentType = Models.Enums.ContentTypes.Sponsor.ToString();
+    private static readonly string SponsorContentType = ContentTypeNames.Sponsor.ToString();
 
     [HttpGet]
     public async Task<ActionResult> GetSponsors()

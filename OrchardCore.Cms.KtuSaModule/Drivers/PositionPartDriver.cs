@@ -13,8 +13,10 @@ public class PositionPartDriver : ContentPartDisplayDriver<PositionPart>
         return Initialize<PositionPartViewModel>(
                 GetDisplayShapeType(context), model =>
                 {
-                    model.Name = part.Name;
-                    model.Description = part.Description;
+                    model.NameLT = part.NameLt;
+                    model.DescriptionLT = part.DescriptionLt;
+                    model.NameEN = part.NameEn;
+                    model.DescriptionEN = part.DescriptionEn;
                 })
             .Location("Detail", "Content:10");
     }
@@ -24,8 +26,10 @@ public class PositionPartDriver : ContentPartDisplayDriver<PositionPart>
         return Initialize<PositionPartViewModel>(
             GetEditorShapeType(context), model =>
             {
-                model.Name = part.Name;
-                model.Description = part.Description;
+                model.NameLT = part.NameLt;
+                model.DescriptionLT = part.DescriptionLt;
+                model.NameEN = part.NameEn;
+                model.DescriptionEN = part.DescriptionEn;
             });
     }
 
@@ -38,8 +42,10 @@ public class PositionPartDriver : ContentPartDisplayDriver<PositionPart>
             return Edit(part, context);
         }
 
-        part.Name = model.Name;
-        part.Description = model.Description;
+        part.NameLt = model.NameLT;
+        part.DescriptionLt = model.DescriptionLT;
+        part.NameEn = model.NameEN;
+        part.DescriptionEn = model.DescriptionEN;
 
         return Edit(part, context);
     }
