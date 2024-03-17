@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models;
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
@@ -22,14 +23,16 @@ public class ArticleMigrations(IContentDefinitionManager contentDefinitionManage
                 .WithEditor("Wysiwyg"))
             .WithField(nameof(ArticlePart.ImageUploadField), field => field
                 .OfType(nameof(ArticlePart.ImageUploadField))
-                .WithDisplayName("Upload image"))
+                .WithDisplayName("Upload main image"))
+            .WithDescription("Articles content part")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync("Article", type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Article.ToString(), type => type
             .Draftable()
             .Creatable()
             .Listable()
             .WithPart(nameof(ArticlePart))
+            .WithDescription("Articles content type")
         );
 
         return 1;

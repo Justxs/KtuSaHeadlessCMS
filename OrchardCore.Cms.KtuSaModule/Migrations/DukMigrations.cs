@@ -11,13 +11,17 @@ public class DukMigrations(IContentDefinitionManager contentDefinitionManager) :
     public async Task<int> CreateAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(DukPart), part => 
-            part.Attachable());
+            part
+                .Attachable()
+                .WithDescription("Frequently asked questions content part")
+        );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Duk.ToString(), type => type
             .Draftable()
             .Creatable()
             .Listable()
             .WithPart(nameof(DukPart))
+            .WithDescription("Frequently asked questions content type")
         );
 
         return 1;

@@ -7,4 +7,5 @@ public enum ContentTypeNames
     Sponsor,
     MainContact,
     Contact,
+    HeroSection,
 }

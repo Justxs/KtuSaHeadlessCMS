@@ -24,7 +24,7 @@ public class MemberPartIndexProvider : IndexProvider<ContentItem>
                 : new MemberPartIndex
                 {
                     ContentItemId = contentItem.ContentItemId,
-                    SaUnit = memberPart.SaUnit,
+                    SaUnit = memberPart.SaUnitSelectField.SaUnit,
                 })!;
         });
     }

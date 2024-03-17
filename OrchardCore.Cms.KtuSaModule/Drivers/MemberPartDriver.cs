@@ -14,7 +14,6 @@ public class MemberPartDriver : ContentPartDisplayDriver<MemberPart>
                 GetDisplayShapeType(context), model =>
                 {
                     model.Name = part.Name;
-                    model.SaUnit = part.SaUnit;
                 })
             .Location("Detail", "Content:10");
     }
@@ -25,7 +24,6 @@ public class MemberPartDriver : ContentPartDisplayDriver<MemberPart>
             GetEditorShapeType(context), model =>
             {
                 model.Name = part.Name;
-                model.SaUnit = part.SaUnit;
             });
     }
 
@@ -39,7 +37,6 @@ public class MemberPartDriver : ContentPartDisplayDriver<MemberPart>
         }
 
         part.Name = model.Name;
-        part.SaUnit = model.SaUnit;
 
         return Edit(part, context);
     }

@@ -14,13 +14,16 @@ public class SponsorMigrations(IContentDefinitionManager contentDefinitionManage
             part.Attachable()
                 .WithField(nameof(ArticlePart.ImageUploadField), field => field
                     .OfType(nameof(ArticlePart.ImageUploadField))
-                    .WithDisplayName("Upload company Logo")));
+                    .WithDisplayName("Upload company Logo"))
+                .WithDescription("Sponsors content part")
+            );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Sponsor.ToString(), type => type
             .Draftable()
             .Creatable()
             .Listable()
             .WithPart(nameof(SponsorPart))
+            .WithDescription("Sponsors content type")
         );
 
         return 1;

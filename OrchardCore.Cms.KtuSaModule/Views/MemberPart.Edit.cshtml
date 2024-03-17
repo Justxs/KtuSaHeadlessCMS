@@ -13,17 +13,3 @@
            value="@Model.Name"
            required />
 </fieldset>
-
-<fieldset class="form-group" asp-validation-class-for="SaUnit">
-    <label class="form-label" asp-for="SaUnit">
-        SA Unit
-    </label>
-
-    <select 
-        asp-for="SaUnit" 
-        asp-items="Html.GetEnumSelectList<OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit>()"
-        class="form-control"
-        >
-            @Model.SaUnit
-    </select>
-</fieldset>

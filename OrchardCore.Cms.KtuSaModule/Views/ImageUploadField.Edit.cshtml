@@ -3,7 +3,7 @@
 <fieldset class="form-group" asp-validation-class-for="UploadedFile" style="margin-bottom: 20px; display: flex; gap: 20px">
     <div>
         <label asp-for="UploadedFile" class="control-label">
-            Thumbnail image
+            @Model.Label
         </label>
 
         <input

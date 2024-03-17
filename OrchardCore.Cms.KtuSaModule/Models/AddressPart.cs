@@ -2,5 +2,7 @@
 
 public class AddressPart : ContactPart
 {
-    public new string Address { get; set; } = null!;
+    public string Address { get; set; } = null!;
+
+    public SaUnitSelectField SaUnitSelectField { get; set; } = null!;
 }

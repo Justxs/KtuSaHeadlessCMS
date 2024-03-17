@@ -4,6 +4,7 @@ using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.Cms.KtuSaModule.ViewModels;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
+using OrchardCore.ContentManagement.Metadata.Models;
 using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 
@@ -15,7 +16,11 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
     {
         return Initialize<ImageUploadFieldViewModel>(
                 GetDisplayShapeType(context),
-                viewModel => { viewModel.FileId = field.FileId; })
+                viewModel =>
+                {
+                    viewModel.FileId = field.FileId;
+                    viewModel.Label = context.PartFieldDefinition.DisplayName();
+                })
             .Location("Content");
     }
 
@@ -23,7 +28,11 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
     {
         return Initialize<ImageUploadFieldViewModel>(
                 GetEditorShapeType(context),
-                viewModel => { viewModel.FileId = field.FileId; })
+                viewModel =>
+                {
+                    viewModel.FileId = field.FileId;
+                    viewModel.Label = context.PartFieldDefinition.DisplayName();
+                })
             .Location("Content");
     }
 

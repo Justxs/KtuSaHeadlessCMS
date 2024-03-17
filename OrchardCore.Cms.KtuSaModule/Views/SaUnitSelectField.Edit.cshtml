@@ -1,0 +1,17 @@
+﻿@using OrchardCore.Cms.KtuSaModule.Models.Enums
+@model OrchardCore.Cms.KtuSaModule.ViewModels.SaUnitSelectFieldViewModel
+
+
+<fieldset class="form-group" asp-validation-class-for="SaUnit">
+    <label class="form-label" asp-for="SaUnit">
+        SA Unit
+    </label>
+
+    <select 
+        asp-for="SaUnit" 
+        asp-items="Html.GetEnumSelectList<SaUnit>()"
+        class="form-control"
+    >
+        @Model.SaUnit
+    </select>
+</fieldset>

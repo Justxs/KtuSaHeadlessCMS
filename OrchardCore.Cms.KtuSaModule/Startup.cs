@@ -27,6 +27,10 @@ public class Startup : StartupBase
             .AddHandler<ImageUploadFieldHandler>();
 
         services
+            .AddContentField<SaUnitSelectField>()
+            .UseDisplayDriver<SaUnitSelectFieldDriver>();
+
+        services
             .AddContentPart<ArticlePart>()
             .UseDisplayDriver<ArticlePartDriver>()
             .AddHandler<ArticlePartHandler>();
@@ -59,10 +63,14 @@ public class Startup : StartupBase
             .UseDisplayDriver<SponsorPartDriver>()
             .AddHandler<SponsorPartHandler>();
 
+        services.AddContentPart<HeroSectionPart>();
+
         services.AddScoped<IDataMigration, ArticleMigrations>();
         services.AddScoped<IDataMigration, DukMigrations>();
         services.AddScoped<IDataMigration, SponsorMigrations>();
         services.AddScoped<IDataMigration, ContactMigrations>();
+        services.AddScoped<IDataMigration, HeroSectionMigrations>();
+
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
     }
 

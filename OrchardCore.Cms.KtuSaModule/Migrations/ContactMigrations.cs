@@ -22,7 +22,9 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .Attachable()
             .WithField(nameof(MemberPart.ImageUploadField), field => field
                 .OfType(nameof(MemberPart.ImageUploadField))
-                .WithDisplayName("Upload image"))
+                .WithDisplayName("Upload Member photo"))
+            .WithField(nameof(MemberPart.SaUnitSelectField), field => field
+                .OfType(nameof(MemberPart.SaUnitSelectField)))
             .WithDescription("Member info: Name, Responsibilities, SaUnit, photo")
         );
 
@@ -33,10 +35,12 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
 
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(AddressPart), part => part
             .Attachable()
+            .WithField(nameof(MemberPart.SaUnitSelectField), field => field
+                .OfType(nameof(MemberPart.SaUnitSelectField)))
             .WithDescription("Address part: location for an object like the office of KTU SA")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync("Member", type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Contact.ToString(), type => type
             .Creatable()
             .Listable()
             .WithPart(nameof(MemberPart))
@@ -52,24 +56,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .WithDescription("Main Contacts of KTU SA")
         );
 
-        var mainContactItem = await contentManager.NewAsync(ContentTypeNames.MainContact.ToString());
-        mainContactItem.DisplayText = "Pagrindiniai kontaktai / Main contacts";
-
-        var contactPart = mainContactItem.As<ContactPart>();
-        var addressPart = mainContactItem.As<AddressPart>();
-
-
-        if (contactPart != null)
-        {
-            contactPart.PhoneNumber = "+37012345678";
-            contactPart.Email = "info@example.com";
-            addressPart.Address = "Kaunas, Lithuania";
-
-            mainContactItem.Apply(nameof(ContactPart), contactPart);
-
-            await contentManager.CreateAsync(mainContactItem);
-        }
-        await contentManager.CreateAsync(mainContactItem);
+        await CreateMainContactAsync();
 
         await SchemaBuilder.CreateMapIndexTableAsync<MemberPartIndex>(table => table
             .Column<string>(nameof(MemberPartIndex.ContentItemId), column => column.WithLength(26))
@@ -82,22 +69,22 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
                 nameof(MemberPartIndex.SaUnit))
         );
 
-        return 2;
+        return 1;
     }
 
-    public async Task<int> UpdateFrom1Async()
+    private async Task CreateMainContactAsync()
     {
-        await SchemaBuilder.CreateMapIndexTableAsync<MemberPartIndex>(table => table
-            .Column<string>(nameof(MemberPartIndex.ContentItemId), column => column.WithLength(26))
-            .Column<string>(nameof(MemberPartIndex.SaUnit), column => column.WithLength(10))
-        );
+        var mainContactItem = await contentManager.NewAsync(ContentTypeNames.MainContact.ToString());
+        mainContactItem.DisplayText = "Pagrindiniai kontaktai / Main contacts";
 
-        await SchemaBuilder.AlterTableAsync(nameof(MemberPartIndex),table => table
-            .CreateIndex(
-            $"IDX_{nameof(MemberPartIndex)}_{nameof(MemberPartIndex.SaUnit)}",
-            nameof(MemberPartIndex.SaUnit))
-        );
+        var contactPart = mainContactItem.As<ContactPart>();
+        var addressPart = mainContactItem.As<AddressPart>();
 
-        return 2;
+        contactPart.PhoneNumber = "+37012345678";
+        contactPart.Email = "info@example.com";
+        addressPart.Address = "Kaunas, Lithuania";
+
+        mainContactItem.Apply(nameof(ContactPart), contactPart);
+        await contentManager.CreateAsync(mainContactItem);
     }
 }
