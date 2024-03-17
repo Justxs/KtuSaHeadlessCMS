@@ -1,6 +1,8 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.Models;
+﻿using OrchardCore.ContentManagement;
 
-public class AddressPart : ContactPart
+namespace OrchardCore.Cms.KtuSaModule.Models;
+
+public class AddressPart : ContentPart
 {
     public string Address { get; set; } = null!;
 

@@ -20,11 +20,12 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
-        services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
 
         AddContentFields(services);
         AddContentParts(services);
         AddMigrations(services);
+
+        services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

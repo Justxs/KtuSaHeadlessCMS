@@ -35,8 +35,8 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
 
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(AddressPart), part => part
             .Attachable()
-            .WithField(nameof(MemberPart.SaUnitSelectField), field => field
-                .OfType(nameof(MemberPart.SaUnitSelectField)))
+            .WithField(nameof(AddressPart.SaUnitSelectField), field => field
+                .OfType(nameof(AddressPart.SaUnitSelectField)))
             .WithDescription("Address part: location for an object like the office of KTU SA")
         );
 
@@ -56,8 +56,6 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .WithDescription("Main Contacts of KTU SA")
         );
 
-        await CreateMainContactAsync();
-
         await SchemaBuilder.CreateMapIndexTableAsync<MemberPartIndex>(table => table
             .Column<string>(nameof(MemberPartIndex.ContentItemId), column => column.WithLength(26))
             .Column<string>(nameof(MemberPartIndex.SaUnit), column => column.WithLength(10))
@@ -69,13 +67,18 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
                 nameof(MemberPartIndex.SaUnit))
         );
 
+        foreach (var saUnit in (SaUnit[])Enum.GetValues(typeof(SaUnit)))
+        {
+            await CreateMainContactAsync(saUnit);
+        }
+
         return 1;
     }
 
-    private async Task CreateMainContactAsync()
+    private async Task CreateMainContactAsync(SaUnit saUnit)
     {
         var mainContactItem = await contentManager.NewAsync(ContentTypeNames.MainContact.ToString());
-        mainContactItem.DisplayText = "Pagrindiniai kontaktai / Main contacts";
+        mainContactItem.DisplayText = saUnit.ToString();
 
         var contactPart = mainContactItem.As<ContactPart>();
         var addressPart = mainContactItem.As<AddressPart>();
@@ -85,6 +88,8 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
         addressPart.Address = "Kaunas, Lithuania";
 
         mainContactItem.Apply(nameof(ContactPart), contactPart);
+        mainContactItem.Apply(nameof(AddressPart), addressPart);
+
         await contentManager.CreateAsync(mainContactItem);
     }
 }

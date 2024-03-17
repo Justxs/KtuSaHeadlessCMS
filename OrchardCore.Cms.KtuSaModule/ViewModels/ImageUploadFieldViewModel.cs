@@ -4,7 +4,7 @@ namespace OrchardCore.Cms.KtuSaModule.ViewModels;
 
 public class ImageUploadFieldViewModel
 {
-    public string Label { get; set; } = null!;
+    public string? Label { get; set; }
 
     public string? FileId { get; set; }
 
