@@ -20,7 +20,28 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
+        services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
 
+        AddContentFields(services);
+        AddContentParts(services);
+        AddMigrations(services);
+    }
+
+    public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
+    {
+    }
+
+    private static void AddMigrations(IServiceCollection services)
+    {
+        services.AddScoped<IDataMigration, ArticleMigrations>();
+        services.AddScoped<IDataMigration, DukMigrations>();
+        services.AddScoped<IDataMigration, SponsorMigrations>();
+        services.AddScoped<IDataMigration, ContactMigrations>();
+        services.AddScoped<IDataMigration, HeroSectionMigrations>();
+    }
+
+    private static void AddContentFields(IServiceCollection services)
+    {
         services
             .AddContentField<ImageUploadField>()
             .UseDisplayDriver<ImageUploadFieldDriver>()
@@ -29,7 +50,10 @@ public class Startup : StartupBase
         services
             .AddContentField<SaUnitSelectField>()
             .UseDisplayDriver<SaUnitSelectFieldDriver>();
+    }
 
+    private static void AddContentParts(IServiceCollection services)
+    {
         services
             .AddContentPart<ArticlePart>()
             .UseDisplayDriver<ArticlePartDriver>()
@@ -64,17 +88,5 @@ public class Startup : StartupBase
             .AddHandler<SponsorPartHandler>();
 
         services.AddContentPart<HeroSectionPart>();
-
-        services.AddScoped<IDataMigration, ArticleMigrations>();
-        services.AddScoped<IDataMigration, DukMigrations>();
-        services.AddScoped<IDataMigration, SponsorMigrations>();
-        services.AddScoped<IDataMigration, ContactMigrations>();
-        services.AddScoped<IDataMigration, HeroSectionMigrations>();
-
-        services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
-    }
-
-    public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
-    {
     }
 }
