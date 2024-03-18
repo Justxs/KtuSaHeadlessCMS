@@ -1,0 +1,10 @@
+﻿<zone name="HeadMeta">
+    <link asp-src="~/media/Logo.png" type="image/png" rel="shortcut icon" />
+</zone>
+
+<div class="d-flex align-items-center">
+    <a class="ta-navbar-brand" asp-route-area="OrchardCore.Admin" asp-controller="Admin" asp-action="Index">
+        <img src=@Url.Content("~/media/LogoH.png") alt="@Site.SiteName" style="margin-right: 10px;"/>
+    </a>
+    <h1>@Site.SiteName</h1>
+</div>

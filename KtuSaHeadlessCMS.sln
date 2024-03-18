@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrchardCore.KtuSaTheme", "OrchardCore.KtuSaTheme\OrchardCore.KtuSaTheme.csproj", "{31C40231-4F28-4B50-83DB-5F48FC4A2D2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9C298B0-BD95-470D-B7DA-A6CDB4FA12A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C40231-4F28-4B50-83DB-5F48FC4A2D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31C40231-4F28-4B50-83DB-5F48FC4A2D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C40231-4F28-4B50-83DB-5F48FC4A2D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31C40231-4F28-4B50-83DB-5F48FC4A2D2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

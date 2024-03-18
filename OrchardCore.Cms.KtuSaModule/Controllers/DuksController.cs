@@ -14,7 +14,6 @@ public class DuksController(IContentManager contentManager, ISession session) : 
 {
     private static readonly string DukContentType = ContentTypeNames.Duk.ToString();
 
-
     [HttpGet]
     public async Task<ActionResult> GetDuks(string language, [FromQuery] int? limit)
     {
