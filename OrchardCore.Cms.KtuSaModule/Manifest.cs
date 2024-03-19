@@ -9,7 +9,14 @@ using OrchardCore.Modules.Manifest;
     Category = "Content Management",
     Dependencies =
     [
+        "OrchardCore.Admin",
+        "OrchardCore.Contents",
         "OrchardCore.ContentTypes",
         "OrchardCore.ContentFields",
+        "OrchardCore.Localization",
+        "OrchardCore.Navigation",
+        "OrchardCore.Resources",
+        "OrchardCore.Roles",
+        "OrchardCore.Settings",
     ]
 )]

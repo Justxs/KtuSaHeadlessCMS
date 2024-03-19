@@ -7,12 +7,14 @@ using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Migrations;
 using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Navigation;
+using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
+using OrchardCore.Security.Permissions;
 using YesSql.Indexes;
 
 namespace OrchardCore.Cms.KtuSaModule;
@@ -29,7 +31,9 @@ public class Startup : StartupBase
 
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
 
-        //services.AddScoped<INavigationProvider, PresidentMenu>();
+        services.AddScoped<IPermissionProvider, DukPermissions>();
+        services.AddScoped<INavigationProvider, AdminMenu>();
+
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
