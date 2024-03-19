@@ -28,12 +28,10 @@ public class Startup : StartupBase
         AddContentFields(services);
         AddContentParts(services);
         AddMigrations(services);
+        AddPermissions(services);
 
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
-
-        services.AddScoped<IPermissionProvider, DukPermissions>();
         services.AddScoped<INavigationProvider, AdminMenu>();
-
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
@@ -59,6 +57,16 @@ public class Startup : StartupBase
         services
             .AddContentField<SaUnitSelectField>()
             .UseDisplayDriver<SaUnitSelectFieldDriver>();
+    }
+
+    private static void AddPermissions(IServiceCollection services)
+    {
+        services.AddScoped<IPermissionProvider, DukPermissions>();
+        services.AddScoped<IPermissionProvider, ArticlePermissions>();
+        services.AddScoped<IPermissionProvider, SponsorPermissions>();
+        services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
+        services.AddScoped<IPermissionProvider, ContactPermissions>();
+
     }
 
     private static void AddContentParts(IServiceCollection services)
