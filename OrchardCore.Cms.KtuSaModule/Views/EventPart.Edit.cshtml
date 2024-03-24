@@ -1,0 +1,17 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.EventPartViewModel
+
+<fieldset class="form-group" asp-validation-class-for="FbEventLink" style="margin-bottom: 20px;">
+    <label asp-for="FbEventLink">
+        Facebook event link
+    </label>
+
+    <input asp-for="FbEventLink"
+           class="form-control"
+           value="@Model.FbEventLink"
+           type="url"
+           required />
+
+    <span class="hint">
+        Insert event facebook url
+    </span>
+</fieldset>

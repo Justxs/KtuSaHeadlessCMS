@@ -7,28 +7,29 @@ using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers;
 
-public class ArticlePartDriver : ContentPartDisplayDriver<ArticlePart>
+public class CardPartDriver : ContentPartDisplayDriver<CardPart>
 {
-    public override IDisplayResult Display(ArticlePart part, BuildPartDisplayContext context)
+    public override IDisplayResult Display(CardPart part, BuildPartDisplayContext context)
     {
-        return Initialize<ArticlePartViewModel>(
+        return Initialize<CardPartViewModel>(
                 GetDisplayShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))
             .Location("Detail", "Content:5")
             .Location("Summary", "Content:5");
     }
 
-    public override IDisplayResult Edit(ArticlePart part, BuildPartEditorContext context)
+    public override IDisplayResult Edit(CardPart part, BuildPartEditorContext context)
     {
-        return Initialize<ArticlePartViewModel>(
+        var test = GetEditorShapeType(context);
+        return Initialize<CardPartViewModel>(
                 GetEditorShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))
             .Location("Content:5");
     }
 
-    public override async Task<IDisplayResult> UpdateAsync(ArticlePart part, IUpdateModel updater, UpdatePartEditorContext context)
+    public override async Task<IDisplayResult> UpdateAsync(CardPart part, IUpdateModel updater, UpdatePartEditorContext context)
     {
-        var viewModel = new ArticlePartViewModel();
+        var viewModel = new CardPartViewModel();
 
         if (!await updater.TryUpdateModelAsync(viewModel, Prefix))
         {
@@ -43,7 +44,7 @@ public class ArticlePartDriver : ContentPartDisplayDriver<ArticlePart>
         return await EditAsync(part, context);
     }
 
-    private static void PopulateViewModel(ArticlePart part, ArticlePartViewModel viewModel)
+    private static void PopulateViewModel(CardPart part, CardPartViewModel viewModel)
     {
         viewModel.TitleLt = part.TitleLt;
         viewModel.TitleEn = part.TitleEn;

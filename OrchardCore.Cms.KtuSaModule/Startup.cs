@@ -48,6 +48,8 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, SponsorMigrations>();
         services.AddScoped<IDataMigration, ContactMigrations>();
         services.AddScoped<IDataMigration, HeroSectionMigrations>();
+        services.AddScoped<IDataMigration, EventMigrations>();
+
     }
 
     private static void AddContentFields(IServiceCollection services)
@@ -82,6 +84,15 @@ public class Startup : StartupBase
             .AddContentPart<ArticlePart>()
             .UseDisplayDriver<ArticlePartDriver>()
             .AddHandler<ArticlePartHandler>();
+
+        services
+            .AddContentPart<CardPart>()
+            .UseDisplayDriver<CardPartDriver>()
+            .AddHandler<CardPartHandler>();
+
+        services
+            .AddContentPart<EventPart>()
+            .UseDisplayDriver<EventPartDriver>();
 
         services
             .AddContentPart<ContactPart>()

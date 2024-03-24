@@ -8,4 +8,5 @@ public enum ContentTypeNames
     MainContact,
     Contact,
     HeroSection,
+    Event,
 }

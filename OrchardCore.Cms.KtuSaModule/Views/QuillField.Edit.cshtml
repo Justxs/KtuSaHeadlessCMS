@@ -45,18 +45,19 @@
         @Model.Label
     </label>
 
-    <div id="@Model.Label"></div>
+    <div id=@Model.Label.Replace(" ", "")></div>
 
     <script>
         function handleTextChange(editorId, quill) {
             return function () {
-                console.log(editorId);
                 var htmlContent = quill.root.innerHTML;
                 document.getElementById(`HtmlContent-${editorId}`).value = htmlContent;
             };
         }
 
-        var editorId = '@Model.Label'
+        var editorId = '@Model.Label';
+        editorId = editorId.replace(/\s/g, '');
+
         var quill = new Quill(`#${editorId}`, {
             modules: {
                 toolbar: [
