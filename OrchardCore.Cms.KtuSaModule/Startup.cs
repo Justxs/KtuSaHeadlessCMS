@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OrchardCore.Cms.KtuSaModule.Drivers;
 using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Indexes;
@@ -14,6 +15,7 @@ using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
+using OrchardCore.ResourceManagement;
 using OrchardCore.Security.Permissions;
 using YesSql.Indexes;
 
@@ -32,6 +34,7 @@ public class Startup : StartupBase
 
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
         services.AddScoped<INavigationProvider, AdminMenu>();
+        services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
@@ -57,6 +60,10 @@ public class Startup : StartupBase
         services
             .AddContentField<SaUnitSelectField>()
             .UseDisplayDriver<SaUnitSelectFieldDriver>();
+
+        services
+            .AddContentField<QuillField>()
+            .UseDisplayDriver<QuillFieldDriver>();
     }
 
     private static void AddPermissions(IServiceCollection services)

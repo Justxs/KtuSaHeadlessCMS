@@ -1,0 +1,79 @@
+﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.QuillFieldViewModel
+<style>
+    .ql-editor {
+        color: #373E43;
+        font-family: "PF DinText Pro";
+        font-weight: 400;
+        line-height: 140%;
+        letter-spacing: 0.72px;
+        text-align: justify;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        background-color: white;
+    }
+
+    .ql-editor h1 {
+        color: #24282D;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.96px;
+    }
+
+    .ql-editor p {
+        color: #373E43;
+        font-size: 18px;
+    }
+
+    .ql-editor a {
+        color: #373E43;
+        font-size: 18px;
+        font-weight: 400;
+        text-decoration: underline;
+    }
+
+    .ql-editor i {
+        color: #373E43;
+        font-size: 18px;
+        font-weight: 400;
+    }
+</style>
+
+
+<fieldset class="form-group" asp-validation-class-for="HtmlBody" style="margin-bottom: 20px;">
+    <label asp-for="Label">
+        @Model.Label
+    </label>
+
+    <div id="@Model.Label"></div>
+
+    <script>
+        function handleTextChange(editorId, quill) {
+            return function () {
+                console.log(editorId);
+                var htmlContent = quill.root.innerHTML;
+                document.getElementById(`HtmlContent-${editorId}`).value = htmlContent;
+            };
+        }
+
+        var editorId = '@Model.Label'
+        var quill = new Quill(`#${editorId}`, {
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, false] }],
+                    ['bold', 'underline', 'italic'],
+                    ['link']
+                ],
+            },
+            theme: 'snow'
+        });
+
+        quill.on('text-change', handleTextChange(editorId, quill));
+
+        var content = @Html.Raw(Json.Serialize(Model.HtmlBody));
+        quill.root.innerHTML = content;
+    </script>
+
+    <input asp-for="HtmlBody" type="hidden" id="HtmlContent-@Model.Label" value="@Model.HtmlBody" class="form-control">
+
+</fieldset>

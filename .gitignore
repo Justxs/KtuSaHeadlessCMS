@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 /KtuSaHeadlessCMS/App_Data
 /OrchardCore.Cms.KtuSaModule/GoogleCredentials.json
+/KtuSaHeadlessCMS/Properties/ServiceDependencies/KtuSaHeadlessCMS20240318033148 - Web Deploy/profile.arm.json
