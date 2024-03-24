@@ -1,6 +1,5 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
@@ -14,16 +13,13 @@ public class ArticleMigrations(IContentDefinitionManager contentDefinitionManage
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(ArticlePart), part => part
             .Attachable()
             .WithField(nameof(ArticlePart.HtmlContentLt), field => field
-                .OfType(nameof(HtmlField))
-                .WithDisplayName("LT Article Content")
-                .WithEditor("Wysiwyg"))
+                .OfType(nameof(QuillField))
+                .WithDisplayName("Article Content LT")
+                .WithPosition("6"))
             .WithField(nameof(ArticlePart.HtmlContentEn), field => field
-                .OfType(nameof(HtmlField))
-                .WithDisplayName("EN Article Content")
-                .WithEditor("Wysiwyg"))
-            .WithField(nameof(ArticlePart.ImageUploadField), field => field
-                .OfType(nameof(ArticlePart.ImageUploadField))
-                .WithDisplayName("Upload main image"))
+                .OfType(nameof(QuillField))
+                .WithDisplayName("Article Content EN")
+                .WithPosition("7"))
             .WithDescription("Articles content part")
         );
 
@@ -31,7 +27,10 @@ public class ArticleMigrations(IContentDefinitionManager contentDefinitionManage
             .Draftable()
             .Creatable()
             .Listable()
-            .WithPart(nameof(ArticlePart))
+            .WithPart(nameof(CardPart), part => part
+                .WithPosition("1"))
+            .WithPart(nameof(ArticlePart), part => part
+                .WithPosition("2"))
             .WithDescription("Articles content type")
         );
 

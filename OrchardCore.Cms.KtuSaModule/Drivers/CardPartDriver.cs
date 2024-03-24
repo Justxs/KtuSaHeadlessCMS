@@ -14,8 +14,8 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
         return Initialize<CardPartViewModel>(
                 GetDisplayShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))
-            .Location("Detail", "Content:5")
-            .Location("Summary", "Content:5");
+            .Location("Detail", "Content:1")
+            .Location("Summary", "Content:1");
     }
 
     public override IDisplayResult Edit(CardPart part, BuildPartEditorContext context)
@@ -24,7 +24,8 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
         return Initialize<CardPartViewModel>(
                 GetEditorShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))
-            .Location("Content:5");
+            .Location("Content:1");
+            
     }
 
     public override async Task<IDisplayResult> UpdateAsync(CardPart part, IUpdateModel updater, UpdatePartEditorContext context)

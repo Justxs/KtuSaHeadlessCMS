@@ -37,7 +37,7 @@ public class ArticlesController(IContentManager contentManager, ISession session
 
         var articleDtos = articles.Select(item =>
         {
-            var part = item.As<ArticlePart>();
+            var part = item.As<CardPart>();
             var dto = new ArticleDto
             {
                 Title = (isLithuanian 
@@ -73,7 +73,9 @@ public class ArticlesController(IContentManager contentManager, ISession session
 
         var isLithuanian = language.ToUpper() == Languages.LT.ToString();
 
-        var part = article.As<ArticlePart>();
+        var part = article.As<CardPart>();
+        var htmlPart = article.As<ArticlePart>();
+
         var articleDto = new ArticleDto
         {
             Title = (isLithuanian
@@ -85,8 +87,8 @@ public class ArticlesController(IContentManager contentManager, ISession session
                 : part?.PreviewEn)!,
 
             HtmlBody = (isLithuanian
-                ? part?.HtmlContentLt.Html
-                : part?.HtmlContentEn.Html)!,
+                ? htmlPart?.HtmlContentLt.HtmlBody
+                : htmlPart?.HtmlContentEn.HtmlBody)!,
 
             Id = article.ContentItemId,
             CreatedDate = (DateTime)article.CreatedUtc!,

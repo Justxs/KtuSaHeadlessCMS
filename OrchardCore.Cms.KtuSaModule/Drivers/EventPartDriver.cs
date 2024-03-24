@@ -15,7 +15,7 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
                 {
                     model.FbEventLink = part.FbEventLink;
                 })
-            .Location("Detail", "Content:10");
+            .Location("Detail", "Content:2");
     }
 
     public override IDisplayResult Edit(EventPart part, BuildPartEditorContext context)
@@ -24,7 +24,8 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
             GetEditorShapeType(context), model =>
             {
                 model.FbEventLink = part.FbEventLink;
-            });
+            })
+            .Location("Content:2");
     }
 
     public override async Task<IDisplayResult> UpdateAsync(EventPart part, UpdatePartEditorContext context)

@@ -14,7 +14,7 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
             .Attachable()
             .WithField(nameof(CardPart.ImageUploadField), field => field
                 .OfType(nameof(ImageUploadField))
-                .WithDisplayName("Upload main image"))
+                .WithDisplayName("Upload thumbnail image"))
             .WithDescription("Card part for displaying main info")
         );
 
@@ -24,10 +24,12 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
                 .OfType(nameof(SaUnitSelectField)))
             .WithField(nameof(EventPart.BodyFieldLt), field => field
                 .OfType(nameof(QuillField))
-                .WithDisplayName("Event text LT"))
+                .WithDisplayName("Event text LT")
+                .WithPosition("7"))
             .WithField(nameof(EventPart.BodyFieldEn), field => field
                 .OfType(nameof(QuillField))
-                .WithDisplayName("Event text EN"))
+                .WithDisplayName("Event text EN")
+                .WithPosition("8"))
             .WithDescription("Event part info")
         );
 
@@ -35,8 +37,10 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
             .Draftable()
             .Creatable()
             .Listable()
-            .WithPart(nameof(EventPart))
-            .WithPart(nameof(CardPart))
+            .WithPart(nameof(CardPart), part => part
+                .WithPosition("1"))
+            .WithPart(nameof(EventPart), part => part
+                .WithPosition("2"))
             .WithDescription("Event content type")
         );
 

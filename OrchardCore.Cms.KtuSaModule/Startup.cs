@@ -72,6 +72,7 @@ public class Startup : StartupBase
     {
         services.AddScoped<IPermissionProvider, DukPermissions>();
         services.AddScoped<IPermissionProvider, ArticlePermissions>();
+        services.AddScoped<IPermissionProvider, EventPermissions>();
         services.AddScoped<IPermissionProvider, SponsorPermissions>();
         services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
         services.AddScoped<IPermissionProvider, ContactPermissions>();
@@ -81,9 +82,7 @@ public class Startup : StartupBase
     private static void AddContentParts(IServiceCollection services)
     {
         services
-            .AddContentPart<ArticlePart>()
-            .UseDisplayDriver<ArticlePartDriver>()
-            .AddHandler<ArticlePartHandler>();
+            .AddContentPart<ArticlePart>();
 
         services
             .AddContentPart<CardPart>()

@@ -12,8 +12,8 @@ public class SponsorMigrations(IContentDefinitionManager contentDefinitionManage
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(SponsorPart), part => 
             part.Attachable()
-                .WithField(nameof(ArticlePart.ImageUploadField), field => field
-                    .OfType(nameof(ArticlePart.ImageUploadField))
+                .WithField(nameof(SponsorPart.ImageUploadField), field => field
+                    .OfType(nameof(ImageUploadField))
                     .WithDisplayName("Upload company Logo"))
                 .WithDescription("Sponsors content part")
             );
