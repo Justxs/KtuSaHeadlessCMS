@@ -1,5 +1,5 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using YesSql.Indexes;
 

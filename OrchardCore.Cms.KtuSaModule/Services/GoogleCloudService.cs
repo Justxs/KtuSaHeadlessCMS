@@ -1,6 +1,6 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
-using OrchardCore.Cms.KtuSaModule.ViewModels;
+using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using System;
 
 namespace OrchardCore.Cms.KtuSaModule.Services;

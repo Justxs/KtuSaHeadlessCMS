@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Dtos;
-using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.ContentManagement;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 

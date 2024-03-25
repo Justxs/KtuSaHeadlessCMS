@@ -1,4 +1,4 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement.Handlers;
 
 namespace OrchardCore.Cms.KtuSaModule.Handlers;

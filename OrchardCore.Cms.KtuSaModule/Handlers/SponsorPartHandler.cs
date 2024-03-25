@@ -1,4 +1,4 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement.Handlers;
 using System;
 using System.Collections.Generic;

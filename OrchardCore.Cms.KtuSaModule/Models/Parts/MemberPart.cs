@@ -1,0 +1,13 @@
+﻿using OrchardCore.Cms.KtuSaModule.Models.FIelds;
+using OrchardCore.ContentManagement;
+
+namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
+
+public class MemberPart : ContentPart
+{
+    public string Name { get; set; } = null!;
+
+    public SaUnitSelectField SaUnitSelectField { get; set; } = null!;
+
+    public ImageUploadField ImageUploadField { get; set; } = null!;
+}
