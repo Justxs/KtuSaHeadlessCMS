@@ -5,12 +5,13 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class HeroSectionsController(IContentManager contentManager, ISession session) : ControllerBase
+public class HeroSectionsController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string MainContact = ContentTypeNames.HeroSection.ToString();
 
@@ -22,7 +23,7 @@ public class HeroSectionsController(IContentManager contentManager, ISession ses
             .ListAsync();
 
         var filteredSection = new ContentItem();
-        var isLithuanian = language.ToUpper() == Languages.LT.ToString();
+        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
         foreach (var section in heroSections)
         {

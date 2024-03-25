@@ -5,12 +5,13 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class DuksController(IContentManager contentManager, ISession session) : ControllerBase
+public class DuksController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string DukContentType = ContentTypeNames.Duk.ToString();
 
@@ -32,7 +33,7 @@ public class DuksController(IContentManager contentManager, ISession session) : 
             await contentManager.LoadAsync(duk);
         }
 
-        var isLithuanian = language.ToUpper() == Languages.LT.ToString();
+        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
         var articleDtos = duks.Select(item =>
         {

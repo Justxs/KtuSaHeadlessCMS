@@ -4,14 +4,14 @@ using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Dtos;
-using System.Text.RegularExpressions;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
+using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class ArticlesController(IContentManager contentManager, ISession session) : ControllerBase
+public class ArticlesController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string ArticleContentType = ContentTypeNames.Article.ToString();
 
@@ -33,7 +33,7 @@ public class ArticlesController(IContentManager contentManager, ISession session
             await contentManager.LoadAsync(article);
         }
 
-        var isLithuanian = language.ToUpper() == Languages.LT.ToString();
+        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
         var articleDtos = articles.Select(item =>
         {
@@ -71,7 +71,7 @@ public class ArticlesController(IContentManager contentManager, ISession session
             return BadRequest("Article is not published yet.");
         }
 
-        var isLithuanian = language.ToUpper() == Languages.LT.ToString();
+        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
         var part = article.As<CardPart>();
         var htmlPart = article.As<ArticlePart>();
@@ -95,30 +95,8 @@ public class ArticlesController(IContentManager contentManager, ISession session
             ThumbnailImageId = part!.ImageUploadField.FileId,
         };
 
-        articleDto.ReadingTime = CalculateReadingTime(articleDto.Preview, articleDto.HtmlBody);
-
+        articleDto.ReadingTime = stringActionService.CalculateReadingTime(articleDto.Preview, articleDto.HtmlBody);
 
         return Ok(articleDto);
-    }
-
-    private static string CalculateReadingTime(string preview, string htmlBody)
-    {
-        var textContent = Regex.Replace(htmlBody, "<.*?>", string.Empty);
-        var totalWordCount = CountWords(preview) + CountWords(textContent);
-
-        var readingTimeMinutes = totalWordCount / 100;
-
-        readingTimeMinutes = Math.Max(readingTimeMinutes, 1);
-
-        return readingTimeMinutes > 1 ? $"{readingTimeMinutes} min." : "1 min.";
-    }
-
-    private static int CountWords(string input)
-    {
-        if (string.IsNullOrEmpty(input)) return 0;
-
-        var matches = Regex.Matches(input, @"\b\S+\b");
-
-        return matches.Count;
     }
 }

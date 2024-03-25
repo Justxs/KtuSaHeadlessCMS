@@ -31,6 +31,7 @@ public class Startup : StartupBase
     {
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
         services.AddScoped<IRoleSetupService, RoleSetupService>();
+        services.AddScoped<IStringActionService, StringActionService>();
 
         AddContentFields(services);
         AddContentParts(services);
