@@ -1,8 +1,9 @@
 ﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.EventPartViewModel
-
+<!-- TODO Disable edit if date is past-->
 <fieldset class="form-group" asp-validation-class-for="FbEventLink" style="margin-bottom: 20px;">
     <label asp-for="FbEventLink">
         Facebook event link
+        <span asp-validation-for="FbEventLink"></span>
     </label>
 
     <input asp-for="FbEventLink"
@@ -12,6 +13,24 @@
            required />
 
     <span class="hint">
-        Insert event facebook url
+        Insert event facebook url. Example: https://www.facebook.com/events/3526931650915426
     </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Date" style="margin-bottom: 20px; display: flex">
+    <div>
+        <label class="form-label" asp-for="Date">
+            Event Date
+            <span asp-validation-for="Date"></span>
+        </label>
+
+        <input
+            asp-for="Date"
+            type="date"
+            class="form-control"
+            min="@DateTime.Today.ToString("yyyy-MM-dd")"
+            value="@Model.Date.ToString("yyyy-MM-dd")"
+            required
+            />
+    </div>
 </fieldset>

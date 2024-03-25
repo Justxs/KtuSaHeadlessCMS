@@ -79,6 +79,6 @@
         quill.root.innerHTML = content;
     </script>
 
-    <input asp-for="HtmlBody" type="hidden" id="HtmlContent-@Model.Label" value="@Model.HtmlBody" class="form-control">
+    <input asp-for="HtmlBody" type="hidden" id="HtmlContent-@Model.Label.Replace(" ", "")" value="@Model.HtmlBody" class="form-control">
 
 </fieldset>

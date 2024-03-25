@@ -14,6 +14,7 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
                 GetDisplayShapeType(context), model =>
                 {
                     model.FbEventLink = part.FbEventLink;
+                    model.Date = part.Date;
                 })
             .Location("Detail", "Content:2");
     }
@@ -24,6 +25,7 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
             GetEditorShapeType(context), model =>
             {
                 model.FbEventLink = part.FbEventLink;
+                model.Date = part.Date;
             })
             .Location("Content:2");
     }
@@ -37,7 +39,15 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
             return Edit(part, context);
         }
 
+        if (model.Date <= DateTime.Today)
+        {
+            context.Updater.ModelState.AddModelError(Prefix + ".Date", "The event date must be later than today's date.");
+
+            return Edit(part, context);
+        }
+
         part.FbEventLink = model.FbEventLink;
+        part.Date = model.Date;
 
         return Edit(part, context);
     }
