@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 using OrchardCore.Cms.KtuSaModule.Drivers.Parts;
+using OrchardCore.Cms.KtuSaModule.Events;
 using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Migrations;
@@ -29,6 +30,7 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
+        services.AddScoped<IRoleSetupService, RoleSetupService>();
 
         AddContentFields(services);
         AddContentParts(services);
@@ -38,6 +40,7 @@ public class Startup : StartupBase
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
         services.AddScoped<INavigationProvider, AdminMenu>();
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
+        services.AddScoped<IModularTenantEvents, StartupConfigurationHandler>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)

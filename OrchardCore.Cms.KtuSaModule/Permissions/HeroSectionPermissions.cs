@@ -25,6 +25,11 @@ public class HeroSectionPermissions : IPermissionProvider
                 Name = "Administrator",
                 Permissions = new[] { ManageHeroSections },
             },
+            new PermissionStereotype
+            {
+                Name = "CsaEditor",
+                Permissions = new[] { ManageHeroSections },
+            },
         };
     }
 }

@@ -24,6 +24,11 @@ public class ArticlePermissions : IPermissionProvider
                 Name = "Administrator",
                 Permissions = new[] { ManageArticles },
             },
+            new PermissionStereotype
+            {
+                Name = "CsaEditor",
+                Permissions = new[] { ManageArticles },
+            },
         };
     }
 }

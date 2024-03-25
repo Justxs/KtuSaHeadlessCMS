@@ -24,6 +24,11 @@ public class SponsorPermissions : IPermissionProvider
                 Name = "Administrator",
                 Permissions = new[] { ManageSponsors },
             },
+            new PermissionStereotype
+            {
+                Name = "Marketing",
+                Permissions = new[] { ManageSponsors },
+            },
         };
     }
 }

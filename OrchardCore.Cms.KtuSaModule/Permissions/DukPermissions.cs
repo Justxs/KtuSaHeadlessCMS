@@ -24,6 +24,13 @@ public class DukPermissions : IPermissionProvider
                 Name = "Administrator",
                 Permissions = new[] { ManageDuks },
             },
+            new PermissionStereotype
+            {
+                Name = "CsaEditor",
+                Permissions = new[] {
+                    ManageDuks,
+                },
+            },
         };
     }
 }

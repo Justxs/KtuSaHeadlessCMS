@@ -54,6 +54,67 @@ public class ContactPermissions : IPermissionProvider
                     ManageShmContacts,
                 },
             },
+            new PermissionStereotype
+            {
+                Name = "CsaEditor",
+                Permissions = new[] { 
+                    ManageCsaContacts,
+                    ManageBrkContacts,
+                    ManageInfosaContacts,
+                    ManageVivatChemijaContacts,
+                    ManageIndiContacts,
+                    ManageEsaContacts,
+                    ManageFumsaContacts,
+                    ManageStatiusContacts,
+                    ManageVfsaContacts,
+                    ManageShmContacts,
+                },
+            },
+            new PermissionStereotype
+            {
+                Name = "BrkEditor",
+                Permissions = new[] { ManageBrkContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "InfosaEditor",
+                Permissions = new[] { ManageInfosaContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "VivatChemijaEditor",
+                Permissions = new[] { ManageVivatChemijaContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "IndiEditor",
+                Permissions = new[] { ManageIndiContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "EsaEditor",
+                Permissions = new[] { ManageEsaContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "FumsaEditor",
+                Permissions = new[] { ManageFumsaContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "StatiusEditor",
+                Permissions = new[] { ManageStatiusContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "VfsaEditor",
+                Permissions = new[] { ManageVfsaContacts },
+            },
+            new PermissionStereotype
+            {
+                Name = "ShmEditor",
+                Permissions = new[] { ManageShmContacts },
+            }
         };
     }
 }
