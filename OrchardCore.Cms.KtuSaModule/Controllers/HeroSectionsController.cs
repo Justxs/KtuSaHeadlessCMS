@@ -13,13 +13,13 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class HeroSectionsController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
 {
-    private static readonly string MainContact = ContentTypeNames.HeroSection.ToString();
+    private static readonly string HeroSection = ContentTypeNames.HeroSection.ToString();
 
     [HttpGet("{sectionName}")]
     public async Task<ActionResult> GetMainContacts(string language, string sectionName)
     {
         var heroSections = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == MainContact)
+            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == HeroSection)
             .ListAsync();
 
         var filteredSection = new ContentItem();
