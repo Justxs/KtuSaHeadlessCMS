@@ -26,10 +26,10 @@
 
         <input
             asp-for="Date"
-            type="date"
+            type="datetime-local"
             class="form-control"
-            min="@DateTime.Today.ToString("yyyy-MM-dd")"
-            value="@Model.Date.ToString("yyyy-MM-dd")"
+            min="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"
+            value="@Model.Date.ToString("yyyy-MM-dd hh:mm")"
             required
             />
     </div>
