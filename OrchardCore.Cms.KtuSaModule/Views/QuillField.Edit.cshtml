@@ -49,7 +49,7 @@
         @Model.Label
     </label>
 
-    <div id=@Model.Label.Replace(" ", "")></div>
+    <div id=@Model.Label!.Replace(" ", "")></div>
 
     <script>
         function handleTextChange(editorId, quill) {
@@ -69,6 +69,14 @@
                     ['bold', 'underline', 'italic'],
                     ['link']
                 ],
+                clipboard: {
+                    matchVisual: false,
+                    matchers: [
+                        [Node.ELEMENT_NODE, function (node, delta) {
+                            return delta.compose(new Delta().retain(delta.length(), { bold: false, italic: false, underline: false, link: false }));
+                        }]
+                    ]
+                },
             },
             theme: 'snow'
         });

@@ -15,4 +15,6 @@ public class ArticleDto
     public DateTime CreatedDate { get; set; }
 
     public string ThumbnailImageId { get; set; } = null!;
+
+    public List<string>? ContentList { get; set; }
 }

@@ -64,12 +64,17 @@ public class ArticlesController(IContentManager contentManager, ISession session
     {
         var article = await contentManager.GetAsync(id);
 
-        await contentManager.LoadAsync(article);
+        if (article is null)
+        {
+            return NotFound("Article not found");
+        }
 
         if (!article.Published)
         {
             return BadRequest("Article is not published yet.");
         }
+
+        await contentManager.LoadAsync(article);
 
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
@@ -90,12 +95,14 @@ public class ArticlesController(IContentManager contentManager, ISession session
                 ? htmlPart?.HtmlContentLt.HtmlBody
                 : htmlPart?.HtmlContentEn.HtmlBody)!,
 
+
             Id = article.ContentItemId,
             CreatedDate = (DateTime)article.CreatedUtc!,
             ThumbnailImageId = part!.ImageUploadField.FileId,
         };
 
         articleDto.ReadingTime = stringActionService.CalculateReadingTime(articleDto.Preview, articleDto.HtmlBody);
+        articleDto.ContentList = stringActionService.GetContentList(articleDto.HtmlBody);
 
         return Ok(articleDto);
     }
