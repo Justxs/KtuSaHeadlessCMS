@@ -1,6 +1,7 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
@@ -11,6 +12,14 @@ public class ArticleMigrations(IContentDefinitionManager contentDefinitionManage
 {
     public async Task<int> CreateAsync()
     {
+        await contentDefinitionManager.AlterPartDefinitionAsync(nameof(CardPart), part => part
+            .Attachable()
+            .WithField(nameof(CardPart.ImageUploadField), field => field
+                .OfType(nameof(ImageUploadField))
+                .WithDisplayName("Upload cover image"))
+            .WithDescription("Card part for displaying main info")
+        );
+
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(ArticlePart), part => part
             .Attachable()
             .WithField(nameof(ArticlePart.HtmlContentLt), field => field

@@ -9,4 +9,5 @@ public enum ContentTypeNames
     Contact,
     HeroSection,
     Event,
+    SaUnit,
 }

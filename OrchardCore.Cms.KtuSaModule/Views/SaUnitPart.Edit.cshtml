@@ -1,0 +1,14 @@
+﻿@model SaUnitPartViewModel
+
+<!-- TODO Remove sa unit name edit -->
+<fieldset class="form-group" asp-validation-class-for="UnitName" style="margin-bottom: 20px;">
+    <label asp-for="UnitName">
+        Sa unit Name
+    </label>
+
+    <input 
+        asp-for="UnitName"
+        class="form-control"
+        value="@Model.UnitName"
+    />
+</fieldset>

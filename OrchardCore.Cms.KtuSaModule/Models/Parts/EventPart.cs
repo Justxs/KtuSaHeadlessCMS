@@ -5,13 +5,21 @@ namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 public class EventPart : ContentPart
 {
+    public string TitleLt { get; set; } = null!;
+
+    public string TitleEn { get; set; } = null!;
+
     public string FbEventLink { get; set; } = null!;
 
-    public DateTime Date { get; set; }
+    public string? Address { get; set; }
+
+    public string? FientaTicketLink { get; set; }
+
+    public DateTime StartDate { get; set; }
+
+    public DateTime EndDate { get; set; }
 
     public QuillField BodyFieldLt { get; set; } = null!;
 
     public QuillField BodyFieldEn { get; set; } = null!;
-
-    public SaUnitSelectField SaUnit { get; set; } = null!;
 }

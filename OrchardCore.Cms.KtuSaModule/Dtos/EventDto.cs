@@ -6,11 +6,17 @@ public class EventDto
 
     public string Title { get; set; } = null!;
 
-    public string Preview { get; set; } = null!;
+    public string FacebookUrl { get; set; } = null!;
+
+    public string? FientaTicketUrl { get; set; }
+    
+    public string? Address { get; set; }
 
     public string? HtmlBody { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateTime StartDate { get; set; }
 
-    public string ThumbnailImageId { get; set; } = null!;
+    public DateTime EndDate { get; set; }
+
+    public string CoverImageUrl { get; set; } = null!;
 }

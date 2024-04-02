@@ -34,7 +34,7 @@ public class EventsController(IContentManager contentManager, ISession session, 
 
             var part = eventItem.As<EventPart>();
 
-            if (part != null && part.Date > DateTime.Now)
+            if (part != null && part.StartDate > DateTime.Now)
             {
                 filteredSection.Add(eventItem);
             }
@@ -49,17 +49,14 @@ public class EventsController(IContentManager contentManager, ISession session, 
 
             var dto = new EventDto
             {
+                Id = item.ContentItemId,
+
                 Title = isLithuanian
                     ? cardPart.TitleLt
                     : cardPart.TitleEn,
 
-                Preview = isLithuanian
-                    ? cardPart.PreviewLt
-                    : cardPart.PreviewEn,
-
-                Id = item.ContentItemId,
-                Date = part.Date,
-                ThumbnailImageId = cardPart.ImageUploadField.FileId,
+                StartDate = part.StartDate,
+                CoverImageUrl = cardPart.ImageUploadField.FileId,
             };
 
             return dto;
@@ -87,21 +84,22 @@ public class EventsController(IContentManager contentManager, ISession session, 
 
         var eventDto = new EventDto
         {
+            Id = eventItem.ContentItemId,
+
             Title = isLithuanian
                 ? cardPart.TitleLt
                 : cardPart.TitleEn,
-
-            Preview = isLithuanian
-                ? cardPart.PreviewLt
-                : cardPart.PreviewEn,
 
             HtmlBody = isLithuanian
                 ? eventPart.BodyFieldLt.HtmlBody
                 : eventPart.BodyFieldEn.HtmlBody,
 
-            Id = eventItem.ContentItemId,
-            Date = eventPart.Date,
-            ThumbnailImageId = cardPart.ImageUploadField.FileId,
+            StartDate = eventPart.StartDate,
+            EndDate = eventPart.StartDate,
+            Address = eventPart.Address,
+            FientaTicketUrl = eventPart.FientaTicketLink,
+            FacebookUrl = eventPart.FbEventLink,
+            CoverImageUrl = cardPart.ImageUploadField.FileId,
         };
 
         return Ok(eventDto);

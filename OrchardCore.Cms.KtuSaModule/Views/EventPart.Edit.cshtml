@@ -1,5 +1,35 @@
 ﻿@model EventPartViewModel
-<!-- TODO Disable edit if date is past-->
+
+<fieldset class="form-group" asp-validation-class-for="TitleLt" style="margin-bottom: 20px;">
+    <label asp-for="TitleLt">
+        Title LT
+    </label>
+
+    <input asp-for="TitleLt"
+           class="form-control"
+           value="@Model.TitleLt"
+           required />
+
+    <span class="hint">
+        Title in Lithuanian language
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="TitleEn" style="margin-bottom: 20px;">
+    <label asp-for="TitleEn">
+        Title EN
+    </label>
+
+    <input asp-for="TitleEn"
+           class="form-control"
+           value="@Model.TitleEn"
+           required />
+
+    <span class="hint">
+        Title in English language
+    </span>
+</fieldset>
+
 <fieldset class="form-group" asp-validation-class-for="FbEventLink" style="margin-bottom: 20px;">
     <label asp-for="FbEventLink">
         Facebook event link
@@ -17,20 +47,74 @@
     </span>
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="Date" style="margin-bottom: 20px; display: flex">
-    <div>
-        <label class="form-label" asp-for="Date">
-            Event Date
-            <span asp-validation-for="Date"></span>
-        </label>
+<fieldset class="form-group" asp-validation-class-for="FientaTicketLink" style="margin-bottom: 20px;">
+    <label asp-for="FientaTicketLink">
+        Fienta ticket link *Optional
+        <span asp-validation-for="FientaTicketLink"></span>
+    </label>
 
-        <input
-            asp-for="Date"
-            type="datetime-local"
-            class="form-control"
-            min="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"
-            value="@Model.Date.ToString("yyyy-MM-dd hh:mm")"
-            required
-            />
-    </div>
+    <input 
+        asp-for="FientaTicketLink"
+        class="form-control"
+        value="@Model.FientaTicketLink"
+        type="url"
+    />
+
+    <span class="hint">
+        Insert Fienta ticket url. Example: https://fienta.com/infoshow24-anime-nights
+    </span>
 </fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Address" style="margin-bottom: 20px;">
+    <label asp-for="Address">
+        Event address *Optional
+        <span asp-validation-for="FientaTicketLink"></span>
+    </label>
+
+    <input asp-for="Address"
+        class="form-control"
+        value="@Model.Address"
+    />
+
+    <span class="hint">
+       Insert location of the event.
+    </span>
+</fieldset>
+
+<div style="margin-bottom: 20px; display: flex; gap: 20px;">
+    <fieldset class="form-group" asp-validation-class-for="StartDate">
+        <div>
+            <label class="form-label" asp-for="StartDate">
+                Event start date
+                <span asp-validation-for="StartDate"></span>
+            </label>
+
+            <input 
+                asp-for="StartDate"
+                type="datetime-local"
+                class="form-control"
+                min="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"
+                value="@Model.StartDate.ToString("yyyy-MM-dd hh:mm")"
+                required
+            />
+        </div>
+    </fieldset>
+
+    <fieldset class="form-group" asp-validation-class-for="EndDate">
+        <div>
+            <label class="form-label" asp-for="EndDate">
+                Event end date
+                <span asp-validation-for="EndDate"></span>
+            </label>
+
+            <input 
+                asp-for="EndDate"
+                type="datetime-local"
+                class="form-control"
+                min="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"
+                value="@Model.EndDate.ToString("yyyy-MM-dd hh:mm")"
+                required
+            />
+        </div>
+    </fieldset>
+</div>

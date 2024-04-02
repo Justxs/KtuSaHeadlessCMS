@@ -1,7 +1,6 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
 
-namespace OrchardCore.Cms.KtuSaModule.Models;
+namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 public class CardPart : ContactPart
 {

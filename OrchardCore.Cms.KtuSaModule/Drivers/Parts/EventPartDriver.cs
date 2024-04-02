@@ -11,11 +11,16 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
     public override IDisplayResult Display(EventPart part, BuildPartDisplayContext context)
     {
         return Initialize<EventPartViewModel>(
-                GetDisplayShapeType(context), model =>
-                {
-                    model.FbEventLink = part.FbEventLink;
-                    model.Date = part.Date;
-                })
+            GetDisplayShapeType(context), model =>
+            {
+                model.TitleLt = part.TitleLt;
+                model.TitleEn = part.TitleEn;
+                model.FbEventLink = part.FbEventLink;
+                model.FientaTicketLink = part.FientaTicketLink;
+                model.Address = part.Address;
+                model.StartDate = part.StartDate;
+                model.EndDate = part.EndDate;
+            })
             .Location("Detail", "Content:2");
     }
 
@@ -24,8 +29,13 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
         return Initialize<EventPartViewModel>(
             GetEditorShapeType(context), model =>
             {
+                model.TitleLt = part.TitleLt;
+                model.TitleEn = part.TitleEn;
                 model.FbEventLink = part.FbEventLink;
-                model.Date = part.Date;
+                model.FientaTicketLink = part.FientaTicketLink;
+                model.Address = part.Address;
+                model.StartDate = part.StartDate;
+                model.EndDate = part.EndDate;
             })
             .Location("Content:2");
     }
@@ -39,15 +49,27 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
             return Edit(part, context);
         }
 
-        if (model.Date <= DateTime.Today)
+        if (model.StartDate <= DateTime.Today)
         {
-            context.Updater.ModelState.AddModelError(Prefix + ".Date", "The event date must be later than today's date.");
+            context.Updater.ModelState.AddModelError(Prefix + ".StartDate", "The event start date must be later than today's date.");
 
             return Edit(part, context);
         }
 
+        if (model.EndDate < model.StartDate)
+        {
+            context.Updater.ModelState.AddModelError(Prefix + ".EndDate", "The event end date must be later than start date");
+
+            return Edit(part, context);
+        }
+
+        part.TitleLt = model.TitleLt;
+        part.TitleEn = model.TitleEn;
         part.FbEventLink = model.FbEventLink;
-        part.Date = model.Date;
+        part.FientaTicketLink = model.FientaTicketLink;
+        part.Address = model.Address;
+        part.StartDate = model.StartDate;
+        part.EndDate = model.EndDate;
 
         return Edit(part, context);
     }
