@@ -4,7 +4,7 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
-using OrchardCore.Cms.KtuSaModule.Models.FIelds;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 

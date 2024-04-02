@@ -1,7 +1,7 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 
-namespace OrchardCore.Cms.KtuSaModule.Models.FIelds;
+namespace OrchardCore.Cms.KtuSaModule.Models.Fields;
 
 public class SaUnitSelectField : ContentField
 {

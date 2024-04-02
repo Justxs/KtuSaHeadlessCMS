@@ -1,4 +1,4 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.FIelds;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentManagement;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;

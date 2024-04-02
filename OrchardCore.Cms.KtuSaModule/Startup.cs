@@ -9,7 +9,7 @@ using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Migrations;
 using OrchardCore.Cms.KtuSaModule.Models;
-using OrchardCore.Cms.KtuSaModule.Models.FIelds;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Navigation;
 using OrchardCore.Cms.KtuSaModule.Permissions;
