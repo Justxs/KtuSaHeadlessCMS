@@ -16,6 +16,9 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(EventPart), part => part
             .Attachable()
+            .WithField(nameof(EventPart.ImageUploadField), field => field
+                .OfType(nameof(ImageUploadField))
+                .WithDisplayName("Upload cover image"))
             .WithField(nameof(EventPart.BodyFieldLt), field => field
                 .OfType(nameof(QuillField))
                 .WithDisplayName("Event text LT")

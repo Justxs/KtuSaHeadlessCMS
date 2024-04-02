@@ -22,4 +22,6 @@ public class EventPart : ContentPart
     public QuillField BodyFieldLt { get; set; } = null!;
 
     public QuillField BodyFieldEn { get; set; } = null!;
+
+    public ImageUploadField ImageUploadField { get; set; } = null!;
 }

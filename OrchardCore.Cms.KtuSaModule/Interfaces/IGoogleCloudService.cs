@@ -1,6 +1,6 @@
 ﻿using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 
-namespace OrchardCore.Cms.KtuSaModule.Services;
+namespace OrchardCore.Cms.KtuSaModule.Interfaces;
 
 public interface IGoogleCloudService
 {

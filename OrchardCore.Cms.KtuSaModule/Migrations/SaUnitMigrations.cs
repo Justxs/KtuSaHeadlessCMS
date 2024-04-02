@@ -31,7 +31,7 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
     private async Task CreateSaUnitsAsync(SaUnit saUnit)
     {
         var saUnitItem = await contentManager.NewAsync(nameof(ContentTypeNames.SaUnit));
-        saUnitItem.DisplayText = saUnit.ToString();
+        saUnitItem.DisplayText = saUnit.ToString().Replace("_", " ");
 
         var saUnitPart = saUnitItem.As<SaUnitPart>();
 

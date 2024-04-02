@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using OrchardCore.Cms.KtuSaModule.Services;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Environment.Shell.Removing;
 using OrchardCore.Modules;
 

@@ -6,7 +6,7 @@ using YesSql;
 using OrchardCore.Cms.KtuSaModule.Dtos;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
-using OrchardCore.Cms.KtuSaModule.Services;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 

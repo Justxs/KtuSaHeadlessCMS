@@ -6,7 +6,7 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
-using OrchardCore.Cms.KtuSaModule.Services;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 

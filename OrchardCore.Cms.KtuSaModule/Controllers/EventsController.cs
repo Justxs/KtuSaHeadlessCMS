@@ -5,8 +5,8 @@ using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using YesSql;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.ContentManagement;
-using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -45,18 +45,17 @@ public class EventsController(IContentManager contentManager, ISession session, 
         var eventDtos = filteredSection.Select(item =>
         {
             var part = item.As<EventPart>();
-            var cardPart = item.As<CardPart>();
 
             var dto = new EventDto
             {
                 Id = item.ContentItemId,
 
                 Title = isLithuanian
-                    ? cardPart.TitleLt
-                    : cardPart.TitleEn,
+                    ? part.TitleLt
+                    : part.TitleEn,
 
                 StartDate = part.StartDate,
-                CoverImageUrl = cardPart.ImageUploadField.FileId,
+                CoverImageUrl = part.ImageUploadField.FileId,
             };
 
             return dto;

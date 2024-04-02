@@ -7,8 +7,8 @@ using OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 using OrchardCore.Cms.KtuSaModule.Events;
 using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Indexes;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Migrations;
-using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Navigation;
@@ -32,6 +32,7 @@ public class Startup : StartupBase
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
         services.AddScoped<IRoleSetupService, RoleSetupService>();
         services.AddScoped<IStringActionService, StringActionService>();
+        services.AddHttpClient<IFientaService, FientaService>();
 
         AddContentFields(services);
         AddContentParts(services);

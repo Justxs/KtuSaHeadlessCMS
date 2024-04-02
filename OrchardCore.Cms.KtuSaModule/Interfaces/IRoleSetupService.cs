@@ -1,4 +1,4 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.Services;
+﻿namespace OrchardCore.Cms.KtuSaModule.Interfaces;
 
 public interface IRoleSetupService
 {
