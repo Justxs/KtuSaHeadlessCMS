@@ -47,22 +47,23 @@
     </span>
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="FientaTicketLink" style="margin-bottom: 20px;">
-    <label asp-for="FientaTicketLink">
-        Fienta ticket link *Optional
-        <span asp-validation-for="FientaTicketLink"></span>
-    </label>
+<fieldset class="form-group" asp-validation-class-for="FientaTicketLink" style="margin-bottom: 20px; display: flex; gap: 20px;">
+    <div>
+        <label class="form-label" asp-for="FientaTicketLink">
+            Select Fienta event
+        </label>
 
-    <input 
-        asp-for="FientaTicketLink"
-        class="form-control"
-        value="@Model.FientaTicketLink"
-        type="url"
-    />
+        <select asp-for="FientaTicketLink"
+                asp-items="@Model.FientaEventOptions"
+                class="form-control">
+            <option value="">None</option>
+            @Model.FientaTicketLink
+        </select>
 
-    <span class="hint">
-        Insert Fienta ticket url. Example: https://fienta.com/infoshow24-anime-nights
-    </span>
+        <span class="hint">
+            Choose your Fienta event. If there is no Fienta event set it to None.
+        </span>
+    </div>
 </fieldset>
 
 <fieldset class="form-group" asp-validation-class-for="Address" style="margin-bottom: 20px;">

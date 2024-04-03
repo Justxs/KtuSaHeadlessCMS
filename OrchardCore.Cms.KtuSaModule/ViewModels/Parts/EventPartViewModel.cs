@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
 
 namespace OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 
@@ -12,6 +14,12 @@ public class EventPartViewModel
 
     [Required(ErrorMessage = "Facebook event link is required")]
     public string FbEventLink { get; set; } = null!;
+
+    public List<FientaEvent>? FientaEventListLt { get; set; }
+
+    public List<FientaEvent>? FientaEventListEn { get; set; }
+
+    public List<SelectListItem> FientaEventOptions { get; set; } = [];
 
     public string? FientaTicketLink { get; set; }
 

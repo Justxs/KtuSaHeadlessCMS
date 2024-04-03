@@ -16,27 +16,20 @@ public class FientaService(HttpClient httpClient, FientaSettings settings) : IFi
         PropertyNameCaseInsensitive = true,
     };
 
-    public async Task<List<FientaEvent>> FetchKtuSaEvents(string locale = "en")
+    public async Task<List<FientaEvent>> FetchKtuSaEventsAsync(string locale)
     {
         var requestUrl = $"{_baseUrl}?organizer={_organiserId}&locale={locale}";
 
         var response = await httpClient.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
         {
-            throw new Exception("Failed to fetch events from Fienta.");
+            return [];
         }
 
         var json = await response.Content.ReadAsStringAsync();
+        var apiResponse = JsonSerializer.Deserialize<FientaApiResponse>(json, JsonSerializerOptions);
 
-        using var doc = JsonDocument.Parse(json);
+        return apiResponse?.Events ?? [];
 
-        var root = doc.RootElement;
-        var eventsElement = root.GetProperty("events");
-
-        var events = JsonSerializer.Deserialize<List<FientaEvent>>(
-            eventsElement.GetRawText(),
-            JsonSerializerOptions);
-
-        return events ?? [];
     }
 }

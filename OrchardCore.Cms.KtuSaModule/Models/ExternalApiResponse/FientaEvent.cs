@@ -4,14 +4,17 @@ namespace OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
 
 public class FientaEvent
 {
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
     [JsonPropertyName("title")]
     public string Title { get; set; } = null!;
 
     [JsonPropertyName("starts_at")]
-    public DateTime StartsAt { get; set; }
+    public string StartsAt { get; set; } = null!;
 
     [JsonPropertyName("ends_at")]
-    public DateTime EndsAt { get; set; }
+    public string EndsAt { get; set; } = null!;
 
     [JsonPropertyName("description")]
     public string Description { get; set; } = null!;

@@ -1,4 +1,7 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
@@ -6,7 +9,7 @@ using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 
-public class EventPartDriver : ContentPartDisplayDriver<EventPart>
+public class EventPartDriver(IFientaService fientaService) : ContentPartDisplayDriver<EventPart>
 {
     public override IDisplayResult Display(EventPart part, BuildPartDisplayContext context)
     {
@@ -24,14 +27,26 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
             .Location("Detail", "Content:2");
     }
 
-    public override IDisplayResult Edit(EventPart part, BuildPartEditorContext context)
+    public override async Task<IDisplayResult> EditAsync(EventPart part, BuildPartEditorContext context)
     {
+        var eventsLt = await fientaService.FetchKtuSaEventsAsync("lt");
+        var eventsEn = await fientaService.FetchKtuSaEventsAsync("en");
+
+        var fientaEventOptions = eventsLt.Select(e => new SelectListItem
+        {
+            Text = e.Title,
+            Value = e.Url,
+        }).ToList();
+
         return Initialize<EventPartViewModel>(
             GetEditorShapeType(context), model =>
             {
                 model.TitleLt = part.TitleLt;
                 model.TitleEn = part.TitleEn;
                 model.FbEventLink = part.FbEventLink;
+                model.FientaEventListLt = eventsLt;
+                model.FientaEventListEn = eventsEn;
+                model.FientaEventOptions = fientaEventOptions;
                 model.FientaTicketLink = part.FientaTicketLink;
                 model.Address = part.Address;
                 model.StartDate = part.StartDate;
@@ -46,21 +61,21 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
 
         if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
         {
-            return Edit(part, context);
+            return await EditAsync(part, context);
         }
 
         if (model.StartDate <= DateTime.Today)
         {
             context.Updater.ModelState.AddModelError(Prefix + ".StartDate", "The event start date must be later than today's date.");
 
-            return Edit(part, context);
+            return await EditAsync(part, context);
         }
 
         if (model.EndDate < model.StartDate)
         {
             context.Updater.ModelState.AddModelError(Prefix + ".EndDate", "The event end date must be later than start date");
 
-            return Edit(part, context);
+            return await EditAsync(part, context);
         }
 
         part.TitleLt = model.TitleLt;
@@ -71,6 +86,6 @@ public class EventPartDriver : ContentPartDisplayDriver<EventPart>
         part.StartDate = model.StartDate;
         part.EndDate = model.EndDate;
 
-        return Edit(part, context);
+        return await EditAsync(part, context);
     }
 }

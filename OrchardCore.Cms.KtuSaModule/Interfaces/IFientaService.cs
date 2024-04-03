@@ -4,5 +4,5 @@ namespace OrchardCore.Cms.KtuSaModule.Interfaces;
 
 public interface IFientaService
 {
-    Task<List<FientaEvent>> FetchKtuSaEvents(string locale);
+    Task<List<FientaEvent>> FetchKtuSaEventsAsync(string locale);
 }
