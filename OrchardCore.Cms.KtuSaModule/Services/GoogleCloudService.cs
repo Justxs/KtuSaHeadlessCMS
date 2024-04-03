@@ -1,6 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Newtonsoft.Json;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Settings;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using System;
 
@@ -9,19 +11,30 @@ namespace OrchardCore.Cms.KtuSaModule.Services;
 public class GoogleCloudService : IGoogleCloudService
 {
     private readonly StorageClient _storageClient;
-    private const string CredentialsFilePath = "../OrchardCore.Cms.KtuSaModule/GoogleCredentials.json";
-    private const string BucketName = "testktusa";
+    private readonly string _bucketName;
 
-    public GoogleCloudService()
+    public GoogleCloudService(GoogleCloudSettings settings)
     {
 
-        GoogleCredential googleCredential;
-        using (var stream = new FileStream(CredentialsFilePath, FileMode.Open, FileAccess.Read))
-        {
-            googleCredential = GoogleCredential.FromStream(stream);
-        }
+        var jsonCredentials = JsonConvert.SerializeObject(
+            new
+            {
+                type = settings.Type,
+                project_id = settings.ProjectId,
+                private_key_id = settings.PrivateKeyId,
+                private_key = settings.PrivateKey.Replace("\\n", "\n"),
+                client_email = settings.ClientEmail,
+                client_id = settings.ClientId,
+                auth_uri = settings.AuthUri,
+                token_uri = settings.TokenUri,
+                auth_provider_x509_cert_url = settings.AuthProviderX509CertUrl,
+                client_x509_cert_url = settings.ClientX509CertUrl,
+            });
+
+        var googleCredential = GoogleCredential.FromJson(jsonCredentials);
 
         _storageClient = StorageClient.Create(googleCredential);
+        _bucketName = settings.BucketName;
     }
 
     public async Task<string> UploadImageAsync(ImageUploadFieldViewModel viewModel)
@@ -37,7 +50,7 @@ public class GoogleCloudService : IGoogleCloudService
         await using var stream = viewModel.UploadedFile.OpenReadStream();
 
         var storageObject = await _storageClient.UploadObjectAsync(
-            bucket: BucketName,
+            bucket: _bucketName,
             objectName: fileName,
             contentType: contentType,
             source: stream
@@ -60,6 +73,6 @@ public class GoogleCloudService : IGoogleCloudService
             fileName = fileName[..queryIndex];
         }
 
-        await _storageClient.DeleteObjectAsync(BucketName, fileName);
+        await _storageClient.DeleteObjectAsync(_bucketName, fileName);
     }
 }

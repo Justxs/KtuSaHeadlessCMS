@@ -1,16 +1,15 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
-using System.Net.Http;
 using System.Text.Json;
+using OrchardCore.Cms.KtuSaModule.Settings;
 
 namespace OrchardCore.Cms.KtuSaModule.Services;
 
-public class FientaService(HttpClient httpClient) : IFientaService
+public class FientaService(HttpClient httpClient, FientaSettings settings) : IFientaService
 {
-    // TODO Move to app settings BaseUrl and KtuSaId
-    private const string BaseUrl = "https://fienta.com/api/v1/public/events";
+    private readonly string _baseUrl = settings.BaseUrl;
 
-    private const string KtuSaId = "84867";
+    private readonly string _organiserId = settings.OrganiserId;
 
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
@@ -19,7 +18,7 @@ public class FientaService(HttpClient httpClient) : IFientaService
 
     public async Task<List<FientaEvent>> FetchKtuSaEvents(string locale = "en")
     {
-        var requestUrl = $"{BaseUrl}?organizer={KtuSaId}&locale={locale}";
+        var requestUrl = $"{_baseUrl}?organizer={_organiserId}&locale={locale}";
 
         var response = await httpClient.GetAsync(requestUrl);
         if (!response.IsSuccessStatusCode)
