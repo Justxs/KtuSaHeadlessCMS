@@ -6,6 +6,7 @@ using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -35,7 +36,7 @@ public class DuksController(IContentManager contentManager, ISession session, IS
 
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
-        var articleDtos = duks.Select(item =>
+        var dukDtos = duks.Select(item =>
         {
             var part = item.As<DukPart>();
             var dto = new DukDto
@@ -55,6 +56,6 @@ public class DuksController(IContentManager contentManager, ISession session, IS
             return dto;
         }).ToList();
 
-        return Ok(articleDtos);
+        return Ok(dukDtos);
     }
 }

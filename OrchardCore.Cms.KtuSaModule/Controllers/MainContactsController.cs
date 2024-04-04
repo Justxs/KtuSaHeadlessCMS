@@ -28,7 +28,7 @@ public class MainContactsController(IContentManager contentManager, ISession ses
             await contentManager.LoadAsync(contact);
             var part = contact.As<AddressPart>();
 
-            if (part != null && part.SaUnitSelectField.SaUnit == saUnit)
+            if (part.SaUnitSelectField != null && part.SaUnitSelectField.SaUnit == saUnit)
             {
                 filteredContact = contact;
             }

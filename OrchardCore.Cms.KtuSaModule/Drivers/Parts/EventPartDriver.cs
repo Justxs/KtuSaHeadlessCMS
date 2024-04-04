@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
@@ -19,7 +18,8 @@ public class EventPartDriver(IFientaService fientaService) : ContentPartDisplayD
                 model.TitleLt = part.TitleLt;
                 model.TitleEn = part.TitleEn;
                 model.FbEventLink = part.FbEventLink;
-                model.FientaTicketLink = part.FientaTicketLink;
+                model.FientaTicketLinkLt = part.FientaTicketLinkLt;
+                model.FientaTicketLinkEn = part.FientaTicketLinkEn;
                 model.Address = part.Address;
                 model.StartDate = part.StartDate;
                 model.EndDate = part.EndDate;
@@ -32,11 +32,16 @@ public class EventPartDriver(IFientaService fientaService) : ContentPartDisplayD
         var eventsLt = await fientaService.FetchKtuSaEventsAsync("lt");
         var eventsEn = await fientaService.FetchKtuSaEventsAsync("en");
 
-        var fientaEventOptions = eventsLt.Select(e => new SelectListItem
-        {
-            Text = e.Title,
-            Value = e.Url,
-        }).ToList();
+        var fientaEventOptions = eventsLt
+            .Join(eventsEn,
+                eventLt => eventLt.Id,
+                eventEn => eventEn.Id,
+                (eventLt, eventEn) => new SelectListItem
+                {
+                    Text = eventLt.Title,
+                    Value = $"{eventLt.Url}|||{eventEn.Url}",
+                })
+            .ToList();
 
         return Initialize<EventPartViewModel>(
             GetEditorShapeType(context), model =>
@@ -47,7 +52,8 @@ public class EventPartDriver(IFientaService fientaService) : ContentPartDisplayD
                 model.FientaEventListLt = eventsLt;
                 model.FientaEventListEn = eventsEn;
                 model.FientaEventOptions = fientaEventOptions;
-                model.FientaTicketLink = part.FientaTicketLink;
+                model.FientaTicketLinkLt = part.FientaTicketLinkLt;
+                model.FientaTicketLinkEn = part.FientaTicketLinkEn;
                 model.Address = part.Address;
                 model.StartDate = part.StartDate;
                 model.EndDate = part.EndDate;
@@ -81,7 +87,8 @@ public class EventPartDriver(IFientaService fientaService) : ContentPartDisplayD
         part.TitleLt = model.TitleLt;
         part.TitleEn = model.TitleEn;
         part.FbEventLink = model.FbEventLink;
-        part.FientaTicketLink = model.FientaTicketLink;
+        part.FientaTicketLinkLt = model.FientaTicketLinkLt;
+        part.FientaTicketLinkEn = model.FientaTicketLinkEn;
         part.Address = model.Address;
         part.StartDate = model.StartDate;
         part.EndDate = model.EndDate;

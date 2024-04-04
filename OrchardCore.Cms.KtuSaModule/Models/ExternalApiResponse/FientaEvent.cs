@@ -19,6 +19,9 @@ public class FientaEvent
     [JsonPropertyName("description")]
     public string Description { get; set; } = null!;
 
+    [JsonPropertyName("address")]
+    public string Address { get; set; } = null!;
+
     [JsonPropertyName("url")]
     public string Url { get; set; } = null!;
 

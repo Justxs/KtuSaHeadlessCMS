@@ -1,4 +1,16 @@
 ﻿@model EventPartViewModel
+@using System.Text.Json
+
+<script id="eventDataScript" type="application/json">
+    @{
+        var combinedEventData = new
+        {
+            FientaEventListLt = Model.FientaEventListLt,
+            FientaEventListEn = Model.FientaEventListEn,
+        };
+    }
+    @Html.Raw(JsonSerializer.Serialize(combinedEventData))
+</script>
 
 <fieldset class="form-group" asp-validation-class-for="TitleLt" style="margin-bottom: 20px;">
     <label asp-for="TitleLt">
@@ -47,29 +59,40 @@
     </span>
 </fieldset>
 
-<fieldset class="form-group" asp-validation-class-for="FientaTicketLink" style="margin-bottom: 20px; display: flex; gap: 20px;">
+<fieldset class="form-group" asp-validation-class-for="FientaTicketLinkLt" style="margin-bottom: 20px; display: flex; gap: 20px;">
     <div>
-        <label class="form-label" asp-for="FientaTicketLink">
+        <label class="form-label" asp-for="FientaTicketLinkLt">
             Select Fienta event
         </label>
 
-        <select asp-for="FientaTicketLink"
-                asp-items="@Model.FientaEventOptions"
+        <select asp-for="FientaTicketLinkLt" asp-items="@Model.FientaEventOptions"
                 class="form-control">
             <option value="">None</option>
-            @Model.FientaTicketLink
         </select>
+
 
         <span class="hint">
             Choose your Fienta event. If there is no Fienta event set it to None.
         </span>
     </div>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <button
+            type="button"
+            id="importDataButton"
+            class="btn btn-primary"
+            style="display:none;"
+        >
+            Import data from Fienta
+        </button>
+    </div>
 </fieldset>
+
+<input asp-for="FientaTicketLinkEn" type="hidden" value="@Model.FientaTicketLinkEn" class="form-control">
 
 <fieldset class="form-group" asp-validation-class-for="Address" style="margin-bottom: 20px;">
     <label asp-for="Address">
         Event address *Optional
-        <span asp-validation-for="FientaTicketLink"></span>
+        <span asp-validation-for="Address"></span>
     </label>
 
     <input asp-for="Address"
@@ -119,3 +142,58 @@
         </div>
     </fieldset>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dropdown = document.getElementById('EventPart_FientaTicketLinkLt');
+        var button = document.getElementById('importDataButton');
+
+        function toggleButtonBasedOnDropdown() {
+            if (dropdown.value) {
+                button.style.display = 'block';
+            } else {
+                button.style.display = 'none';
+            }
+        }
+
+        toggleButtonBasedOnDropdown();
+
+        dropdown.addEventListener('change', toggleButtonBasedOnDropdown);
+    });
+
+    document.getElementById('importDataButton').addEventListener('click', function () {
+        var selectedEventUrl = document.getElementById('EventPart_FientaTicketLinkLt').value;
+
+        var urls = selectedEventUrl.split('|||');
+        var urlLt = urls[0];
+        var urlEn = urls.length > 1 ? urls[1] : '';
+
+        var eventDataJson = document.getElementById('eventDataScript').textContent;
+        var combinedEvents = JSON.parse(eventDataJson);
+
+        var eventsLt = combinedEvents.FientaEventListLt;
+        var eventsEn = combinedEvents.FientaEventListEn;
+
+        var selectedEventLt = combinedEvents.FientaEventListLt.find(event => event.url === urlLt);
+        var selectedEventEn = combinedEvents.FientaEventListEn.find(event => event.url === urlEn);
+
+        if (selectedEventLt) {
+            document.getElementById('EventPart_TitleLt').value = selectedEventLt.title || '';
+            document.getElementById('EventPart_StartDate').value = selectedEventLt.starts_at || '';
+            document.getElementById('EventPart_EndDate').value = selectedEventLt.ends_at || '';
+            document.getElementById('EventPart_Address').value = selectedEventLt.address || '';
+
+            document.getElementById('HtmlContent-EventtextLT').value = selectedEventLt.description || '';
+            var quillLt = new Quill('#EventtextLT');
+            quillLt.root.innerHTML = selectedEventLt.description || '<p><br></p>';
+        }
+
+        if (selectedEventEn) {
+            document.getElementById('EventPart_TitleEn').value = selectedEventEn.title || '';
+            document.getElementById('HtmlContent-EventtextEN').value = selectedEventLt.description || '';
+            var quillEn = new Quill('#EventtextEN');
+            quillEn.root.innerHTML = selectedEventEn.description || '<p><br></p>';
+            document.getElementById('EventPart_FientaTicketLinkEn').value = urlEn || '';
+        }
+    });
+</script>

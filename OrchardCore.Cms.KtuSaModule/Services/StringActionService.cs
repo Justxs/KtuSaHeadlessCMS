@@ -38,7 +38,11 @@ public partial class StringActionService : IStringActionService
         var doc = new HtmlDocument();
         doc.LoadHtml(htmlBody);
 
-        var h1Tags = doc.DocumentNode.SelectNodes("//h1").Select(node => node.InnerText).ToList();
+        var h1NodeCollection = doc.DocumentNode.SelectNodes("//h1");
+
+        var h1Tags = h1NodeCollection != null
+            ? h1NodeCollection.Select(node => node.InnerText).ToList()
+            : [];
 
         return h1Tags;
     }

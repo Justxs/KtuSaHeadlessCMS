@@ -33,6 +33,7 @@ public class Startup : StartupBase
         services.AddScoped<IRoleSetupService, RoleSetupService>();
         services.AddScoped<IStringActionService, StringActionService>();
         services.AddHttpClient<IFientaService, FientaService>();
+        services.AddScoped<IRepository, Repository>();
 
         AddContentFields(services);
         AddContentParts(services);

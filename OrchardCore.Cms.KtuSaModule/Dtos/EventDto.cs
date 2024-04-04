@@ -19,4 +19,6 @@ public class EventDto
     public DateTime EndDate { get; set; }
 
     public string CoverImageUrl { get; set; } = null!;
+
+    public List<string> Organisers { get; set; } = null!;
 }

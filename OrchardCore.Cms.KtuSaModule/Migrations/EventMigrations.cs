@@ -27,7 +27,7 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
                 .OfType(nameof(QuillField))
                 .WithDisplayName("Event text EN")
                 .WithPosition("8"))
-            .WithField("OrganisersField", field => field
+            .WithField(nameof(EventPart.OrganisersField), field => field
                 .OfType(nameof(ContentPickerField))
                 .WithDisplayName("Select event organisers")
                 .WithSettings(new ContentPickerFieldSettings

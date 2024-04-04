@@ -21,7 +21,9 @@ public class EventPartViewModel
 
     public List<SelectListItem> FientaEventOptions { get; set; } = [];
 
-    public string? FientaTicketLink { get; set; }
+    public string? FientaTicketLinkLt { get; set; }
+
+    public string? FientaTicketLinkEn { get; set; }
 
     public string? Address { get; set; }
 
