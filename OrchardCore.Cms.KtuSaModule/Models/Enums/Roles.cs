@@ -2,6 +2,7 @@
 
 public enum Roles
 {
+    Administrator,
     President,
     CsaEditor,
     Marketing,

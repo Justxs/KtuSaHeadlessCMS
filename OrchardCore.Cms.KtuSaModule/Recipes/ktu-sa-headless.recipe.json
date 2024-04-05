@@ -1,0 +1,247 @@
+{
+  "name": "KtuSaHeadlessRecipe",
+  "displayName": "KTU SA Headless recipe",
+  "description": "Enables modules needed in KTU SA CMS site",
+  "author": "Justas Pranauskis",
+  "website": "https://github.com/Justxs/KTU-SA-Site",
+  "version": "1.0",
+  "issetuprecipe": true,
+  "categories": [ "default" ],
+  "tags": [ "setup", "headless", "content management", "ktu sa" ],
+
+  "variables": {
+    // "now": "[js: new Date().toISOString()]"
+  },
+
+  "steps": [
+    {
+      "name": "feature",
+      "enable": [
+        "OrchardCore.HomeRoute",
+        "OrchardCore.Admin",
+        "OrchardCore.Diagnostics",
+        "OrchardCore.Features",
+        "OrchardCore.Navigation",
+        "OrchardCore.Recipes",
+        "OrchardCore.Resources",
+        "OrchardCore.Roles",
+        "OrchardCore.Security",
+        "OrchardCore.Settings",
+        "OrchardCore.Themes",
+        "OrchardCore.Users",
+
+        // Content Management
+        "OrchardCore.Alias",
+        "OrchardCore.Html",
+        "OrchardCore.ContentFields",
+        "OrchardCore.Contents",
+        "OrchardCore.ContentTypes",
+        "OrchardCore.CustomSettings",
+        "OrchardCore.Deployment",
+        "OrchardCore.Deployment.Remote",
+        "OrchardCore.Apis.GraphQL",
+        "OrchardCore.Flows",
+        "OrchardCore.Indexing",
+        "OrchardCore.Layers",
+        "OrchardCore.Lists",
+        "OrchardCore.Markdown",
+        "OrchardCore.Media",
+        "OrchardCore.Menu",
+        "OrchardCore.OpenId",
+        "OrchardCore.OpenId.Management",
+        "OrchardCore.OpenId.Server",
+        "OrchardCore.OpenId.Validation",
+        "OrchardCore.Queries",
+        "OrchardCore.Title",
+        "OrchardCore.Widgets",
+        "OrchardCore.Localization",
+        "OrchardCore.Google.GoogleAuthentication",
+        "OrchardCore.Users.CustomUserSettings",
+
+        "KtuSaModule",
+        "TheAdmin"
+      ]
+    },
+    {
+      "name": "Roles",
+      "Roles": [
+        {
+          "Name": "Administrator",
+          "Description": "Administrator",
+          "Permissions": []
+        },
+        {
+          "Name": "President",
+          "Description": "President",
+          "Permissions": [
+            "AssignRoles",
+            "View Users",
+            "EditUsers",
+            "ListUsers",
+            "AssignRoleToUsers",
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "CsaEditor",
+          "Description": "Csa Editor this user can edit all SA Units and CSA content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "Marketing",
+          "Description": "Marketing can add sponsors and view analitics",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "InfosaEditor",
+          "Description": "InfoSA Editor this user can edit InfoSA content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "BrkEditor",
+          "Description": "BRK Editor this user can edit BRK content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "VivatChemijaEditor",
+          "Description": "Vivat chemija Editor this user can edit Vivat chemija content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "IndiEditor",
+          "Description": "InDi Editor this user can edit InDi content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "EsaEditor",
+          "Description": "Esa Editor this user can edit ESA content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "FumsaEditor",
+          "Description": "FUMSA Editor this user can edit FUMSA content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "StatiusEditor",
+          "Description": "STATIUS Editor this user can edit STATIUS content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "VfsaEditor",
+          "Description": "VFSA Editor this user can edit VFSA content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "ShmEditor",
+          "Description": "SHM Editor this user can edit SHM content",
+          "Permissions": [
+            "AccessAdminPanel",
+            "PublishContent",
+            "EditContent",
+            "ViewContent",
+            "CloneContent",
+            "ListContent"
+          ]
+        },
+        {
+          "Name": "Authenticated",
+          "Description": "Authenticated",
+          "Permissions": [
+            "ViewContent",
+            "ExecuteGraphQL",
+            "ExecuteApiAll"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "themes",
+      "admin": "TheAdmin",
+      "site": ""
+    },
+    {
+      "name": "settings",
+      "HomeRoute": {
+        "Action": "Index",
+        "Controller": "Admin",
+        "Area": "OrchardCore.Admin"
+      }
+    }
+  ]
+}

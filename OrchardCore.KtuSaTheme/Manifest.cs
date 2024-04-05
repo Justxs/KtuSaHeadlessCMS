@@ -1,8 +1,7 @@
 using OrchardCore.DisplayManagement.Manifest;
 
 [assembly: Theme(
-    Id = "KtuSA",
-    Name = "KTU SA Theme",
+    Name = "KtuSaAdmin",
     Author = "Justas Pranauskis",
     Website = "https://github.com/Justxs/KtuSaHeadlessCMS",
     Version = "0.0.1",

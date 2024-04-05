@@ -10,4 +10,5 @@ public enum ContentTypeNames
     HeroSection,
     Event,
     SaUnit,
+    UserProfile,
 }

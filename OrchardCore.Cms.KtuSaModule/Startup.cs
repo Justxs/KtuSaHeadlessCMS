@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 using OrchardCore.Cms.KtuSaModule.Drivers.Parts;
-using OrchardCore.Cms.KtuSaModule.Events;
 using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
@@ -25,12 +24,11 @@ using YesSql.Indexes;
 
 namespace OrchardCore.Cms.KtuSaModule;
 
-public class Startup() : StartupBase
+public class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
-        services.AddScoped<IRoleSetupService, RoleSetupService>();
         services.AddScoped<IStringActionService, StringActionService>();
         services.AddHttpClient<IFientaService, FientaService>();
         services.AddScoped<IRepository, Repository>();
@@ -43,7 +41,6 @@ public class Startup() : StartupBase
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
         services.AddScoped<INavigationProvider, AdminMenu>();
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
-        services.AddScoped<IModularTenantEvents, StartupConfigurationHandler>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
@@ -59,6 +56,8 @@ public class Startup() : StartupBase
         services.AddScoped<IDataMigration, HeroSectionMigrations>();
         services.AddScoped<IDataMigration, EventMigrations>();
         services.AddScoped<IDataMigration, SaUnitMigrations>();
+        services.AddScoped<IDataMigration, UserMigrations>();
+
     }
 
     private static void AddContentFields(IServiceCollection services)
@@ -85,13 +84,12 @@ public class Startup() : StartupBase
         services.AddScoped<IPermissionProvider, SponsorPermissions>();
         services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
         services.AddScoped<IPermissionProvider, ContactPermissions>();
-
     }
 
     private static void AddContentParts(IServiceCollection services)
     {
-        services
-            .AddContentPart<ArticlePart>();
+        services.AddContentPart<ArticlePart>();
+        services.AddContentPart<UserProfilePart>();
 
         services
             .AddContentPart<CardPart>()

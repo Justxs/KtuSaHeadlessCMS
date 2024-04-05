@@ -1,4 +1,5 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.Models.Enums;
+﻿// ReSharper disable All
+namespace OrchardCore.Cms.KtuSaModule.Models.Enums;
 
 public enum SaUnit
 {

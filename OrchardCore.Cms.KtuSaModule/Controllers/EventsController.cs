@@ -107,7 +107,7 @@ public class EventsController(IContentManager contentManager, IStringActionServi
                 : part.FientaTicketLinkEn,
 
             StartDate = part.StartDate,
-            EndDate = part.StartDate,
+            EndDate = part.EndDate,
             Address = part.Address,
             FacebookUrl = part.FbEventLink,
             CoverImageUrl = part.ImageUploadField.FileId,

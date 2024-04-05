@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Security.Permissions;
+using static OrchardCore.Cms.KtuSaModule.Models.Enums.Roles;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
@@ -22,12 +23,12 @@ public class HeroSectionPermissions : IPermissionProvider
         {
             new PermissionStereotype
             {
-                Name = "Administrator",
+                Name = Administrator.ToString(),
                 Permissions = new[] { ManageHeroSections },
             },
             new PermissionStereotype
             {
-                Name = "CsaEditor",
+                Name = CsaEditor.ToString(),
                 Permissions = new[] { ManageHeroSections },
             },
         };

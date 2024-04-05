@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Security.Permissions;
+using static OrchardCore.Cms.KtuSaModule.Models.Enums.Roles;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
@@ -39,7 +40,7 @@ public class ContactPermissions : IPermissionProvider
         {
             new PermissionStereotype
             {
-                Name = "Administrator",
+                Name = Administrator.ToString(),
                 Permissions = new[]
                 {
                     ManageCsaContacts,
@@ -56,7 +57,7 @@ public class ContactPermissions : IPermissionProvider
             },
             new PermissionStereotype
             {
-                Name = "CsaEditor",
+                Name = CsaEditor.ToString(),
                 Permissions = new[] { 
                     ManageCsaContacts,
                     ManageBrkContacts,
@@ -72,47 +73,47 @@ public class ContactPermissions : IPermissionProvider
             },
             new PermissionStereotype
             {
-                Name = "BrkEditor",
+                Name = BrkEditor.ToString(),
                 Permissions = new[] { ManageBrkContacts },
             },
             new PermissionStereotype
             {
-                Name = "InfosaEditor",
+                Name = InfosaEditor.ToString(),
                 Permissions = new[] { ManageInfosaContacts },
             },
             new PermissionStereotype
             {
-                Name = "VivatChemijaEditor",
+                Name = VivatChemijaEditor.ToString(),
                 Permissions = new[] { ManageVivatChemijaContacts },
             },
             new PermissionStereotype
             {
-                Name = "IndiEditor",
+                Name = IndiEditor.ToString(),
                 Permissions = new[] { ManageIndiContacts },
             },
             new PermissionStereotype
             {
-                Name = "EsaEditor",
+                Name = EsaEditor.ToString(),
                 Permissions = new[] { ManageEsaContacts },
             },
             new PermissionStereotype
             {
-                Name = "FumsaEditor",
+                Name = FumsaEditor.ToString(),
                 Permissions = new[] { ManageFumsaContacts },
             },
             new PermissionStereotype
             {
-                Name = "StatiusEditor",
+                Name = StatiusEditor.ToString(),
                 Permissions = new[] { ManageStatiusContacts },
             },
             new PermissionStereotype
             {
-                Name = "VfsaEditor",
+                Name = VfsaEditor.ToString(),
                 Permissions = new[] { ManageVfsaContacts },
             },
             new PermissionStereotype
             {
-                Name = "ShmEditor",
+                Name = ShmEditor.ToString(),
                 Permissions = new[] { ManageShmContacts },
             }
         };

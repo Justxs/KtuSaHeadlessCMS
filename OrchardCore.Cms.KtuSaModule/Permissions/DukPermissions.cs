@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Security.Permissions;
+using static OrchardCore.Cms.KtuSaModule.Models.Enums.Roles;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
@@ -21,12 +22,12 @@ public class DukPermissions : IPermissionProvider
         {
             new PermissionStereotype
             {
-                Name = "Administrator",
+                Name = Administrator.ToString(),
                 Permissions = new[] { ManageDuks },
             },
             new PermissionStereotype
             {
-                Name = "CsaEditor",
+                Name = CsaEditor.ToString(),
                 Permissions = new[] {
                     ManageDuks,
                 },
