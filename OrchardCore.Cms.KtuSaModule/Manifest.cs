@@ -18,5 +18,6 @@ using OrchardCore.Modules.Manifest;
         "OrchardCore.Resources",
         "OrchardCore.Roles",
         "OrchardCore.Settings",
+        "OrchardCore.Google",
     ]
 )]

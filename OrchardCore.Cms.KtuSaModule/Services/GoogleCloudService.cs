@@ -61,18 +61,26 @@ public class GoogleCloudService : IGoogleCloudService
 
     public async Task RemoveFileAsync(string fileName)
     {
-        var lastIndex = fileName.LastIndexOf('/');
-        fileName = lastIndex != -1
-            ? fileName[(lastIndex + 1)..]
-            : fileName;
-
-        var queryIndex = fileName.IndexOf('?');
-
-        if (queryIndex != -1)
+        try
         {
-            fileName = fileName[..queryIndex];
-        }
+            var lastIndex = fileName.LastIndexOf('/');
+            fileName = lastIndex != -1
+                ? fileName[(lastIndex + 1)..]
+                : fileName;
 
-        await _storageClient.DeleteObjectAsync(_bucketName, fileName);
+            var queryIndex = fileName.IndexOf('?');
+
+            if (queryIndex != -1)
+            {
+                fileName = fileName[..queryIndex];
+            }
+
+            await _storageClient.DeleteObjectAsync(_bucketName, fileName);
+        }
+        catch
+        {
+            // TODO add logging
+            Console.WriteLine("Failed to delete image");
+        }
     }
 }

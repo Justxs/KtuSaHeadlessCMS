@@ -25,7 +25,7 @@ using YesSql.Indexes;
 
 namespace OrchardCore.Cms.KtuSaModule;
 
-public class Startup : StartupBase
+public class Startup() : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
