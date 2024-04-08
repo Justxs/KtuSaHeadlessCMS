@@ -57,6 +57,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, EventMigrations>();
         services.AddScoped<IDataMigration, SaUnitMigrations>();
         services.AddScoped<IDataMigration, UserMigrations>();
+        services.AddScoped<IDataMigration, PositionMigrations>();
 
     }
 
@@ -121,7 +122,7 @@ public class Startup : StartupBase
         services
             .AddContentPart<PositionPart>()
             .UseDisplayDriver<PositionPartDriver>()
-            .AddHandler<MemberPartHandler>();
+            .AddHandler<PositionPartHandler>();
 
         services
             .AddContentPart<DukPart>()

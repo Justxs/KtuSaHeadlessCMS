@@ -30,7 +30,6 @@
         "OrchardCore.Themes",
         "OrchardCore.Users",
 
-        // Content Management
         "OrchardCore.Alias",
         "OrchardCore.Html",
         "OrchardCore.ContentFields",
@@ -39,7 +38,6 @@
         "OrchardCore.CustomSettings",
         "OrchardCore.Deployment",
         "OrchardCore.Deployment.Remote",
-        "OrchardCore.Apis.GraphQL",
         "OrchardCore.Flows",
         "OrchardCore.Indexing",
         "OrchardCore.Layers",

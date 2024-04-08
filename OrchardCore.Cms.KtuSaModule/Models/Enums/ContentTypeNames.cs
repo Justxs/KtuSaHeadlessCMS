@@ -11,4 +11,5 @@ public enum ContentTypeNames
     Event,
     SaUnit,
     UserProfile,
+    Position,
 }

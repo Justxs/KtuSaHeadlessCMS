@@ -7,14 +7,14 @@ public class MemberPartHandler : ContentPartHandler<MemberPart>
 {
     public override Task UpdatedAsync(UpdateContentContext context, MemberPart instance)
     {
-        context.ContentItem.DisplayText = $"{instance.Name}";
+        context.ContentItem.DisplayText = instance.Name;
 
         return Task.CompletedTask;
     }
 
     public override Task CreatedAsync(CreateContentContext context, MemberPart instance)
     {
-        context.ContentItem.DisplayText = $"{instance.Name}";
+        context.ContentItem.DisplayText = instance.Name;
 
         return Task.CompletedTask;
     }

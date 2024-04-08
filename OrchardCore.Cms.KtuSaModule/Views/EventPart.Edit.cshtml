@@ -184,16 +184,16 @@
             document.getElementById('EventPart_Address').value = selectedEventLt.address || '';
 
             document.getElementById('HtmlContent-EventtextLT').value = selectedEventLt.description || '';
-            var quillLt = new Quill('#EventtextLT');
-            quillLt.root.innerHTML = selectedEventLt.description || '<p><br></p>';
+
+            document.querySelector('#EventtextLT .ql-editor').innerHTML = selectedEventLt.description;
         }
 
         if (selectedEventEn) {
             document.getElementById('EventPart_TitleEn').value = selectedEventEn.title || '';
             document.getElementById('HtmlContent-EventtextEN').value = selectedEventLt.description || '';
-            var quillEn = new Quill('#EventtextEN');
-            quillEn.root.innerHTML = selectedEventEn.description || '<p><br></p>';
             document.getElementById('EventPart_FientaTicketLinkEn').value = urlEn || '';
+
+            document.querySelector('#EventtextEN .ql-editor').innerHTML = selectedEventEn.description;
         }
     });
 </script>

@@ -1,6 +1,9 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.ContentFields.Fields;
+using OrchardCore.ContentFields.Settings;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
@@ -21,22 +24,26 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(MemberPart), part => part
             .Attachable()
             .WithField(nameof(MemberPart.ImageUploadField), field => field
-                .OfType(nameof(MemberPart.ImageUploadField))
+                .OfType(nameof(ImageUploadField))
                 .WithDisplayName("Upload Member photo"))
             .WithField(nameof(MemberPart.SaUnitSelectField), field => field
-                .OfType(nameof(MemberPart.SaUnitSelectField)))
-            .WithDescription("Member info: Name, Responsibilities, SaUnit, photo")
-        );
-
-        await contentDefinitionManager.AlterPartDefinitionAsync(nameof(PositionPart), part => part
-            .Attachable()
-            .WithDescription("Position info: Name and description")
+                .OfType(nameof(SaUnitSelectField)))
+            .WithField(nameof(MemberPart.Position), field => field
+                .OfType(nameof(ContentPickerField))
+                .WithDisplayName("Select position")
+                .WithSettings(new ContentPickerFieldSettings
+                {
+                    Multiple = false,
+                    Required = true,
+                    DisplayedContentTypes = [nameof(ContentTypeNames.Position)],
+                }))
+            .WithDescription("Member info: Name, Responsibilities, Sa Unit, photo")
         );
 
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(AddressPart), part => part
             .Attachable()
             .WithField(nameof(AddressPart.SaUnitSelectField), field => field
-                .OfType(nameof(AddressPart.SaUnitSelectField)))
+                .OfType(nameof(SaUnitSelectField)))
             .WithDescription("Address part: location for an object like the office of KTU SA")
         );
 
@@ -44,7 +51,6 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .Creatable()
             .Listable()
             .WithPart(nameof(MemberPart))
-            .WithPart(nameof(PositionPart))
             .WithPart(nameof(ContactPart))
             .WithDescription("All info about member")
         );

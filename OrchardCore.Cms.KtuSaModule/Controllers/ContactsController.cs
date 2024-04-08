@@ -3,11 +3,9 @@ using OrchardCore.Cms.KtuSaModule.Dtos;
 using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -53,7 +51,6 @@ public class ContactsController(IContentManager contentManager, ISession session
                 Responsibilities = (isLithuanian
                     ? positionPart?.DescriptionLt
                     : positionPart?.DescriptionEn)!,
-
             };
 
             return dto;

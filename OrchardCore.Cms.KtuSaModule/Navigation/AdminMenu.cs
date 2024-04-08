@@ -103,6 +103,24 @@ public class AdminMenu(
                     .Permission(ArticlePermissions.ManageArticles)
                     .AddClass("icon-class-fa-circle-plus")
                     .AddClass("icon-class-fas"))
+            )
+            .Add(T["Contacts"], "1", content => content
+                .AddClass("icon-class-fa-address-book")
+                .AddClass("icon-class-fas")
+                .Add(T["All current contacts"], eventContentType => eventContentType
+                    .Action("List", "Admin", new
+                    {
+                        area = "OrchardCore.Contents",
+                        contentTypeId = ContentTypeNames.Contact.ToString(),
+                    })
+                    .Permission(ContactPermissions.ManageCsaContacts)
+                    .AddClass("icon-class-fa-list")
+                    .AddClass("icon-class-fas"))
+                .Add(T["Create a new contact"], createAction => createAction
+                    .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Contact}/Create")
+                    .Permission(ContactPermissions.ManageCsaContacts)
+                    .AddClass("icon-class-fa-circle-plus")
+                    .AddClass("icon-class-fas"))
             );
 
         if (hasEventPermission)

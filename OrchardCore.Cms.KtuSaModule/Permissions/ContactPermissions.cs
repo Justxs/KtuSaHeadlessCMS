@@ -8,7 +8,7 @@ public class ContactPermissions : IPermissionProvider
     public static readonly Permission ManageCsaContacts = new(nameof(ManageCsaContacts), "Can manage CSA contacts.");
     public static readonly Permission ManageBrkContacts = new(nameof(ManageBrkContacts), "Can manage BRK contacts.");
     public static readonly Permission ManageInfosaContacts = new(nameof(ManageInfosaContacts), "Can manage InfoSA contacts.");
-    public static readonly Permission ManageVivatChemijaContacts = new(nameof(ManageVivatChemijaContacts), "Can manage Vivat Chemija contacts.");
+    public static readonly Permission ManageVivatChemijaContacts = new(nameof(ManageVivatChemijaContacts), "Can manage Vivat chemija contacts.");
     public static readonly Permission ManageIndiContacts = new(nameof(ManageIndiContacts), "Can manage InDi contacts.");
     public static readonly Permission ManageEsaContacts = new(nameof(ManageEsaContacts), "Can manage ESA contacts.");
     public static readonly Permission ManageFumsaContacts = new(nameof(ManageFumsaContacts), "Can manage FUMSA contacts.");

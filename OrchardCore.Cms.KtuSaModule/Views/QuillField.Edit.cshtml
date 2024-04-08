@@ -62,7 +62,7 @@
         var editorId = '@Model.Label';
         editorId = editorId.replace(/\s/g, '');
 
-        var quill = new Quill(`#${editorId}`, {
+        window.quill = new Quill(`#${editorId}`, {
             modules: {
                 toolbar: [
                     [{ 'header': [1, false] }],
