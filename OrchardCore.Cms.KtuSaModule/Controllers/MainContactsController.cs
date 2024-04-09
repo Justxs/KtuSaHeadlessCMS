@@ -1,38 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Cms.KtuSaModule.Dtos;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Records;
-using YesSql;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class MainContactsController(IContentManager contentManager, ISession session) : ControllerBase
+public class MainContactsController(IRepository repository) : ControllerBase
 {
     private static readonly string MainContact = ContentTypeNames.MainContact.ToString();
 
     [HttpGet("{saUnit}")]
+    [ProducesResponseType(typeof(MainContactDto), 200)]
     public async Task<ActionResult> GetMainContacts(SaUnit saUnit)
     {
-        var contacts = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == MainContact)
-            .ListAsync();
+        var contacts = await repository.GetAllAsync(MainContact);
 
-        var filteredContact = new ContentItem();
-
-        foreach (var contact in contacts)
-        {
-            await contentManager.LoadAsync(contact);
-            var part = contact.As<AddressPart>();
-
-            if (part.SaUnitSelectField != null && part.SaUnitSelectField.SaUnit == saUnit)
-            {
-                filteredContact = contact;
-            }
-        }
+        var filteredContact = contacts
+            .Select(contact => contact)
+            .FirstOrDefault(part => part.As<AddressPart>().SaUnit == saUnit.ToString());
 
         var addressPart = filteredContact.As<AddressPart>();
         var contactPart = filteredContact.As<ContactPart>();

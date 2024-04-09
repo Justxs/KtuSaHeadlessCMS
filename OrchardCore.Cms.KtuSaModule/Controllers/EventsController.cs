@@ -1,41 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrchardCore.Cms.KtuSaModule.Dtos;
+using OrchardCore.Cms.KtuSaModule.Dtos.Events;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class EventsController(IContentManager contentManager, IStringActionService stringActionService, IRepository repository) : ControllerBase
+public class EventsController(
+    IContentManager contentManager, 
+    IStringActionService stringActionService, 
+    IRepository repository) : ControllerBase
 {
     // TODO add indexes for event type
-    // TODO add sa unit filtering
     private static readonly string EventContentType = ContentTypeNames.Event.ToString();
     private static readonly string SaUnitContentType = ContentTypeNames.SaUnit.ToString();
 
-
     [HttpGet]
-    public async Task<ActionResult> GetArticles(string language)
+    [ProducesResponseType(typeof(List<EventPreviewDto>), 200)]
+    public async Task<ActionResult> GetEvents(string language, [FromQuery] bool fetchPassed)
     {
         var events = await repository.GetAllAsync(EventContentType);
 
-        var filteredSection = new List<ContentItem>();
-
-        foreach (var eventItem in events)
-        {
-            await contentManager.LoadAsync(eventItem);
-
-            var part = eventItem.As<EventPart>();
-
-            if (part != null && part.StartDate > DateTime.Now)
-            {
-                filteredSection.Add(eventItem);
-            }
-        }
+        var filteredSection = events
+            .Where(eventItem => fetchPassed || eventItem.As<EventPart>().StartDate > DateTime.Now)
+            .OrderByDescending(item => item.As<EventPart>().StartDate)
+            .ToList();
 
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
@@ -43,7 +35,45 @@ public class EventsController(IContentManager contentManager, IStringActionServi
         {
             var part = item.As<EventPart>();
 
-            var dto = new EventDto
+            var dto = new EventPreviewDto
+            {
+                Id = item.ContentItemId,
+
+                Title = isLithuanian
+                    ? part.TitleLt
+                    : part.TitleEn,
+
+                StartDate = part.StartDate,
+                CoverImageUrl = part.ImageUploadField.FileId,
+            };
+
+            return dto;
+        }).ToList();
+
+        return Ok(eventDtos);
+    }
+
+    [HttpGet("SaUnits/{saUnit}")]
+    [ProducesResponseType(typeof(List<EventPreviewDto>), 200)]
+    public async Task<ActionResult> GetEventsByFsa(string language, SaUnit saUnit, [FromQuery] bool fetchPassed)
+    {
+        var events = await repository.GetAllAsync(EventContentType);
+        var saUnits = await repository.GetAllAsync(SaUnitContentType);
+        var filterSaUnit = saUnits.FirstOrDefault(item => item.As<SaUnitPart>().UnitName == saUnit.ToString());
+
+        var filteredSection = events
+            .Where(eventItem => fetchPassed || eventItem.As<EventPart>().StartDate >= DateTime.Now)
+            .Where(eventItem => eventItem.As<EventPart>().OrganisersField.ContentItemIds.Contains(filterSaUnit!.ContentItemId))
+            .OrderByDescending(item => item.As<EventPart>().StartDate)
+            .ToList();
+
+        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+
+        var eventDtos = filteredSection.Select(item =>
+        {
+            var part = item.As<EventPart>();
+
+            var dto = new EventPreviewDto
             {
                 Id = item.ContentItemId,
 
@@ -62,7 +92,10 @@ public class EventsController(IContentManager contentManager, IStringActionServi
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetArticleById(string language, string id)
+    [ProducesResponseType(typeof(EventContentDto), 200)]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(string), 404)]
+    public async Task<ActionResult> GetEventById(string language, string id)
     {
         var eventItem = await contentManager.GetAsync(id);
 
@@ -90,7 +123,7 @@ public class EventsController(IContentManager contentManager, IStringActionServi
             .Select(unit => unit.As<SaUnitPart>().UnitName)
             .ToList();
 
-        var eventDto = new EventDto
+        var eventDto = new EventContentDto
         {
             Id = eventItem.ContentItemId,
 

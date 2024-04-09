@@ -2,37 +2,32 @@
 using OrchardCore.Cms.KtuSaModule.Dtos;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Records;
-using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class DuksController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
+public class DuksController(IRepository repository, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string DukContentType = ContentTypeNames.Duk.ToString();
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<DukDto>), 200)]
     public async Task<ActionResult> GetDuks(string language, [FromQuery] int? limit)
     {
-        var duks = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == DukContentType && index.Published)
-            .OrderByDescending(index => index.ModifiedUtc)
-            .ListAsync();
+        var duks = await repository.GetAllAsync(DukContentType);
+
+        duks = duks.OrderByDescending(item => item.ModifiedUtc);
 
         if (limit is not null)
         {
-            duks = duks.OrderBy(_ => Guid.NewGuid()).Take((int)limit).ToList();
+            duks = duks.OrderBy(_ => Guid.NewGuid())
+                .Take((int)limit)
+                .ToList();
         }
 
-        foreach (var duk in duks)
-        {
-            await contentManager.LoadAsync(duk);
-        }
 
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 

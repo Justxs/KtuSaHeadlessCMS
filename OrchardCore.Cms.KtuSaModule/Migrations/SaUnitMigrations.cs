@@ -1,4 +1,5 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
@@ -13,11 +14,15 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(SaUnitPart), part => part
             .Attachable()
+            .WithField(nameof(SaUnitPart.SaPhoto), field => field
+                .OfType(nameof(ImageUploadField))
+                .WithDisplayName("Upload FSA photo"))
             .WithDescription("Sa unit content part"));
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(nameof(ContentTypeNames.SaUnit), type => type
             .Listable()
             .WithPart(nameof(SaUnitPart))
+            .WithPart(nameof(ContactPart))
             .WithDescription("Sa unit content type"));
 
         foreach (var saUnit in (SaUnit[])Enum.GetValues(typeof(SaUnit)))

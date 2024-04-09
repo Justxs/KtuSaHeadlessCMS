@@ -11,29 +11,32 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class ContactsController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
+public class ContactsController(
+    ISession session, 
+    IStringActionService stringActionService,
+    IRepository repository) : ControllerBase
 {
-    private static readonly string ContactContentType = ContentTypeNames.Contact.ToString();
-
     [HttpGet]
+    [ProducesResponseType(typeof(List<ContactDto>), 200)]
     public async Task<ActionResult> GetContactsBySaUnit(string language, [FromQuery] SaUnit saUnit)
     {
         var contacts = await session
             .Query<ContentItem, MemberPartIndex>(index => index.SaUnit == saUnit)
             .ListAsync();
 
-        foreach (var contact in contacts)
-        {
-            await contentManager.LoadAsync(contact);
-        }
-
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+
+        var positions = await repository.GetAllAsync(nameof(ContentTypeNames.Position));
 
         var contactDtos = contacts.Select(item =>
         {
             var contactPart = item.As<ContactPart>();
             var memberPart = item.As<MemberPart>();
-            var positionPart = item.As<PositionPart>();
+
+            var positionPart = positions
+                .FirstOrDefault(position => memberPart.Position.ContentItemIds
+                    .Contains(position.ContentItemId))
+                .As<PositionPart>();
 
             var dto = new ContactDto
             {

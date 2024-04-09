@@ -2,8 +2,6 @@
 using OrchardCore.Cms.KtuSaModule.Dtos;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
-using OrchardCore.ContentManagement.Records;
-using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 
@@ -11,37 +9,26 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class HeroSectionsController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
+public class HeroSectionsController(IContentManager contentManager, IRepository repository, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string HeroSection = ContentTypeNames.HeroSection.ToString();
 
     [HttpGet("{sectionName}")]
+    [ProducesResponseType(typeof(HeroSectionDto), 200)]
     public async Task<ActionResult> GetMainContacts(string language, string sectionName)
     {
-        var heroSections = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == HeroSection)
-            .ListAsync();
+        var heroSections = await repository.GetAllAsync(HeroSection);
 
-        var filteredSection = new ContentItem();
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
-        foreach (var section in heroSections)
-        {
-            await contentManager.LoadAsync(section);
-            var part = section.As<HeroSectionPart>();
-
-            var title = (isLithuanian
-                ? part?.TitleLt
-                : part?.TitleEn)!;
-
-            if (title != sectionName)
+        var filteredSection = heroSections
+            .Select(section => new
             {
-                continue;
-            }
-
-            filteredSection = section;
-            break;
-        }
+                Section = section, 
+                Part = section.As<HeroSectionPart>(),
+            })
+            .FirstOrDefault(x => (isLithuanian ? x.Part?.TitleLt : x.Part?.TitleEn) == sectionName)
+            ?.Section;
 
         var heroSectionPart = filteredSection.As<HeroSectionPart>();
 

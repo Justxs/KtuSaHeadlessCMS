@@ -1,7 +1,6 @@
 ﻿@model SaUnitPartViewModel
 
-<!-- TODO Remove sa unit name edit -->
-<fieldset class="form-group" asp-validation-class-for="UnitName" style="margin-bottom: 20px;">
+<fieldset class="form-group" asp-validation-class-for="UnitName" style="display: none">
     <label asp-for="UnitName">
         Sa unit Name
     </label>
@@ -11,4 +10,34 @@
         class="form-control"
         value="@Model.UnitName"
     />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="DescriptionLt" style="margin-bottom: 20px;">
+    <label asp-for="DescriptionLt">
+        Description LT
+    </label>
+
+    <input asp-for="DescriptionLt"
+           class="form-control"
+           value="@Model.DescriptionLt"
+           required />
+
+    <span class="hint">
+        Write here what does this position
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="DescriptionEn" style="margin-bottom: 20px;">
+    <label asp-for="DescriptionEn">
+        Description EN
+    </label>
+
+    <input asp-for="DescriptionEn"
+           class="form-control"
+           value="@Model.DescriptionEn"
+           required />
+
+    <span class="hint">
+        Write here what does this position
+    </span>
 </fieldset>

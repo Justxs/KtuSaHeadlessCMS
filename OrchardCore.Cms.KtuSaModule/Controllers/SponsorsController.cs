@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using YesSql;
 using OrchardCore.Cms.KtuSaModule.Dtos;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.ContentManagement.Records;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 
@@ -10,23 +9,16 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class SponsorsController(IContentManager contentManager, ISession session) : ControllerBase
+public class SponsorsController(IRepository repository) : ControllerBase
 {
     private static readonly string SponsorContentType = ContentTypeNames.Sponsor.ToString();
 
     [HttpGet]
     public async Task<ActionResult> GetSponsors()
     {
-        var sponsors = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == SponsorContentType && index.Published)
-            .OrderByDescending(index => index.ModifiedUtc)
-        .ListAsync();
+        var sponsors = await repository.GetAllAsync(SponsorContentType);
 
-
-        foreach (var sponsor in sponsors)
-        {
-            await contentManager.LoadAsync(sponsor);
-        }
+        sponsors = sponsors.OrderByDescending(item => item.CreatedUtc);
 
         var sponsorDtos = sponsors.Select(item =>
         {

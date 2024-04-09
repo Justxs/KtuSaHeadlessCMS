@@ -42,8 +42,6 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
 
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(AddressPart), part => part
             .Attachable()
-            .WithField(nameof(AddressPart.SaUnitSelectField), field => field
-                .OfType(nameof(SaUnitSelectField)))
             .WithDescription("Address part: location for an object like the office of KTU SA")
         );
 
@@ -73,10 +71,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
                 nameof(MemberPartIndex.SaUnit))
         );
 
-        foreach (var saUnit in (SaUnit[])Enum.GetValues(typeof(SaUnit)))
-        {
-            await CreateMainContactAsync(saUnit);
-        }
+        await CreateMainContactAsync(SaUnit.CSA);
 
         return 1;
     }
@@ -92,6 +87,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
         contactPart.PhoneNumber = "+37012345678";
         contactPart.Email = "info@example.com";
         addressPart.Address = "Kaunas, Lithuania";
+        addressPart.SaUnit = "CSA";
 
         mainContactItem.Apply(nameof(ContactPart), contactPart);
         mainContactItem.Apply(nameof(AddressPart), addressPart);

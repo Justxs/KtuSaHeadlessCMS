@@ -4,35 +4,30 @@ using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.ContentManagement.Records;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Dtos;
+using OrchardCore.Cms.KtuSaModule.Dtos.Articles;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Services;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class ArticlesController(IContentManager contentManager, ISession session, IStringActionService stringActionService) : ControllerBase
+public class ArticlesController(IContentManager contentManager, IRepository repository, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string ArticleContentType = ContentTypeNames.Article.ToString();
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<ArticlePreviewDto>), 200)]
     public async Task<ActionResult> GetArticles(string language, [FromQuery] int? limit)
     {
-        var articles = await session
-            .Query<ContentItem, ContentItemIndex>(index => index.ContentType == ArticleContentType && index.Published)
-            .OrderByDescending(index => index.CreatedUtc)
-            .ListAsync();
+        var articles = await repository.GetAllAsync(ArticleContentType);
+
+        articles = articles.OrderByDescending(item => item.CreatedUtc);
 
         if (limit is not null)
         {
             articles = articles.Take((int)limit).ToList();
-        }
-
-        foreach (var article in articles)
-        {
-            await contentManager.LoadAsync(article);
         }
 
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
@@ -40,8 +35,10 @@ public class ArticlesController(IContentManager contentManager, ISession session
         var articleDtos = articles.Select(item =>
         {
             var part = item.As<CardPart>();
-            var dto = new ArticleDto
+            var dto = new ArticlePreviewDto
             {
+                Id = item.ContentItemId,
+
                 Title = (isLithuanian 
                     ? part?.TitleLt
                     : part?.TitleEn)!,
@@ -50,7 +47,6 @@ public class ArticlesController(IContentManager contentManager, ISession session
                     ? part?.PreviewLt 
                     : part?.PreviewEn)!,
 
-                Id = item.ContentItemId,
                 CreatedDate = (DateTime)item.CreatedUtc!,
                 ThumbnailImageId = part!.ImageUploadField.FileId,
             };
@@ -62,6 +58,9 @@ public class ArticlesController(IContentManager contentManager, ISession session
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(List<ArticleContentDto>), 200)]
+    [ProducesResponseType(typeof(string), 400)]
+    [ProducesResponseType(typeof(string), 404)]
     public async Task<ActionResult> GetArticleById(string language, string id)
     {
         var article = await contentManager.GetAsync(id);
@@ -83,7 +82,7 @@ public class ArticlesController(IContentManager contentManager, ISession session
         var part = article.As<CardPart>();
         var htmlPart = article.As<ArticlePart>();
 
-        var articleDto = new ArticleDto
+        var articleDto = new ArticleContentDto
         {
             Title = (isLithuanian
                 ? part?.TitleLt
