@@ -112,14 +112,12 @@ public class EventsController(
         await contentManager.LoadAsync(eventItem);
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
 
-        var saUnits = await repository.GetAllAsync(SaUnitContentType);
 
         var part = eventItem.As<EventPart>();
 
-        var saUnitIds = part.OrganisersField.ContentItemIds;
+        var saUnits = await contentManager.GetAsync(part.OrganisersField.ContentItemIds);
 
         var organisers = saUnits
-            .Where(unit => saUnitIds.Contains(unit.ContentItemId))
             .Select(unit => unit.As<SaUnitPart>().UnitName)
             .ToList();
 

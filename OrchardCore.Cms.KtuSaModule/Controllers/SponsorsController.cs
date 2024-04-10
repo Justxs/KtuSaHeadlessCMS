@@ -14,6 +14,7 @@ public class SponsorsController(IRepository repository) : ControllerBase
     private static readonly string SponsorContentType = ContentTypeNames.Sponsor.ToString();
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<SponsorDto>), 200)]
     public async Task<ActionResult> GetSponsors()
     {
         var sponsors = await repository.GetAllAsync(SponsorContentType);

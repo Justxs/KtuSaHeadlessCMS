@@ -11,7 +11,6 @@ namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
 public class AdminMenu(
     IStringLocalizer<AdminMenu> stringLocalizer, 
-    IAuthorizationService authorizationService, 
     IHttpContextAccessor httpContextAccessor) : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
@@ -28,10 +27,6 @@ public class AdminMenu(
         {
             return;
         }
-
-        var eventPermissions = await new EventPermissions().GetPermissionsAsync();
-        var hasEventPermission = await CheckIfUserHasPermissionAsync(eventPermissions, user);
-
 
         builder
             .Add(T["Need help content"],"1", content => content
@@ -66,44 +61,6 @@ public class AdminMenu(
                 .AddClass("icon-class-fa-circle-info")
                 .AddClass("icon-class-fas")
             )
-            .Add(T["Sponsors"], "1", content => content
-                .AddClass("icon-class-fa-sack-dollar")
-                .AddClass("icon-class-fas")
-                .Add(T["All sponsors"], duk => duk
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentTypeId = ContentTypeNames.Sponsor.ToString(),
-                    })
-                    .Permission(SponsorPermissions.ManageSponsors)
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas")
-                )
-                .Add(T["Add new sponsor"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Sponsor}/Create")
-                    .Permission(SponsorPermissions.ManageSponsors)
-                    .AddClass("icon-class-fa-circle-plus")
-                    .AddClass("icon-class-fas")
-                )
-            )
-            .Add(T["Articles"], "1", content => content
-                .AddClass("icon-class-fa-newspaper")
-                .AddClass("icon-class-fas")
-                .Add(T["All articles"], eventContentType => eventContentType
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentTypeId = ContentTypeNames.Article.ToString(),
-                    })
-                    .Permission(ArticlePermissions.ManageArticles)
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas"))
-                .Add(T["Create an article"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Article}/Create")
-                    .Permission(ArticlePermissions.ManageArticles)
-                    .AddClass("icon-class-fa-circle-plus")
-                    .AddClass("icon-class-fas"))
-            )
             .Add(T["Contacts"], "1", content => content
                 .AddClass("icon-class-fa-address-book")
                 .AddClass("icon-class-fas")
@@ -123,39 +80,5 @@ public class AdminMenu(
                     .AddClass("icon-class-fas"))
             );
 
-        if (hasEventPermission)
-        {
-            builder.Add(T["Events"], "1", content => content
-                .AddClass("icon-class-fa-calendar-days")
-                .AddClass("icon-class-fas")
-                .Add(T["All events"], eventContentType => eventContentType
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents", 
-                        contentTypeId = ContentTypeNames.Event.ToString(),
-                    })
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas"))
-                .Add(T["Create an event"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Event}/Create")
-                    .AddClass("icon-class-fa-calendar-plus")
-                    .AddClass("icon-class-fas"))
-            );
-        }
-    }
-
-    private async Task<bool> CheckIfUserHasPermissionAsync(IEnumerable<Permission> permissions, ClaimsPrincipal user)
-    {
-        var hasEventPermission = false;
-        foreach (var permission in permissions)
-        {
-            if (await authorizationService.AuthorizeAsync(user, permission))
-            {
-                hasEventPermission = true;
-                break;
-            }
-        }
-
-        return hasEventPermission;
     }
 }

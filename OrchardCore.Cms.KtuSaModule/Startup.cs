@@ -37,14 +37,24 @@ public class Startup : StartupBase
         AddContentParts(services);
         AddMigrations(services);
         AddPermissions(services);
+        AddNavigationProviders(services);
 
         services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
-        services.AddScoped<INavigationProvider, AdminMenu>();
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
     }
 
     public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
     {
+    }
+
+    private static void AddNavigationProviders(IServiceCollection services)
+    {
+        services.AddScoped<INavigationProvider, AdminMenu>();
+        services.AddScoped<INavigationProvider, SponsorsMenu>();
+        services.AddScoped<INavigationProvider, ArticlesMenu>();
+        services.AddScoped<INavigationProvider, EventsMenu>();
+        services.AddScoped<INavigationProvider, SaUnitsInfoMenu>();
+
     }
 
     private static void AddMigrations(IServiceCollection services)
@@ -85,6 +95,8 @@ public class Startup : StartupBase
         services.AddScoped<IPermissionProvider, SponsorPermissions>();
         services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
         services.AddScoped<IPermissionProvider, ContactPermissions>();
+        services.AddScoped<IPermissionProvider, SaUnitPermissions>();
+
     }
 
     private static void AddContentParts(IServiceCollection services)
