@@ -17,13 +17,14 @@
         Description LT
     </label>
 
-    <input asp-for="DescriptionLt"
+    <textarea asp-for="DescriptionLt"
            class="form-control"
-           value="@Model.DescriptionLt"
-           required />
+           required >
+        @Model.DescriptionLt
+    </textarea>
 
     <span class="hint">
-        Write here what does this position
+        Description about FSA in lithuanian
     </span>
 </fieldset>
 
@@ -32,9 +33,25 @@
         Description EN
     </label>
 
-    <input asp-for="DescriptionEn"
+    <textarea asp-for="DescriptionEn"
            class="form-control"
-           value="@Model.DescriptionEn"
+           required >
+        @Model.DescriptionEn
+    </textarea>
+
+    <span class="hint">
+        Description about FSA in english
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Address" style="margin-bottom: 20px;">
+    <label asp-for="Address">
+        Address of the FSA premises
+    </label>
+
+    <input asp-for="Address"
+           class="form-control"
+           value="@Model.Address"
            required />
 
     <span class="hint">

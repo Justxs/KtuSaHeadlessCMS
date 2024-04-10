@@ -45,7 +45,7 @@ public class SaUnitsInfoMenu(
                     continue;
                 }
 
-                content.Add(T[unitName.Replace("_", "")], "1", item => item
+                content.Add(T["Edit " + unitName.Replace("_", " ") + " info"], "1", item => item
                     .Action("Edit", "Admin", new
                     {
                         area = "OrchardCore.Contents", 

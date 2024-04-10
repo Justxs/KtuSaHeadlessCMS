@@ -28,9 +28,9 @@ public class MainContactsController(IRepository repository) : ControllerBase
 
         var contactDto = new MainContactDto
         {
-            Address = addressPart?.Address!,
-            Email = contactPart?.Email!,
-            PhoneNumber = contactPart?.PhoneNumber!,
+            Address = addressPart.Address,
+            Email = contactPart.Email,
+            PhoneNumber = contactPart.PhoneNumber,
         };
 
         return Ok(contactDto);

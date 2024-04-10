@@ -16,6 +16,7 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
                 model.UnitName = part.UnitName;
                 model.DescriptionLt = part.DescriptionLt;
                 model.DescriptionEn = part.DescriptionEn;
+                model.Address = part.Address;
             })
             .Location("Detail", "Content:10");
     }
@@ -28,6 +29,7 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
                 model.UnitName = part.UnitName;
                 model.DescriptionLt = part.DescriptionLt;
                 model.DescriptionEn = part.DescriptionEn;
+                model.Address = part.Address;
             });
     }
 
@@ -43,7 +45,7 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
         part.UnitName = model.UnitName;
         part.DescriptionLt = model.DescriptionLt;
         part.DescriptionEn = model.DescriptionEn;
-
+        part.Address = model.Address;
 
         return Edit(part, context);
     }

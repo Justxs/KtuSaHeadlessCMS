@@ -93,7 +93,6 @@ public class EventsController(
 
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(EventContentDto), 200)]
-    [ProducesResponseType(typeof(string), 400)]
     [ProducesResponseType(typeof(string), 404)]
     public async Task<ActionResult> GetEventById(string language, string id)
     {
@@ -104,14 +103,7 @@ public class EventsController(
             return NotFound("Article not found");
         }
 
-        if (!eventItem.Published)
-        {
-            return BadRequest("Event is not published yet.");
-        }
-
-        await contentManager.LoadAsync(eventItem);
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
-
 
         var part = eventItem.As<EventPart>();
 

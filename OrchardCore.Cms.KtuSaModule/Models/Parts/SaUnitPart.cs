@@ -12,4 +12,6 @@ public class SaUnitPart : ContentPart
     public string DescriptionLt { get; set; } = null!;
 
     public string DescriptionEn { get; set; } = null!;
+
+    public string Address { get; set; } = null!;
 }

@@ -1,11 +1,18 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 
 public class SaUnitPartViewModel
 {
+    [Required(ErrorMessage = "The unit name is required.")]
     public string UnitName { get; set; } = null!;
 
+    [Required(ErrorMessage = "The LT description is required.")]
     public string DescriptionLt { get; set; } = null!;
-    
+
+    [Required(ErrorMessage = "The EN description is required.")]
     public string DescriptionEn { get; set; } = null!;
 
+    [Required(ErrorMessage = "The address is required.")]
+    public string Address { get; set; } = null!;
 }

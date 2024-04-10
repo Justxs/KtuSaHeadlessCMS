@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
-using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
@@ -46,6 +45,7 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
         if (viewModel.UploadedFile is null && field.FileId is not null)
         {
             updater.ModelState[$"{Prefix}.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
+
             return await EditAsync(field, context);
         }
 

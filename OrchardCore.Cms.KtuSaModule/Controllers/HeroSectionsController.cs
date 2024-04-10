@@ -9,12 +9,13 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class HeroSectionsController(IContentManager contentManager, IRepository repository, IStringActionService stringActionService) : ControllerBase
+public class HeroSectionsController(IRepository repository, IStringActionService stringActionService) : ControllerBase
 {
     private static readonly string HeroSection = ContentTypeNames.HeroSection.ToString();
 
     [HttpGet("{sectionName}")]
     [ProducesResponseType(typeof(HeroSectionDto), 200)]
+    [ProducesResponseType(typeof(string), 404)]
     public async Task<ActionResult> GetMainContacts(string language, string sectionName)
     {
         var heroSections = await repository.GetAllAsync(HeroSection);
@@ -30,19 +31,24 @@ public class HeroSectionsController(IContentManager contentManager, IRepository 
             .FirstOrDefault(x => (isLithuanian ? x.Part?.TitleLt : x.Part?.TitleEn) == sectionName)
             ?.Section;
 
+        if (filteredSection == null)
+        {
+            return NotFound("Hero section not found");
+        }
+
         var heroSectionPart = filteredSection.As<HeroSectionPart>();
 
         var heroSectionDto = new HeroSectionDto
         {
-            Title = (isLithuanian
-                ? heroSectionPart?.TitleLt
-                : heroSectionPart?.TitleEn)!,
+            Title = isLithuanian
+                ? heroSectionPart.TitleLt
+                : heroSectionPart.TitleEn,
 
-            Description = (isLithuanian
-                ? heroSectionPart?.DescriptionLt.Text
-                : heroSectionPart?.DescriptionEn.Text)!,
+            Description = isLithuanian
+                ? heroSectionPart.DescriptionLt.Text
+                : heroSectionPart.DescriptionEn.Text,
 
-            ImgSrc = heroSectionPart?.ImageUploadField.FileId!,
+            ImgSrc = heroSectionPart.ImageUploadField.FileId,
         };
 
         return Ok(heroSectionDto);

@@ -35,6 +35,11 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
 
     private async Task CreateSaUnitsAsync(SaUnit saUnit)
     {
+        if (saUnit is SaUnit.BRK or SaUnit.CSA)
+        {
+            return;
+        }
+
         var saUnitItem = await contentManager.NewAsync(nameof(ContentTypeNames.SaUnit));
         saUnitItem.DisplayText = saUnit.ToString().Replace("_", " ");
 
