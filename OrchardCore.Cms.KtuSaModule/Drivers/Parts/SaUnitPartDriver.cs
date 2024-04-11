@@ -17,6 +17,9 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
                 model.DescriptionLt = part.DescriptionLt;
                 model.DescriptionEn = part.DescriptionEn;
                 model.Address = part.Address;
+                model.FacebookUrl = part.FacebookUrl;
+                model.LinkedInUrl = part.LinkedInUrl;
+                model.InstagramUrl = part.InstagramUrl;
             })
             .Location("Detail", "Content:10");
     }
@@ -30,6 +33,9 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
                 model.DescriptionLt = part.DescriptionLt;
                 model.DescriptionEn = part.DescriptionEn;
                 model.Address = part.Address;
+                model.FacebookUrl = part.FacebookUrl;
+                model.LinkedInUrl = part.LinkedInUrl;
+                model.InstagramUrl = part.InstagramUrl;
             });
     }
 
@@ -46,6 +52,9 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
         part.DescriptionLt = model.DescriptionLt;
         part.DescriptionEn = model.DescriptionEn;
         part.Address = model.Address;
+        part.FacebookUrl = model.FacebookUrl;
+        part.LinkedInUrl = model.LinkedInUrl;
+        part.InstagramUrl = model.InstagramUrl;
 
         return Edit(part, context);
     }

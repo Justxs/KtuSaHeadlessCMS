@@ -14,4 +14,11 @@ public class SaUnitPart : ContentPart
     public string DescriptionEn { get; set; } = null!;
 
     public string Address { get; set; } = null!;
+
+    public string LinkedInUrl { get; set; } = null!;
+
+    public string FacebookUrl { get; set; } = null!;
+
+    public string InstagramUrl { get; set; } = null!;
+
 }

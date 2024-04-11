@@ -50,7 +50,7 @@ public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionMa
         await CreateHeroSectionAsync("Kas yra KTU SA?", "What is KTU SA?");
         await CreateHeroSectionAsync("Veiklos ataskaitos", "Activity Reports");
         await CreateHeroSectionAsync("Stipendijos", "Scholarships");
-        await CreateHeroSectionAsync("Seniūnai", "Elders");
+        await CreateHeroSectionAsync("Fakultetinės studentų atstovybės", "Faculty's student association");
         await CreateHeroSectionAsync("Dažniausiai užduodami klausimai", "Frequently asked questions");
 
         return 1;

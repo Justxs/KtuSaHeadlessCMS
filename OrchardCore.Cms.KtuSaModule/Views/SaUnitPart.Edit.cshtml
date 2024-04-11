@@ -58,3 +58,51 @@
         Write here what does this position
     </span>
 </fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="LinkedInUrl" style="margin-bottom: 20px;">
+    <label asp-for="LinkedInUrl">
+        FSA LinkedIn page url
+    </label>
+
+    <input asp-for="LinkedInUrl"
+           class="form-control"
+           value="@Model.LinkedInUrl"
+           type="url"
+           required />
+
+    <span class="hint">
+        Example: https://www.linkedin.com/company/ktu-fsa-infosa/
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="FacebookUrl" style="margin-bottom: 20px;">
+    <label asp-for="FacebookUrl">
+        FSA Facebook page url
+    </label>
+
+    <input asp-for="FacebookUrl"
+           class="form-control"
+           value="@Model.FacebookUrl"
+           type="url"
+           required />
+
+    <span class="hint">
+        Example: https://www.facebook.com/InfoSA
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="InstagramUrl" style="margin-bottom: 20px;">
+    <label asp-for="InstagramUrl">
+        FSA Instagram page url
+    </label>
+
+    <input asp-for="InstagramUrl"
+           class="form-control"
+           value="@Model.InstagramUrl"
+           type="url"
+           required />
+
+    <span class="hint">
+        Example: https://www.instagram.com/ktu_infosa/
+    </span>
+</fieldset>

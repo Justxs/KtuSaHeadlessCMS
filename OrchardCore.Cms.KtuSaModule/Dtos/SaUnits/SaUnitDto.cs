@@ -11,4 +11,10 @@ public class SaUnitDto
     public required string PhoneNumber { get; set; }
 
     public required string Address { get; set; }
+
+    public required string LinkedInUrl { get; set; }
+
+    public required string FacebookUrl { get; set; }
+
+    public required string InstagramUrl { get; set; }
 }

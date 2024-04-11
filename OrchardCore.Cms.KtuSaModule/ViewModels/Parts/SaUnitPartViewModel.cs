@@ -15,4 +15,13 @@ public class SaUnitPartViewModel
 
     [Required(ErrorMessage = "The address is required.")]
     public string Address { get; set; } = null!;
+
+    [Required(ErrorMessage = "The LinkedIn Url is required.")]
+    public string LinkedInUrl { get; set; } = null!;
+
+    [Required(ErrorMessage = "The Facebook Url is required.")]
+    public string FacebookUrl { get; set; } = null!;
+
+    [Required(ErrorMessage = "The Instagram Url is required.")]
+    public string InstagramUrl { get; set; } = null!;
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OrchardCore.Cms.KtuSaModule.Dtos.Events;
 using OrchardCore.Cms.KtuSaModule.Dtos.SaUnits;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
@@ -28,7 +27,7 @@ public class SaUnitsController(IRepository repository, IStringActionService stri
             return NotFound("Sa unit not found");
         }
 
-        var saUnitPart = filterSaUnit.As<SaUnitPart>();
+        var saUnitPart = filterSaUnit.As<SaUnitPart>(); 
         var contactPart = filterSaUnit.As<ContactPart>();
 
         var isLithuanian = stringActionService.IsLanguageLithuanian(language);
@@ -41,6 +40,9 @@ public class SaUnitsController(IRepository repository, IStringActionService stri
                 ? saUnitPart.DescriptionLt
                 : saUnitPart.DescriptionEn,
 
+            LinkedInUrl = saUnitPart.LinkedInUrl,
+            FacebookUrl = saUnitPart.FacebookUrl,
+            InstagramUrl = saUnitPart.InstagramUrl,
             Address = saUnitPart.Address,
             Email = contactPart.Email,
             PhoneNumber = contactPart.PhoneNumber,
