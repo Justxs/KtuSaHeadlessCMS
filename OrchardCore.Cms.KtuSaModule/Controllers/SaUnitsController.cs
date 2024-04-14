@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Cms.KtuSaModule.Dtos.SaUnits;
+using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
@@ -9,7 +10,7 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class SaUnitsController(IRepository repository, IStringActionService stringActionService) : ControllerBase
+public class SaUnitsController(IRepository repository) : ControllerBase
 {
     private static readonly string SaUnitContentType = ContentTypeNames.SaUnit.ToString();
 
@@ -30,7 +31,7 @@ public class SaUnitsController(IRepository repository, IStringActionService stri
         var saUnitPart = filterSaUnit.As<SaUnitPart>(); 
         var contactPart = filterSaUnit.As<ContactPart>();
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian = language.IsLtLanguage();
 
         var saUnitDto = new SaUnitDto
         {

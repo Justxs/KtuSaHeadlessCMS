@@ -1,13 +1,12 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement.Metadata;
-using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class PositionMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) : DataMigration
+public class PositionMigrations(IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
     public async Task<int> CreateAsync()
     {

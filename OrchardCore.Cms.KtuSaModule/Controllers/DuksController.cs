@@ -4,12 +4,13 @@ using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Extensions;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class DuksController(IRepository repository, IStringActionService stringActionService) : ControllerBase
+public class DuksController(IRepository repository) : ControllerBase
 {
     private static readonly string DukContentType = ContentTypeNames.Duk.ToString();
 
@@ -29,7 +30,7 @@ public class DuksController(IRepository repository, IStringActionService stringA
         }
 
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian = language.IsLtLanguage();
 
         var dukDtos = duks.Select(item =>
         {

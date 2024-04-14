@@ -1,4 +1,4 @@
-﻿@model OrchardCore.Cms.KtuSaModule.ViewModels.CardPartViewModel
+﻿@model CardPartViewModel
 <!-- TODO add localization -->
 
 <fieldset class="form-group" asp-validation-class-for="TitleLt" style="margin-bottom: 20px;">
@@ -30,31 +30,5 @@
     
     <span class="hint">
         Title in English language
-    </span>
-</fieldset>
-
-<fieldset class="form-group" asp-validation-class-for="PreviewLt" style="margin-bottom: 20px;">
-    <label asp-for="PreviewLt">
-        Preview LT
-        <span asp-validation-for="PreviewLt"></span>
-    </label>
-
-    <textarea asp-for="PreviewLt" class="form-control" required>@Model.PreviewLt</textarea>
-
-    <span class="hint">
-        Preview text in Lithuanian language. This text will be shown in cards and will be the first paragraph in text
-    </span>
-</fieldset>
-
-<fieldset class="form-group" asp-validation-class-for="PreviewEn" style="margin-bottom: 20px;">
-    <label asp-for="PreviewEn">
-        Preview EN
-        <span asp-validation-for="PreviewEn"></span>
-    </label>
-
-    <textarea asp-for="PreviewEn" class="form-control" required>@Model.PreviewEn</textarea>
-
-    <span class="hint">
-        Preview text in English language. This text will be shown in cards and will be the first paragraph in text
     </span>
 </fieldset>

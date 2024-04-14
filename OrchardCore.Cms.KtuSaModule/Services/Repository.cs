@@ -5,7 +5,7 @@ using OrchardCore.ContentManagement.Records;
 
 namespace OrchardCore.Cms.KtuSaModule.Services;
 
-public class Repository(IContentManager contentManager, ISession session) : IRepository
+public class Repository(ISession session) : IRepository
 {
     public async Task<IEnumerable<ContentItem>> GetAllAsync(string contentTypeName)
     {

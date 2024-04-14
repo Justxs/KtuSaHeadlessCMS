@@ -4,12 +4,13 @@ using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Extensions;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class HeroSectionsController(IRepository repository, IStringActionService stringActionService) : ControllerBase
+public class HeroSectionsController(IRepository repository) : ControllerBase
 {
     private static readonly string HeroSection = ContentTypeNames.HeroSection.ToString();
 
@@ -20,7 +21,7 @@ public class HeroSectionsController(IRepository repository, IStringActionService
     {
         var heroSections = await repository.GetAllAsync(HeroSection);
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian = language.IsLtLanguage();
 
         var filteredSection = heroSections
             .Select(section => new

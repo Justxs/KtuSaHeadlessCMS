@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OrchardCore.Cms.KtuSaModule.ViewModels;
+namespace OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 
 public class CardPartViewModel
 {
@@ -9,10 +9,4 @@ public class CardPartViewModel
 
     [Required(ErrorMessage = "The English title is required.")]
     public string TitleEn { get; set; } = null!;
-
-    [Required(ErrorMessage = "The Lithuanian preview is required.")]
-    public string PreviewLt { get; set; } = null!;
-
-    [Required(ErrorMessage = "The English preview is required.")]
-    public string PreviewEn { get; set; } = null!;
 }

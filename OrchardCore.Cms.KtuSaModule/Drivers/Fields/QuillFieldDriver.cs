@@ -1,4 +1,5 @@
-﻿using OrchardCore.Cms.KtuSaModule.Interfaces;
+﻿using OrchardCore.Cms.KtuSaModule.Extensions;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
@@ -10,7 +11,7 @@ using OrchardCore.ResourceManagement;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 
-public class QuillFieldDriver(IResourceManager resourceManager, IStringActionService stringActionService) : ContentFieldDisplayDriver<QuillField>
+public class QuillFieldDriver(IResourceManager resourceManager) : ContentFieldDisplayDriver<QuillField>
 {
     public override IDisplayResult Display(QuillField field, BuildFieldDisplayContext context)
     {
@@ -48,7 +49,7 @@ public class QuillFieldDriver(IResourceManager resourceManager, IStringActionSer
 
         await updater.TryUpdateModelAsync(viewModel, Prefix);
 
-        field.HtmlBody = stringActionService.AddH1Id(viewModel.HtmlBody);
+        field.HtmlBody = viewModel.HtmlBody.AddH1Id();
 
         return await EditAsync(field, context);
     }

@@ -2,29 +2,28 @@
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 
-public class EventPartDriver(IFientaService fientaService) : ContentPartDisplayDriver<EventPart>
+public class EventPartDriver(IFientaService fientaService, IContentManager contentManager) : ContentPartDisplayDriver<EventPart>
 {
-    public override IDisplayResult Display(EventPart part, BuildPartDisplayContext context)
+    public override async Task<IDisplayResult> DisplayAsync(EventPart part, BuildPartDisplayContext context)
     {
-        return Initialize<EventPartViewModel>(
+        var organisersField = await contentManager.GetAsync(part.OrganisersField.ContentItemIds);
+
+        return Initialize<EventBadgeViewModel>(
             GetDisplayShapeType(context), model =>
             {
-                model.TitleLt = part.TitleLt;
-                model.TitleEn = part.TitleEn;
-                model.FbEventLink = part.FbEventLink;
-                model.FientaTicketLinkLt = part.FientaTicketLinkLt;
-                model.FientaTicketLinkEn = part.FientaTicketLinkEn;
-                model.Address = part.Address;
-                model.StartDate = part.StartDate;
-                model.EndDate = part.EndDate;
+                if (organisersField != null)
+                {
+                    model.SaUnitsDisplayNames = organisersField.Select(organiser => organiser.DisplayText).ToList();
+                }
             })
-            .Location("Detail", "Content:2");
+            .Location("SummaryAdmin", "Tags:11");
     }
 
     public override async Task<IDisplayResult> EditAsync(EventPart part, BuildPartEditorContext context)

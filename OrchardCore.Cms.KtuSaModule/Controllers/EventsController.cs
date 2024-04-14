@@ -4,6 +4,7 @@ using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Extensions;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -11,7 +12,6 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class EventsController(
     IContentManager contentManager, 
-    IStringActionService stringActionService, 
     IRepository repository) : ControllerBase
 {
     // TODO add indexes for event type
@@ -29,7 +29,7 @@ public class EventsController(
             .OrderByDescending(item => item.As<EventPart>().StartDate)
             .ToList();
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian =language.IsLtLanguage();
 
         var eventDtos = filteredSection.Select(item =>
         {
@@ -67,7 +67,7 @@ public class EventsController(
             .OrderByDescending(item => item.As<EventPart>().StartDate)
             .ToList();
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian = language.IsLtLanguage();
 
         var eventDtos = filteredSection.Select(item =>
         {
@@ -103,7 +103,7 @@ public class EventsController(
             return NotFound("Article not found");
         }
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian = language.IsLtLanguage();
 
         var part = eventItem.As<EventPart>();
 

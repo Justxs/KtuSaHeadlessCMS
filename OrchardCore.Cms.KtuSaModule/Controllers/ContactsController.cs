@@ -6,6 +6,7 @@ using OrchardCore.ContentManagement;
 using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Extensions;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -13,7 +14,6 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class ContactsController(
     ISession session, 
-    IStringActionService stringActionService,
     IRepository repository) : ControllerBase
 {
     [HttpGet]
@@ -24,7 +24,7 @@ public class ContactsController(
             .Query<ContentItem, MemberPartIndex>(index => index.SaUnit == saUnit)
             .ListAsync();
 
-        var isLithuanian = stringActionService.IsLanguageLithuanian(language);
+        var isLithuanian = language.IsLtLanguage();
 
         var positions = await repository.GetAllAsync(nameof(ContentTypeNames.Position));
 

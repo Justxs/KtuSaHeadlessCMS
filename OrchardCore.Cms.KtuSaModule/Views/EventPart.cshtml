@@ -1,0 +1,11 @@
+﻿@model EventBadgeViewModel
+
+@if (Model.SaUnitsDisplayNames.Any())
+{
+    @foreach (var organiser in Model.SaUnitsDisplayNames)
+    {
+        <span class="badge ta-badge font-weight-normal" data-bs-toggle="tooltip" data-bs-original-title="Organiser">
+            @organiser
+        </span>
+    }
+}

@@ -6,8 +6,6 @@ public class ArticleContentDto
 
     public required string Title { get; set; }
 
-    public required string Preview { get; set; }
-
     public required string HtmlBody { get; set; }
 
     public string? ReadingTime { get; set; }

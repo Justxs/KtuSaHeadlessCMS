@@ -29,7 +29,6 @@ public class Startup : StartupBase
     public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
-        services.AddScoped<IStringActionService, StringActionService>();
         services.AddHttpClient<IFientaService, FientaService>();
         services.AddScoped<IRepository, Repository>();
 
@@ -49,7 +48,7 @@ public class Startup : StartupBase
 
     private static void AddNavigationProviders(IServiceCollection services)
     {
-        services.AddScoped<INavigationProvider, AdminMenu>();
+        services.AddScoped<INavigationProvider, Navigation.AdminMenu>();
         services.AddScoped<INavigationProvider, SponsorsMenu>();
         services.AddScoped<INavigationProvider, ArticlesMenu>();
         services.AddScoped<INavigationProvider, EventsMenu>();

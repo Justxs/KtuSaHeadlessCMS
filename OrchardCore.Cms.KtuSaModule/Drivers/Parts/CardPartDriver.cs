@@ -1,6 +1,5 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
-using OrchardCore.Cms.KtuSaModule.ViewModels;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.DisplayManagement.ModelBinding;
@@ -15,7 +14,6 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
         return Initialize<CardPartViewModel>(
                 GetDisplayShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))
-            .Location("Detail", "Content:1")
             .Location("Summary", "Content:1");
     }
 
@@ -40,8 +38,6 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
 
         part.TitleLt = viewModel.TitleLt;
         part.TitleEn = viewModel.TitleEn;
-        part.PreviewLt = viewModel.PreviewLt;
-        part.PreviewEn = viewModel.PreviewEn;
 
         return await EditAsync(part, context);
     }
@@ -50,7 +46,5 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
     {
         viewModel.TitleLt = part.TitleLt;
         viewModel.TitleEn = part.TitleEn;
-        viewModel.PreviewLt = part.PreviewLt;
-        viewModel.PreviewEn = part.PreviewEn;
     }
 }
