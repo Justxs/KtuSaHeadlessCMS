@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
 using OrchardCore.Security.Permissions;
 using System.Security.Claims;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
@@ -36,19 +36,19 @@ public class EventsMenu(
 
         if (hasEventPermission)
         {
-            builder.Add(T["Events"], "1", content => content
+            builder.Add(T["Events"], content => content
                 .AddClass("icon-class-fa-calendar-days")
                 .AddClass("icon-class-fas")
                 .Add(T["All events"], eventContentType => eventContentType
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
-                        contentTypeId = ContentTypeNames.Event.ToString(),
+                        contentTypeId = Event,
                     })
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"))
                 .Add(T["Create an event"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Event}/Create")
+                    .Url($"/Admin/Contents/ContentTypes/{Event}/Create")
                     .AddClass("icon-class-fa-calendar-plus")
                     .AddClass("icon-class-fas"))
             );

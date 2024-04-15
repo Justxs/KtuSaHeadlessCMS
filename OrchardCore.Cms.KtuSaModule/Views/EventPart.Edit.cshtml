@@ -115,10 +115,9 @@
 
             <input 
                 asp-for="StartDate"
-                type="datetime-local"
-                class="form-control"
-                min="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"
-                value="@Model.StartDate.ToString("yyyy-MM-dd hh:mm")"
+                type="text"
+                class="form-control datetimepicker"
+                value="@Model.StartDate.ToString("yyyy-MM-dd HH:mm")"
                 required
             />
         </div>
@@ -133,9 +132,8 @@
 
             <input 
                 asp-for="EndDate"
-                type="datetime-local"
-                class="form-control"
-                min="@DateTime.Today.ToString("yyyy-MM-dd hh:mm")"
+                type="text"
+                class="form-control datetimepicker"
                 value="@Model.EndDate.ToString("yyyy-MM-dd hh:mm")"
                 required
             />
@@ -145,6 +143,14 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+        flatpickr(".datetimepicker", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true,
+            minDate: "today"
+        });
+
         var dropdown = document.getElementById('EventPart_FientaTicketLinkLt');
         var button = document.getElementById('importDataButton');
 

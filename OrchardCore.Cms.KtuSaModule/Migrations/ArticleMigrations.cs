@@ -1,10 +1,9 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -33,7 +32,7 @@ public class ArticleMigrations(IContentDefinitionManager contentDefinitionManage
             .WithDescription("Articles content part")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Article.ToString(), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Article, type => type
             .Draftable()
             .Creatable()
             .Listable()

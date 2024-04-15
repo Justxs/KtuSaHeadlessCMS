@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Cms.KtuSaModule.Dtos;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Extensions;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -12,13 +12,11 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class DuksController(IRepository repository) : ControllerBase
 {
-    private static readonly string DukContentType = ContentTypeNames.Duk.ToString();
-
     [HttpGet]
     [ProducesResponseType(typeof(List<DukDto>), 200)]
     public async Task<ActionResult> GetDuks(string language, [FromQuery] int? limit)
     {
-        var duks = await repository.GetAllAsync(DukContentType);
+        var duks = await repository.GetAllAsync(Duk);
 
         duks = duks.OrderByDescending(item => item.ModifiedUtc);
 

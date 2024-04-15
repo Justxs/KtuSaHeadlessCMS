@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
@@ -33,14 +33,14 @@ public class SponsorsMenu(
                 .Action("List", "Admin", new
                 {
                     area = "OrchardCore.Contents",
-                    contentTypeId = ContentTypeNames.Sponsor.ToString(),
+                    contentTypeId = Sponsor,
                 })
                 .Permission(SponsorPermissions.ManageSponsors)
                 .AddClass("icon-class-fa-list")
                 .AddClass("icon-class-fas")
             )
             .Add(T["Add new sponsor"], createAction => createAction
-                .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Sponsor}/Create")
+                .Url($"/Admin/Contents/ContentTypes/{Sponsor}/Create")
                 .Permission(SponsorPermissions.ManageSponsors)
                 .AddClass("icon-class-fa-circle-plus")
                 .AddClass("icon-class-fas")

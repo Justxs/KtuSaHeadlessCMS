@@ -1,34 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.Cms.KtuSaModule.Dtos;
-using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
-using YesSql;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Extensions;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class ContactsController(
-    ISession session, 
-    IRepository repository) : ControllerBase
+public class ContactsController(IRepository repository) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(List<ContactDto>), 200)]
     public async Task<ActionResult> GetContactsBySaUnit(string language, [FromQuery] SaUnit saUnit)
     {
-        var contacts = await session
-            .Query<ContentItem, MemberPartIndex>(index => index.SaUnit == saUnit)
-            .ListAsync();
+        var contacts = await repository.GetAllAsync(Contact);
 
         var isLithuanian = language.IsLtLanguage();
 
-        var positions = await repository.GetAllAsync(nameof(ContentTypeNames.Position));
+        var positions = await repository.GetAllAsync(Position);
+        var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
+        var saUnitId = saUnits.First(unit => unit.As<SaUnitPart>().UnitName == saUnit.ToString()).ContentItemId;
 
-        var contactDtos = contacts.Select(item =>
+
+        var contactDtos = contacts
+            .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitId))
+            .Select(item =>
         {
             var contactPart = item.As<ContactPart>();
             var memberPart = item.As<MemberPart>();

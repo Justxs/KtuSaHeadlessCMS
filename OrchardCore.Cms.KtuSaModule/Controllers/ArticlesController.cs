@@ -5,6 +5,7 @@ using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Extensions;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -12,13 +13,11 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class ArticlesController(IContentManager contentManager, IRepository repository) : ControllerBase
 {
-    private static readonly string ArticleContentType = ContentTypeNames.Article.ToString();
-
     [HttpGet]
     [ProducesResponseType(typeof(List<ArticlePreviewDto>), 200)]
     public async Task<ActionResult> GetArticles(string language, [FromQuery] int? limit)
     {
-        var articles = await repository.GetAllAsync(ArticleContentType);
+        var articles = await repository.GetAllAsync(Article);
 
         articles = articles.OrderByDescending(item => item.CreatedUtc);
 

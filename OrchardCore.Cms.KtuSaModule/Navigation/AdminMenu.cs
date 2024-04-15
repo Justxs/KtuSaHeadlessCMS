@@ -3,6 +3,7 @@ using Microsoft.Extensions.Localization;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
@@ -26,37 +27,25 @@ public class AdminMenu(
         }
 
         builder
-            .Add(T["Need help content"],"1", content => content
-                .AddClass("icon-class-fa-handshake-angle")
+            .Add(T["FAQ"], "2", dukContentType => dukContentType
+                .AddClass("icon-class-fa-circle-question")
                 .AddClass("icon-class-fas")
-                .Add(T["FAQ"], dukContentType => dukContentType
-                    .AddClass("icon-class-fa-circle-question")
+                .Add(T["All FAQs"], duk => duk
+                    .Action("List", "Admin", new
+                    {
+                        area = "OrchardCore.Contents",
+                        contentTypeId = Duk,
+                    })
+                    .Permission(DukPermissions.ManageDuks)
+                    .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas")
-                    .Add(T["All FAQs"], duk => duk
-                        .Action("List", "Admin", new
-                        {
-                            area = "OrchardCore.Contents",
-                            contentTypeId = ContentTypeNames.Duk.ToString(),
-                        })
-                        .Permission(DukPermissions.ManageDuks)
-                        .AddClass("icon-class-fa-list")
-                        .AddClass("icon-class-fas")
-                    )
-                    .Add(T["Create new FAQ"], createAction => createAction
-                        .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Duk}/Create")
-                        .Permission(DukPermissions.ManageDuks)
-                        .AddClass("icon-class-fa-circle-plus")
-                        .AddClass("icon-class-fas")
-                    )
                 )
-            )
-            .Add(T["For students Content"], "1", content => content
-                .AddClass("icon-class-fa-graduation-cap")
-                .AddClass("icon-class-fas")
-            )
-            .Add(T["About us Content"], "1", content => content
-                .AddClass("icon-class-fa-circle-info")
-                .AddClass("icon-class-fas")
+                .Add(T["Create new FAQ"], createAction => createAction
+                    .Url($"/Admin/Contents/ContentTypes/{Duk}/Create")
+                    .Permission(DukPermissions.ManageDuks)
+                    .AddClass("icon-class-fa-circle-plus")
+                    .AddClass("icon-class-fas")
+                )
             )
             .Add(T["Contacts"], "1", content => content
                 .AddClass("icon-class-fa-address-book")
@@ -65,13 +54,13 @@ public class AdminMenu(
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
-                        contentTypeId = ContentTypeNames.Contact.ToString(),
+                        contentTypeId = Contact,
                     })
                     .Permission(ContactPermissions.ManageCsaContacts)
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"))
                 .Add(T["Create a new contact"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Contact}/Create")
+                    .Url($"/Admin/Contents/ContentTypes/{Contact}/Create")
                     .Permission(ContactPermissions.ManageCsaContacts)
                     .AddClass("icon-class-fa-circle-plus")
                     .AddClass("icon-class-fas"))

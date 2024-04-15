@@ -1,8 +1,8 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -16,7 +16,7 @@ public class DukMigrations(IContentDefinitionManager contentDefinitionManager) :
                 .WithDescription("Frequently asked questions content part")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Duk.ToString(), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Duk, type => type
             .Draftable()
             .Creatable()
             .Listable()

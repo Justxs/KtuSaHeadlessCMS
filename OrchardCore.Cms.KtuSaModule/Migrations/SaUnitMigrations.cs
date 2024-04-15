@@ -1,10 +1,11 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
+﻿using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -19,7 +20,7 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
                 .WithDisplayName("Upload FSA photo"))
             .WithDescription("Sa unit content part"));
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(nameof(ContentTypeNames.SaUnit), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeConstants.SaUnit, type => type
             .Listable()
             .WithPart(nameof(SaUnitPart))
             .WithPart(nameof(ContactPart))
@@ -40,7 +41,7 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
             return;
         }
 
-        var saUnitItem = await contentManager.NewAsync(nameof(ContentTypeNames.SaUnit));
+        var saUnitItem = await contentManager.NewAsync(ContentTypeConstants.SaUnit);
         saUnitItem.DisplayText = saUnit.ToString().Replace("_", " ");
 
         var saUnitPart = saUnitItem.As<SaUnitPart>();

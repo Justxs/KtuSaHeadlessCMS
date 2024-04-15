@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Cms.KtuSaModule.Dtos;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -11,13 +11,11 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/[controller]")]
 public class SponsorsController(IRepository repository) : ControllerBase
 {
-    private static readonly string SponsorContentType = ContentTypeNames.Sponsor.ToString();
-
     [HttpGet]
     [ProducesResponseType(typeof(List<SponsorDto>), 200)]
     public async Task<ActionResult> GetSponsors()
     {
-        var sponsors = await repository.GetAllAsync(SponsorContentType);
+        var sponsors = await repository.GetAllAsync(Sponsor);
 
         sponsors = sponsors.OrderByDescending(item => item.CreatedUtc);
 

@@ -4,6 +4,7 @@ using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -11,8 +12,6 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/[controller]")]
 public class MainContactsController(IRepository repository) : ControllerBase
 {
-    private static readonly string MainContact = ContentTypeNames.MainContact.ToString();
-
     [HttpGet("{saUnit}")]
     [ProducesResponseType(typeof(MainContactDto), 200)]
     public async Task<ActionResult> GetMainContacts(SaUnit saUnit)

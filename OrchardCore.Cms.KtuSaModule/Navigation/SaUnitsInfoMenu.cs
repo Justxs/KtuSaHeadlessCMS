@@ -2,10 +2,11 @@
 using Microsoft.Extensions.Localization;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Navigation;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Cms.KtuSaModule.Constants;
+using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
@@ -30,7 +31,7 @@ public class SaUnitsInfoMenu(
             return;
         }
 
-        var saUnits = await repository.GetAllAsync(nameof(ContentTypeNames.SaUnit));
+        var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
 
         builder.Add(T["General Info"], "1", content =>
         {

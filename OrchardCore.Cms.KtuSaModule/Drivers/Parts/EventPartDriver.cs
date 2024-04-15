@@ -6,10 +6,14 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.DisplayManagement.Views;
+using OrchardCore.ResourceManagement;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 
-public class EventPartDriver(IFientaService fientaService, IContentManager contentManager) : ContentPartDisplayDriver<EventPart>
+public class EventPartDriver(
+    IFientaService fientaService, 
+    IContentManager contentManager, 
+    IResourceManager resourceManager) : ContentPartDisplayDriver<EventPart>
 {
     public override async Task<IDisplayResult> DisplayAsync(EventPart part, BuildPartDisplayContext context)
     {
@@ -28,6 +32,12 @@ public class EventPartDriver(IFientaService fientaService, IContentManager conte
 
     public override async Task<IDisplayResult> EditAsync(EventPart part, BuildPartEditorContext context)
     {
+        var settings = resourceManager.RegisterResource("script", "FlatpickrJs");
+        settings.AtHead();
+
+        settings = resourceManager.RegisterResource("stylesheet", "FlatpickrCss");
+        settings.AtHead();
+
         var eventsLt = await fientaService.FetchKtuSaEventsAsync("lt");
         var eventsEn = await fientaService.FetchKtuSaEventsAsync("en");
 

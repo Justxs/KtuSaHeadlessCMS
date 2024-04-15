@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Cms.KtuSaModule.Dtos;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Extensions;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -12,8 +12,6 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 [Route("api/{language}/[controller]")]
 public class HeroSectionsController(IRepository repository) : ControllerBase
 {
-    private static readonly string HeroSection = ContentTypeNames.HeroSection.ToString();
-
     [HttpGet("{sectionName}")]
     [ProducesResponseType(typeof(HeroSectionDto), 200)]
     [ProducesResponseType(typeof(string), 404)]

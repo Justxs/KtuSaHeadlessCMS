@@ -1,8 +1,8 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.ContentManagement.Metadata;
+﻿using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -15,7 +15,7 @@ public class PositionMigrations(IContentDefinitionManager contentDefinitionManag
             .WithDescription("Position info: name and description")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Position.ToString(), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Position, type => type
             .Creatable()
             .Listable()
             .WithPart(nameof(PositionPart))

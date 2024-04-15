@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 using OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 using OrchardCore.Cms.KtuSaModule.Handlers;
-using OrchardCore.Cms.KtuSaModule.Indexes;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Migrations;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
@@ -20,7 +19,6 @@ using OrchardCore.Modules;
 using OrchardCore.Navigation;
 using OrchardCore.ResourceManagement;
 using OrchardCore.Security.Permissions;
-using YesSql.Indexes;
 
 namespace OrchardCore.Cms.KtuSaModule;
 
@@ -38,7 +36,6 @@ public class Startup : StartupBase
         AddPermissions(services);
         AddNavigationProviders(services);
 
-        services.AddSingleton<IIndexProvider, MemberPartIndexProvider>();
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
     }
 
@@ -76,10 +73,6 @@ public class Startup : StartupBase
             .AddContentField<ImageUploadField>()
             .UseDisplayDriver<ImageUploadFieldDriver>()
             .AddHandler<ImageUploadFieldHandler>();
-
-        services
-            .AddContentField<SaUnitSelectField>()
-            .UseDisplayDriver<SaUnitSelectFieldDriver>();
 
         services
             .AddContentField<QuillField>()

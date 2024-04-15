@@ -10,13 +10,21 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
     static ResourceManagementOptionsConfiguration()
     {
         Manifest.DefineStyle("QuillCss")
-            .SetUrl("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css")
-            .SetCdn("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css");
+            .SetUrl("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.snow.css")
+            .SetCdn("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.snow.css");
 
         Manifest.DefineScript("QuillJs")
-            .SetUrl("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.js")
-            .SetCdn("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.js")
+            .SetUrl("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.js")
+            .SetCdn("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.js")
             .SetDependencies("jQuery");
+
+        Manifest.DefineStyle("FlatpickrCss")
+            .SetUrl("https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
+            .SetCdn("https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css");
+
+        Manifest.DefineScript("FlatpickrJs")
+            .SetUrl("https://cdn.jsdelivr.net/npm/flatpickr")
+            .SetCdn("https://cdn.jsdelivr.net/npm/flatpickr");
     }
 
     public void Configure(ResourceManagementOptions options)

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
@@ -27,20 +27,20 @@ public class ArticlesMenu(
             return;
         }
 
-        builder.Add(T["Articles"], "1", content => content
+        builder.Add(T["Articles"], content => content
             .AddClass("icon-class-fa-newspaper")
             .AddClass("icon-class-fas")
             .Add(T["All articles"], eventContentType => eventContentType
                 .Action("List", "Admin", new
                 {
                     area = "OrchardCore.Contents",
-                    contentTypeId = ContentTypeNames.Article.ToString(),
+                    contentTypeId = Article,
                 })
                 .Permission(ArticlePermissions.ManageArticles)
                 .AddClass("icon-class-fa-list")
                 .AddClass("icon-class-fas"))
             .Add(T["Create an article"], createAction => createAction
-                .Url($"/Admin/Contents/ContentTypes/{ContentTypeNames.Article}/Create")
+                .Url($"/Admin/Contents/ContentTypes/{Article}/Create")
                 .Permission(ArticlePermissions.ManageArticles)
                 .AddClass("icon-class-fa-circle-plus")
                 .AddClass("icon-class-fas"))

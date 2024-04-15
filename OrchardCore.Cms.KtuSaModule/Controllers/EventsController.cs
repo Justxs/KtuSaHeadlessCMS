@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.Cms.KtuSaModule.Dtos.Events;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.ContentManagement;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Extensions;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
@@ -14,15 +16,11 @@ public class EventsController(
     IContentManager contentManager, 
     IRepository repository) : ControllerBase
 {
-    // TODO add indexes for event type
-    private static readonly string EventContentType = ContentTypeNames.Event.ToString();
-    private static readonly string SaUnitContentType = ContentTypeNames.SaUnit.ToString();
-
     [HttpGet]
     [ProducesResponseType(typeof(List<EventPreviewDto>), 200)]
     public async Task<ActionResult> GetEvents(string language, [FromQuery] bool fetchPassed)
     {
-        var events = await repository.GetAllAsync(EventContentType);
+        var events = await repository.GetAllAsync(Event);
 
         var filteredSection = events
             .Where(eventItem => fetchPassed || eventItem.As<EventPart>().StartDate > DateTime.Now)
@@ -57,8 +55,8 @@ public class EventsController(
     [ProducesResponseType(typeof(List<EventPreviewDto>), 200)]
     public async Task<ActionResult> GetEventsByFsa(string language, SaUnit saUnit, [FromQuery] bool fetchPassed)
     {
-        var events = await repository.GetAllAsync(EventContentType);
-        var saUnits = await repository.GetAllAsync(SaUnitContentType);
+        var events = await repository.GetAllAsync(Event);
+        var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
         var filterSaUnit = saUnits.FirstOrDefault(item => item.As<SaUnitPart>().UnitName == saUnit.ToString());
 
         var filteredSection = events

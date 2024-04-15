@@ -1,11 +1,11 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Settings;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -36,7 +36,7 @@ public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionMa
                 .WithDescription("Hero section content part")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.HeroSection.ToString(), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(HeroSection, type => type
             .Listable()
             .WithPart(nameof(HeroSectionPart))
             .WithDescription("Hero sections for all pages")
@@ -58,7 +58,7 @@ public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionMa
 
     public async Task CreateHeroSectionAsync(string titleLt, string titleEn)
     {
-        var contactPageHero = await contentManager.NewAsync(ContentTypeNames.HeroSection.ToString());
+        var contactPageHero = await contentManager.NewAsync(HeroSection);
         contactPageHero.DisplayText = $"{titleLt} / {titleEn}";
 
         var heroSectionPart = contactPageHero.As<HeroSectionPart>();

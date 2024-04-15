@@ -1,5 +1,4 @@
-﻿using OrchardCore.Cms.KtuSaModule.Indexes;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
+﻿using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentFields.Fields;
@@ -8,7 +7,8 @@ using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
-using YesSql.Sql;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
+using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -26,8 +26,15 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .WithField(nameof(MemberPart.ImageUploadField), field => field
                 .OfType(nameof(ImageUploadField))
                 .WithDisplayName("Upload Member photo"))
-            .WithField(nameof(MemberPart.SaUnitSelectField), field => field
-                .OfType(nameof(SaUnitSelectField)))
+            .WithField(nameof(MemberPart.SaUnit), field => field
+                .OfType(nameof(ContentPickerField))
+                .WithDisplayName("Select SA unit")
+                .WithSettings(new ContentPickerFieldSettings
+                {
+                    Multiple = false,
+                    Required = true,
+                    DisplayedContentTypes = [ContentTypeConstants.SaUnit],
+                }))
             .WithField(nameof(MemberPart.Position), field => field
                 .OfType(nameof(ContentPickerField))
                 .WithDisplayName("Select position")
@@ -35,7 +42,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
                 {
                     Multiple = false,
                     Required = true,
-                    DisplayedContentTypes = [nameof(ContentTypeNames.Position)],
+                    DisplayedContentTypes = [Position],
                 }))
             .WithDescription("Member info: Name, Responsibilities, Sa Unit, photo")
         );
@@ -45,7 +52,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .WithDescription("Address part: location for an object like the office of KTU SA")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.Contact.ToString(), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Contact, type => type
             .Creatable()
             .Listable()
             .WithPart(nameof(MemberPart))
@@ -53,22 +60,11 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             .WithDescription("All info about member")
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(ContentTypeNames.MainContact.ToString(), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(MainContact, type => type
             .Listable()
             .WithPart(nameof(ContactPart))
             .WithPart(nameof(AddressPart))
             .WithDescription("Main Contacts of KTU SA")
-        );
-
-        await SchemaBuilder.CreateMapIndexTableAsync<MemberPartIndex>(table => table
-            .Column<string>(nameof(MemberPartIndex.ContentItemId), column => column.WithLength(26))
-            .Column<string>(nameof(MemberPartIndex.SaUnit), column => column.WithLength(10))
-        );
-
-        await SchemaBuilder.AlterTableAsync(nameof(MemberPartIndex), table => table
-            .CreateIndex(
-                $"IDX_{nameof(MemberPartIndex)}_{nameof(MemberPartIndex.SaUnit)}",
-                nameof(MemberPartIndex.SaUnit))
         );
 
         await CreateMainContactAsync(SaUnit.CSA);
@@ -78,7 +74,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
 
     private async Task CreateMainContactAsync(SaUnit saUnit)
     {
-        var mainContactItem = await contentManager.NewAsync(ContentTypeNames.MainContact.ToString());
+        var mainContactItem = await contentManager.NewAsync(MainContact);
         mainContactItem.DisplayText = saUnit.ToString();
 
         var contactPart = mainContactItem.As<ContactPart>();

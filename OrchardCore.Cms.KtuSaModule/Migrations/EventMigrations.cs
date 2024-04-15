@@ -1,12 +1,11 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
-using OrchardCore.Cms.KtuSaModule.Models;
-using OrchardCore.ContentManagement.Metadata;
+﻿using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Settings;
+using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -33,12 +32,12 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
                 .WithSettings(new ContentPickerFieldSettings
                 {
                     Multiple = true,
-                    DisplayedContentTypes = [nameof(ContentTypeNames.SaUnit)],
+                    DisplayedContentTypes = [SaUnit],
                 })
             .WithDescription("Event part info"))
         );
 
-        await contentDefinitionManager.AlterTypeDefinitionAsync(nameof(ContentTypeNames.Event), type => type
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Event, type => type
             .Draftable()
             .Creatable()
             .Listable()
