@@ -30,35 +30,35 @@ public class ContactsController(IRepository repository) : ControllerBase
         var contactDtos = contacts
             .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitId))
             .Select(item =>
-        {
-            var contactPart = item.As<ContactPart>();
-            var memberPart = item.As<MemberPart>();
-
-            var positionPart = positions
-                .FirstOrDefault(position => memberPart.Position.ContentItemIds
-                    .Contains(position.ContentItemId))
-                .As<PositionPart>();
-
-            var dto = new ContactDto
             {
-                Id = item.ContentItemId,
-                PhoneNumber = contactPart?.PhoneNumber!,
-                Email = contactPart?.Email!,
+                var contactPart = item.As<ContactPart>();
+                var memberPart = item.As<MemberPart>();
 
-                Name = memberPart?.Name!,
-                ImageSrc = memberPart?.ImageUploadField.FileId!,
+                var positionPart = positions
+                    .FirstOrDefault(position => memberPart.Position.ContentItemIds
+                        .Contains(position.ContentItemId))
+                    .As<PositionPart>();
 
-                Position = (isLithuanian
-                    ? positionPart?.NameLt
-                    : positionPart?.NameEn)!,
+                var dto = new ContactDto
+                {
+                    Id = item.ContentItemId,
+                    PhoneNumber = contactPart.PhoneNumber,
+                    Email = contactPart.Email,
 
-                Responsibilities = (isLithuanian
-                    ? positionPart?.DescriptionLt
-                    : positionPart?.DescriptionEn)!,
-            };
+                    Name = memberPart.Name,
+                    ImageSrc = memberPart.ImageUploadField.FileId,
 
-            return dto;
-        }).ToList();
+                    Position = isLithuanian
+                        ? positionPart.NameLt
+                        : positionPart.NameEn,
+
+                    Responsibilities = isLithuanian
+                        ? positionPart.DescriptionLt
+                        : positionPart.DescriptionEn,
+                };
+
+                return dto;
+            }).ToList();
 
         return Ok(contactDtos);
     }

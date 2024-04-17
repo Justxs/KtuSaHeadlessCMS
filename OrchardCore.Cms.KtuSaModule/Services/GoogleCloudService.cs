@@ -58,6 +58,30 @@ public class GoogleCloudService : IGoogleCloudService
         return storageObject.MediaLink;
     }
 
+    public async Task<string> UploadPdfAsync(PdfUploadFieldViewModel viewModel)
+    {
+        if (viewModel.FileId is not null)
+        {
+            await RemoveFileAsync(viewModel.FileId);
+        }
+
+        var fileName = $"{Guid.NewGuid()}-{viewModel.UploadedFile.FileName}";
+        var contentType = viewModel.UploadedFile.ContentType;
+
+        await using var stream = viewModel.UploadedFile.OpenReadStream();
+
+        var storageObject = await _storageClient.UploadObjectAsync(
+            bucket: _bucketName,
+            objectName: fileName,
+            contentType: contentType,
+            source: stream
+        );
+
+        var lastIndex = storageObject.Id.LastIndexOf('/');
+
+        return "https://storage.googleapis.com/" + storageObject.Id[..lastIndex];
+    }
+
     public async Task RemoveFileAsync(string fileName)
     {
         try

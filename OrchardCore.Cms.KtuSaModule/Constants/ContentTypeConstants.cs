@@ -12,4 +12,6 @@ public static class ContentTypeConstants
     public const string SaUnit = "SaUnit";
     public const string UserProfile = "UserProfile";
     public const string Position = "Position";
+    public const string DocumentCategory = "DocumentCategory";
+    public const string Document = "Document";
 }

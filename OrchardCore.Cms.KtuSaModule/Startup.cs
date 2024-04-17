@@ -50,6 +50,7 @@ public class Startup : StartupBase
         services.AddScoped<INavigationProvider, ArticlesMenu>();
         services.AddScoped<INavigationProvider, EventsMenu>();
         services.AddScoped<INavigationProvider, SaUnitsInfoMenu>();
+        services.AddScoped<INavigationProvider, StaticInfoMenu>();
 
     }
 
@@ -64,6 +65,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, SaUnitMigrations>();
         services.AddScoped<IDataMigration, UserMigrations>();
         services.AddScoped<IDataMigration, PositionMigrations>();
+        services.AddScoped<IDataMigration, DocumentMigrations>();
 
     }
 
@@ -73,6 +75,11 @@ public class Startup : StartupBase
             .AddContentField<ImageUploadField>()
             .UseDisplayDriver<ImageUploadFieldDriver>()
             .AddHandler<ImageUploadFieldHandler>();
+
+        services
+            .AddContentField<PdfUploadField>()
+            .UseDisplayDriver<PdfUploadFieldDriver>()
+            .AddHandler<PdfUploadFieldHandler>();
 
         services
             .AddContentField<QuillField>()
@@ -95,6 +102,16 @@ public class Startup : StartupBase
     {
         services.AddContentPart<ArticlePart>();
         services.AddContentPart<UserProfilePart>();
+
+        services
+            .AddContentPart<DocumentPart>()
+            .UseDisplayDriver<DocumentPartDriver>()
+            .AddHandler<DocumentPartHandler>();
+
+        services
+            .AddContentPart<CategoryPart>()
+            .UseDisplayDriver<CategoryPartDriver>()
+            .AddHandler<CategoryPartHandler>();
 
         services
             .AddContentPart<CardPart>()
