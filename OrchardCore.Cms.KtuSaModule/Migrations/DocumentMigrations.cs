@@ -34,6 +34,7 @@ public class DocumentMigrations(IContentDefinitionManager contentDefinitionManag
                     {
                         Multiple = false,
                         DisplayedContentTypes = [DocumentCategory],
+                        Required = true,
                     }))
                 .WithDescription("Document content part")
         );

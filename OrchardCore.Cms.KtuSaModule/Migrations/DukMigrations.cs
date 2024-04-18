@@ -1,4 +1,6 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.ContentFields.Fields;
+using OrchardCore.ContentFields.Settings;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
@@ -13,6 +15,16 @@ public class DukMigrations(IContentDefinitionManager contentDefinitionManager) :
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(DukPart), part => 
             part
                 .Attachable()
+                .WithField(nameof(DukPart.Document), field => field
+                    .OfType(nameof(ContentPickerField))
+                    .WithDisplayName("Regulatory document")
+                    .WithSettings(new ContentPickerFieldSettings
+                    {
+                        Multiple = false,
+                        DisplayedContentTypes = [Document],
+                        Required = false,
+                        Hint = "Optional field",
+                    }))
                 .WithDescription("Frequently asked questions content part")
         );
 

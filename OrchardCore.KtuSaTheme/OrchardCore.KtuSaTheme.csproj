@@ -24,6 +24,9 @@
     <EmbeddedResource Update="Views\_ViewImports.cshtml">
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Update="wwwroot\Theme.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Update="wwwroot\media\Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

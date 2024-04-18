@@ -33,6 +33,7 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
                 {
                     Multiple = true,
                     DisplayedContentTypes = [SaUnit],
+                    Required = true,
                 })
             .WithDescription("Event part info"))
         );

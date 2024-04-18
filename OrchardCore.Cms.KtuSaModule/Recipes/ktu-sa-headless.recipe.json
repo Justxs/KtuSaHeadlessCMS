@@ -55,6 +55,7 @@
         "OrchardCore.Localization",
         "OrchardCore.Google.GoogleAuthentication",
         "OrchardCore.Users.CustomUserSettings",
+        "OrchardCore.Cors",
 
         "KtuSaModule",
         "TheAdmin"
