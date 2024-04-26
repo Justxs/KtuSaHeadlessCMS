@@ -68,11 +68,6 @@ public class ArticlesController(IContentManager contentManager, IRepository repo
             return NotFound("Article not found");
         }
 
-        if (!article.Published)
-        {
-            return BadRequest("Article is not published yet.");
-        }
-
         await contentManager.LoadAsync(article);
 
         var isLithuanian = language.IsLtLanguage();

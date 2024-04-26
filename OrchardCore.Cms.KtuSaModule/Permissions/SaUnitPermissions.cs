@@ -17,7 +17,6 @@ public class SaUnitPermissions : IPermissionProvider
     public static readonly Permission ManageVfsaInfo = new(nameof(ManageVfsaInfo), "Can manage VFSA info.");
     public static readonly Permission ManageShmInfo = new(nameof(ManageShmInfo), "Can manage SHM info.");
 
-
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
         return Task.FromResult(new[]

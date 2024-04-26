@@ -12,6 +12,4 @@ public class DukPart : ContentPart
     public string AnswerLt { get; set; } = null!;
 
     public string AnswerEn { get; set; } = null!;
-
-    public ContentPickerField Document { get; set; } = null!;
 }

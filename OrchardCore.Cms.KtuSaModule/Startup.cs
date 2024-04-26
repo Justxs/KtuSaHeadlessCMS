@@ -51,6 +51,7 @@ public class Startup : StartupBase
         services.AddScoped<INavigationProvider, EventsMenu>();
         services.AddScoped<INavigationProvider, SaUnitsInfoMenu>();
         services.AddScoped<INavigationProvider, StaticInfoMenu>();
+        services.AddScoped<INavigationProvider, DocumentsMenu>();
 
     }
 
@@ -95,6 +96,7 @@ public class Startup : StartupBase
         services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
         services.AddScoped<IPermissionProvider, ContactPermissions>();
         services.AddScoped<IPermissionProvider, SaUnitPermissions>();
+        services.AddScoped<IPermissionProvider, DocumentsPermissions>();
 
     }
 

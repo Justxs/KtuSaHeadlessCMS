@@ -1,11 +1,11 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Constants;
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
-using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
@@ -36,11 +36,6 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
 
     private async Task CreateSaUnitsAsync(SaUnit saUnit)
     {
-        if (saUnit is SaUnit.BRK or SaUnit.CSA)
-        {
-            return;
-        }
-
         var saUnitItem = await contentManager.NewAsync(ContentTypeConstants.SaUnit);
         saUnitItem.DisplayText = saUnit.ToString().Replace("_", " ");
 

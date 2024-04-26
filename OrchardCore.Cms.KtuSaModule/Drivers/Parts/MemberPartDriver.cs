@@ -1,21 +1,27 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 
-public class MemberPartDriver : ContentPartDisplayDriver<MemberPart>
+public class MemberPartDriver(IContentManager contentManager) : ContentPartDisplayDriver<MemberPart>
 {
-    public override IDisplayResult Display(MemberPart part, BuildPartDisplayContext context)
+    public override async Task<IDisplayResult> DisplayAsync(MemberPart part, BuildPartDisplayContext context)
     {
+        var saUnitField = await contentManager.GetAsync(part.SaUnit.ContentItemIds);
+
         return Initialize<MemberPartViewModel>(
                 GetDisplayShapeType(context), model =>
                 {
-                    model.Name = part.Name;
+                    if (saUnitField != null)
+                    {
+                        model.SaUnit = saUnitField.Select(organiser => organiser.DisplayText).FirstOrDefault();
+                    }
                 })
-            .Location("Detail", "Content:10");
+                .Location("SummaryAdmin", "Tags:11");
     }
 
     public override IDisplayResult Edit(MemberPart part, BuildPartEditorContext context)

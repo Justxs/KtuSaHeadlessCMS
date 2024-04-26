@@ -41,6 +41,14 @@ public class SaUnitsInfoMenu(
             foreach (var saUnit in saUnits)
             {
                 var unitName = saUnit.As<SaUnitPart>().UnitName;
+
+                content.Add(T[$"All {unitName.Replace("_", " ")} contacts"], type => type
+                    .Url($"/Contacts/List/{unitName}")
+                    .Permission(ContactPermissions
+                        .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))
+                    .AddClass("icon-class-fa-list")
+                    .AddClass("icon-class-fas"));
+                
                 if (unitName is nameof(SaUnit.CSA) or nameof(SaUnit.BRK))
                 {
                     continue;

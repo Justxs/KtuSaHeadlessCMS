@@ -1,4 +1,5 @@
-﻿using OrchardCore.Security.Permissions;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
+using OrchardCore.Security.Permissions;
 using static OrchardCore.Cms.KtuSaModule.Constants.RolesConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
@@ -19,19 +20,39 @@ public class ContactPermissions : IPermissionProvider
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
         return Task.FromResult(new[]
-            {
-                ManageCsaContacts,
-                ManageBrkContacts,
-                ManageInfosaContacts,
-                ManageVivatChemijaContacts,
-                ManageIndiContacts,
-                ManageEsaContacts,
-                ManageFumsaContacts,
-                ManageStatiusContacts,
-                ManageVfsaContacts,
-                ManageShmContacts,
-            }
-            .AsEnumerable());
+        {
+            ManageCsaContacts,
+            ManageBrkContacts,
+            ManageInfosaContacts,
+            ManageVivatChemijaContacts,
+            ManageIndiContacts,
+            ManageEsaContacts,
+            ManageFumsaContacts,
+            ManageStatiusContacts,
+            ManageVfsaContacts,
+            ManageShmContacts,
+        }
+        .AsEnumerable());
+    }
+
+    public static Permission GetPermission(SaUnit saUnit)
+    {
+        var permission = saUnit switch
+        {
+            SaUnit.CSA => ManageCsaContacts,
+            SaUnit.InfoSA => ManageInfosaContacts,
+            SaUnit.Vivat_Chemija => ManageVivatChemijaContacts,
+            SaUnit.InDi => ManageIndiContacts,
+            SaUnit.STATIUS => ManageStatiusContacts,
+            SaUnit.FUMSA => ManageFumsaContacts,
+            SaUnit.ESA => ManageEsaContacts,
+            SaUnit.SHM => ManageShmContacts,
+            SaUnit.VFSA => ManageVfsaContacts,
+            SaUnit.BRK => ManageBrkContacts,
+            _ => throw new ArgumentException("Invalid SaUnit", nameof(saUnit)),
+        };
+
+        return permission;
     }
 
     public IEnumerable<PermissionStereotype> GetDefaultStereotypes()

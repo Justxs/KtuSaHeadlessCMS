@@ -1,0 +1,18 @@
+﻿@model List<OrchardCore.DisplayManagement.IShape>
+
+<h1>Contacts</h1>
+
+<a class="btn btn-secondary" href="/Admin/Contents/ContentTypes/Contact/Create">New Contact</a>
+<br/>
+<ul class="list-group with-checkbox">
+    @foreach (var item in Model)
+    {
+        <li class="list-group-item list-group-item-action">
+            @await DisplayAsync(item)
+        </li>
+    }
+    @if (!Model.Any())
+    {
+        <h1>There are no added contacts</h1>
+    }
+</ul>
