@@ -1,0 +1,41 @@
+﻿@model ActivityReportPartViewModel
+
+<div style="margin-bottom: 20px; display: flex; gap: 20px;">
+    <fieldset class="form-group" asp-validation-class-for="From">
+        <div>
+            <label class="form-label" asp-for="From">
+                Activity report from date
+                <span asp-validation-for="From"></span>
+            </label>
+
+            <input asp-for="From"
+                   type="text"
+                   class="form-control datepicker"
+                   value="@Model.From.ToString("yyyy-MM-dd")"
+                   required />
+        </div>
+    </fieldset>
+
+    <fieldset class="form-group" asp-validation-class-for="To">
+        <div>
+            <label class="form-label" asp-for="To">
+                Activity report to date
+                <span asp-validation-for="To"></span>
+            </label>
+
+            <input asp-for="To"
+                   type="text"
+                   class="form-control datepicker"
+                   value="@Model.To.ToString("yyyy-MM-dd")"
+                   required />
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr(".datepicker", {
+            dateFormat: "Y-m-d"
+        });
+    });
+</script>

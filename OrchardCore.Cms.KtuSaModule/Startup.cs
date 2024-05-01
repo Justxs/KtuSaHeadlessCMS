@@ -67,6 +67,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, UserMigrations>();
         services.AddScoped<IDataMigration, PositionMigrations>();
         services.AddScoped<IDataMigration, DocumentMigrations>();
+        services.AddScoped<IDataMigration, ActivityReportMigrations>();
         services.AddScoped<IDataMigration, StaticPageMigrations>();
 
     }
@@ -157,6 +158,11 @@ public class Startup : StartupBase
             .AddContentPart<SponsorPart>()
             .UseDisplayDriver<SponsorPartDriver>()
             .AddHandler<SponsorPartHandler>();
+
+        services
+            .AddContentPart<ActivityReportPart>()
+            .UseDisplayDriver<ActivityReportPartDriver>()
+            .AddHandler<ActivityReportPartHandler>();
 
         services.AddContentPart<HeroSectionPart>();
         services.AddContentPart<StaticPagePart>();

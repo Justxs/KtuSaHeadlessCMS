@@ -56,12 +56,11 @@ public class EventsController(
     public async Task<ActionResult> GetEventsByFsa(string language, SaUnit saUnit, [FromQuery] bool fetchPassed)
     {
         var events = await repository.GetAllAsync(Event);
-        var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
-        var filterSaUnit = saUnits.FirstOrDefault(item => item.As<SaUnitPart>().UnitName == saUnit.ToString());
+        var saUnits = await repository.GetSaUnitByName(saUnit);
 
         var filteredSection = events
             .Where(eventItem => fetchPassed || eventItem.As<EventPart>().StartDate >= DateTime.Now)
-            .Where(eventItem => eventItem.As<EventPart>().OrganisersField.ContentItemIds.Contains(filterSaUnit!.ContentItemId))
+            .Where(eventItem => eventItem.As<EventPart>().OrganisersField.ContentItemIds.Contains(saUnits!.ContentItemId))
             .OrderByDescending(item => item.As<EventPart>().StartDate)
             .ToList();
 

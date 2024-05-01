@@ -10,7 +10,7 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class DocumentMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) : DataMigration
+public class DocumentMigrations(IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
     public async Task<int> CreateAsync()
     {
