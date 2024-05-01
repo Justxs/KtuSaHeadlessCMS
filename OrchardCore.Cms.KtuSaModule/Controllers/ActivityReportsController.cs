@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.Cms.KtuSaModule.Dtos;
-using OrchardCore.Cms.KtuSaModule.Dtos.Events;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
@@ -12,9 +11,7 @@ namespace OrchardCore.Cms.KtuSaModule.Controllers;
 
 [ApiController]
 [Route("api/{language}/[controller]")]
-public class ActivityReportsController(
-    IContentManager contentManager,
-    IRepository repository) : ControllerBase
+public class ActivityReportsController(IRepository repository) : ControllerBase
 {
     [HttpGet("SaUnits/{saUnit}")]
     [ProducesResponseType(typeof(List<ActivityReportDto>), 200)]
