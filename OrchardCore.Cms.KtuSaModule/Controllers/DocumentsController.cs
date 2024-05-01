@@ -14,7 +14,7 @@ public class DocumentsController(IRepository repository) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(List<DocumentsCategoriesDto>), 200)]
-    public async Task<ActionResult> GetArticles(string language)
+    public async Task<ActionResult> GetDocuments(string language)
     {
         var documentsCategories = await repository.GetAllAsync(DocumentCategory);
         var documents = await repository.GetAllAsync(Document);

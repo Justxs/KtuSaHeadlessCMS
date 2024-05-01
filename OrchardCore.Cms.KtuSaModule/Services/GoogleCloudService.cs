@@ -65,7 +65,7 @@ public class GoogleCloudService : IGoogleCloudService
             await RemoveFileAsync(viewModel.FileId);
         }
 
-        var fileName = $"{Guid.NewGuid()}-{viewModel.UploadedFile.FileName}";
+        var fileName = $"{Guid.NewGuid()}-{viewModel.UploadedFile.FileName.Replace(" ", "")}";
         var contentType = viewModel.UploadedFile.ContentType;
 
         await using var stream = viewModel.UploadedFile.OpenReadStream();
