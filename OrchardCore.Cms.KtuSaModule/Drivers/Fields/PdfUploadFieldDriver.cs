@@ -42,7 +42,7 @@ public class PdfUploadFieldDriver(IGoogleCloudService googleCloudService) : Cont
             var allowedContentTypes = new List<string> { "application/pdf" };
             if (!allowedContentTypes.Contains(viewModel.UploadedFile.ContentType.ToLowerInvariant()))
             {
-                updater.ModelState.AddModelError("ImageUploadField.UploadedFile", "Only PNG and JPEG files are allowed.");
+                updater.ModelState.AddModelError($"{Prefix}.UploadedFile", "Only PDF files are allowed.");
             }
         }
 
