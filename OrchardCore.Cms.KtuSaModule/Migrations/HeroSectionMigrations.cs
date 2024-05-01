@@ -42,16 +42,25 @@ public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionMa
             .WithDescription("Hero sections for all pages")
         );
 
-        await CreateHeroSectionAsync("Kontaktai", "Contacts");
-        await CreateHeroSectionAsync("Bendrabučiai", "Dormitories");
-        await CreateHeroSectionAsync("Artimiausi renginiai", "Upcoming events");
-        await CreateHeroSectionAsync("Straipsniai", "Articles");
-        await CreateHeroSectionAsync("Dokumentai", "Documents");
         await CreateHeroSectionAsync("Kas yra KTU SA?", "What is KTU SA?");
-        await CreateHeroSectionAsync("Veiklos ataskaitos", "Activity Reports");
-        await CreateHeroSectionAsync("Stipendijos", "Scholarships");
         await CreateHeroSectionAsync("Fakultetinės studentų atstovybės", "Faculty's student association");
+        await CreateHeroSectionAsync("Veiklos ataskaitos", "Activity Reports");
+        await CreateHeroSectionAsync("Dokumentai", "Documents");
+
+        await CreateHeroSectionAsync("Bendrabučiai", "Dormitories");
+        await CreateHeroSectionAsync("Stipendijos", "Scholarships");
+        await CreateHeroSectionAsync("Straipsniai", "Articles");
+        await CreateHeroSectionAsync("Artimiausi renginiai", "Upcoming events");
+
         await CreateHeroSectionAsync("Dažniausiai užduodami klausimai", "Frequently asked questions");
+        await CreateHeroSectionAsync("Akademinė pagalba", "Academic help");
+        await CreateHeroSectionAsync("Socialinė pagalba", "Social help");
+
+        await CreateHeroSectionAsync("Seniūnai", "Elders");
+        await CreateHeroSectionAsync("Studentų atstovai KTU organuose", "Student representatives in KTU bodies");
+        await CreateHeroSectionAsync("Studentų atstovai fakultetų organuose", "Student representatives in faculties bodies");
+
+        await CreateHeroSectionAsync("Kontaktai", "Contacts");
 
         return 1;
     }

@@ -1,6 +1,6 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
 using System.Text.Json;
+using OrchardCore.Cms.KtuSaModule.Dtos.ExternalApiResponse;
 using OrchardCore.Cms.KtuSaModule.Settings;
 
 namespace OrchardCore.Cms.KtuSaModule.Services;

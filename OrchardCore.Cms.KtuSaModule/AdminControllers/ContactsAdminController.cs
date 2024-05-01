@@ -17,6 +17,7 @@ public class ContactsAdminController(
     IContentItemDisplayManager contentItemDisplayManager, 
     IUpdateModelAccessor updateModelAccessor) : Controller
 {
+    [HttpGet]
     [Route("Contacts/List/{saUnit}")]
     public async Task<IActionResult> ListContacts(SaUnit saUnit)
     {

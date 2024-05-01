@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
+using OrchardCore.Cms.KtuSaModule.Dtos.ExternalApiResponse;
 
 namespace OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 

@@ -50,7 +50,7 @@ public class AdminMenu(
             .Add(T["Contacts"], "1", content => content
                 .AddClass("icon-class-fa-address-book")
                 .AddClass("icon-class-fas")
-                .Add(T["All contacts"], eventContentType => eventContentType
+                .Add(T["All contacts"], contactsType => contactsType
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
@@ -59,7 +59,7 @@ public class AdminMenu(
                     .Permission(ContactPermissions.ManageCsaContacts)
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"))
-                .Add(T["All positions"], eventContentType => eventContentType
+                .Add(T["All positions"], positionsType => positionsType
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",

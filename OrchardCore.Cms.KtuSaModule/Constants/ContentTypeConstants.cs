@@ -14,4 +14,6 @@ public static class ContentTypeConstants
     public const string Position = "Position";
     public const string DocumentCategory = "DocumentCategory";
     public const string Document = "Document";
+    public const string StaticPage = "StaticPage";
+
 }

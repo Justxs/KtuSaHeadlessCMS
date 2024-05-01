@@ -15,7 +15,7 @@ public class HeroSectionsController(IRepository repository) : ControllerBase
     [HttpGet("{sectionName}")]
     [ProducesResponseType(typeof(HeroSectionDto), 200)]
     [ProducesResponseType(typeof(string), 404)]
-    public async Task<ActionResult> GetMainContacts(string language, string sectionName)
+    public async Task<ActionResult> GetHeroSection(string language, string sectionName)
     {
         var heroSections = await repository.GetAllAsync(HeroSection);
 

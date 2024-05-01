@@ -67,6 +67,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, UserMigrations>();
         services.AddScoped<IDataMigration, PositionMigrations>();
         services.AddScoped<IDataMigration, DocumentMigrations>();
+        services.AddScoped<IDataMigration, StaticPageMigrations>();
 
     }
 
@@ -158,5 +159,7 @@ public class Startup : StartupBase
             .AddHandler<SponsorPartHandler>();
 
         services.AddContentPart<HeroSectionPart>();
+        services.AddContentPart<StaticPagePart>();
+
     }
 }

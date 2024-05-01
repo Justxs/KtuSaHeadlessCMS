@@ -94,8 +94,7 @@
             "PublishContent",
             "EditContent",
             "ViewContent",
-            "CloneContent",
-            "ListContent"
+            "CloneContent"
           ]
         },
         {

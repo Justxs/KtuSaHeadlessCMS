@@ -1,4 +1,4 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
+﻿namespace OrchardCore.Cms.KtuSaModule.Dtos.ExternalApiResponse;
 
 public class FientaApiResponse
 {

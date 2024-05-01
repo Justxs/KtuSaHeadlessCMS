@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OrchardCore.Cms.KtuSaModule.Models.ExternalApiResponse;
+namespace OrchardCore.Cms.KtuSaModule.Dtos.ExternalApiResponse;
 
 public class FientaEvent
 {
