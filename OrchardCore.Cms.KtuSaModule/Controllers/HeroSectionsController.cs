@@ -27,7 +27,9 @@ public class HeroSectionsController(IRepository repository) : ControllerBase
                 Section = section, 
                 Part = section.As<HeroSectionPart>(),
             })
-            .FirstOrDefault(x => (isLithuanian ? x.Part?.TitleLt : x.Part?.TitleEn) == sectionName)
+            .FirstOrDefault(x => (isLithuanian
+                ? x.Part?.TitleLt
+                : x.Part?.TitleEn).Contains(sectionName, StringComparison.CurrentCultureIgnoreCase))
             ?.Section;
 
         if (filteredSection == null)

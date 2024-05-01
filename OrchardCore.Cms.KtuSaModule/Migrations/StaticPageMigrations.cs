@@ -29,9 +29,10 @@ public class StaticPageMigrations(IContentDefinitionManager contentDefinitionMan
             .WithDescription("Static page content type")
         );
 
+        await CreateStaticPagesAsync("Kas yra KTU SA?", "What is KTU SA?");
         await CreateStaticPagesAsync("Stipendijos", "Scholarships");
         await CreateStaticPagesAsync("Seniūnai", "Elders");
-        await CreateStaticPagesAsync("Krypties studijų programų komitetai", "Committee of study programs of the field");
+        await CreateStaticPagesAsync("Studentų atstovai fakultetų organuose", "Student representatives in faculties bodies");
         await CreateStaticPagesAsync("Studentų atstovai KTU organuose", "Student Representatives in KTU Bodies");
         await CreateStaticPagesAsync("Socialinė pagalba", "Social Help");
         await CreateStaticPagesAsync("Akademinė pagalba", "Academic Help");
