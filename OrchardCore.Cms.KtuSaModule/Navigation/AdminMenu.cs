@@ -65,7 +65,7 @@ public class AdminMenu(
                         area = "OrchardCore.Contents",
                         contentTypeId = Position,
                     })
-                    .Permission(ContactPermissions.ManageCsaContacts)
+                    .Permission(ContactPermissions.ManagePositions)
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"))
             );

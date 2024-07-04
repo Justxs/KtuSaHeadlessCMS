@@ -16,6 +16,7 @@ public class ContactPermissions : IPermissionProvider
     public static readonly Permission ManageStatiusContacts = new(nameof(ManageStatiusContacts), "Can manage STATIUS contacts.");
     public static readonly Permission ManageVfsaContacts = new(nameof(ManageVfsaContacts), "Can manage VFSA contacts.");
     public static readonly Permission ManageShmContacts = new(nameof(ManageShmContacts), "Can manage SHM contacts.");
+    public static readonly Permission ManagePositions = new(nameof(ManagePositions), "Can manage KTU SA positions.");
 
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
@@ -31,6 +32,7 @@ public class ContactPermissions : IPermissionProvider
             ManageStatiusContacts,
             ManageVfsaContacts,
             ManageShmContacts,
+            ManagePositions,
         }
         .AsEnumerable());
     }
@@ -74,6 +76,13 @@ public class ContactPermissions : IPermissionProvider
                     ManageStatiusContacts,
                     ManageVfsaContacts,
                     ManageShmContacts,
+                },
+            },
+            new PermissionStereotype
+            {
+                Name = President,
+                Permissions = new[] {
+                    ManagePositions,
                 },
             },
             new PermissionStereotype
