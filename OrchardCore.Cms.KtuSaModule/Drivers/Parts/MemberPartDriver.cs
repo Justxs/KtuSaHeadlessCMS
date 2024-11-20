@@ -14,14 +14,17 @@ public class MemberPartDriver(IContentManager contentManager) : ContentPartDispl
         var saUnitField = await contentManager.GetAsync(part.SaUnit.ContentItemIds);
 
         return Initialize<MemberPartViewModel>(
-                GetDisplayShapeType(context), model =>
+            GetDisplayShapeType(context), model =>
+            {
+                if (saUnitField == null)
                 {
-                    if (saUnitField != null)
-                    {
-                        model.SaUnit = saUnitField.Select(organiser => organiser.DisplayText).FirstOrDefault();
-                    }
-                })
-                .Location("SummaryAdmin", "Tags:11");
+                    model.SaUnit = saUnitField.Select(organiser => organiser.DisplayText).FirstOrDefault();
+                }
+
+                model.Email = part.Email;
+                model.Index = part.Index;
+            })
+            .Location("SummaryAdmin", "Tags:11");
     }
 
     public override IDisplayResult Edit(MemberPart part, BuildPartEditorContext context)
@@ -30,6 +33,8 @@ public class MemberPartDriver(IContentManager contentManager) : ContentPartDispl
             GetEditorShapeType(context), model =>
             {
                 model.Name = part.Name;
+                model.Email = part.Email;
+                model.Index = part.Index;
             });
     }
 
@@ -43,6 +48,8 @@ public class MemberPartDriver(IContentManager contentManager) : ContentPartDispl
         }
 
         part.Name = model.Name;
+        part.Email = model.Email;
+        part.Index = model.Index;
 
         return Edit(part, context);
     }

@@ -6,13 +6,15 @@ using OrchardCore.ContentFields.Settings;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
+using OrchardCore.ContentManagement.Records;
 using OrchardCore.Data.Migration;
+using YesSql;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class ContactMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) : DataMigration
+public class ContactMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager, ISession session) : DataMigration
 {
     public async Task<int> CreateAsync()
     {
@@ -70,6 +72,43 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
         await CreateMainContactAsync(SaUnit.CSA);
 
         return 1;
+    }
+
+    public async Task<int> UpdateFrom1Async()
+    {
+        await MigrateEmailToMemberPartAsync();
+
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Contact, type => type
+            .RemovePart(nameof(ContactPart))
+        );
+
+        return 2;
+    }
+
+    private async Task MigrateEmailToMemberPartAsync()
+    {
+        var contentItems = await session
+            .Query<ContentItem>()
+            .With<ContentItemIndex>(x => x.ContentType == Contact)
+            .ListAsync();
+
+        foreach (var contentItem in contentItems)
+        {
+            var contactPart = contentItem.As<ContactPart>();
+            var memberPart = contentItem.As<MemberPart>();
+
+            if (contactPart == null || memberPart == null)
+            {
+                continue;
+            }
+
+            memberPart.Email = contactPart.Email;
+
+            contentItem.Remove(nameof(ContactPart));
+
+            contentItem.Apply(nameof(MemberPart), memberPart);
+            await contentManager.UpdateAsync(contentItem);
+        }
     }
 
     private async Task CreateMainContactAsync(SaUnit saUnit)

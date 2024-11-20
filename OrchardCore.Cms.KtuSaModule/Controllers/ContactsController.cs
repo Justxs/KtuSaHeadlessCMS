@@ -31,7 +31,6 @@ public class ContactsController(IRepository repository) : ControllerBase
             .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitId))
             .Select(item =>
             {
-                var contactPart = item.As<ContactPart>();
                 var memberPart = item.As<MemberPart>();
 
                 var positionPart = positions
@@ -42,8 +41,7 @@ public class ContactsController(IRepository repository) : ControllerBase
                 var dto = new ContactDto
                 {
                     Id = item.ContentItemId,
-                    PhoneNumber = contactPart.PhoneNumber,
-                    Email = contactPart.Email,
+                    Email = memberPart.Email,
 
                     Name = memberPart.Name,
                     ImageSrc = memberPart.ImageUploadField.FileId,
@@ -55,11 +53,13 @@ public class ContactsController(IRepository repository) : ControllerBase
                     Responsibilities = isLithuanian
                         ? positionPart.DescriptionLt
                         : positionPart.DescriptionEn,
+
+                    Index = memberPart.Index
                 };
 
                 return dto;
             }).ToList();
 
-        return Ok(contactDtos);
+        return Ok(contactDtos.OrderBy(contact=> contact.Index));
     }
 }

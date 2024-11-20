@@ -8,6 +8,10 @@ public class MemberPart : ContentPart
 {
     public string Name { get; set; } = null!;
 
+    public string Email { get; set; } = null!;
+
+    public int Index { get; set; } = 1;
+
     public ContentPickerField SaUnit { get; set; } = null!;
 
     public ImageUploadField ImageUploadField { get; set; } = null!;

@@ -2,8 +2,17 @@
 @inject IAuthorizationService AuthorizationService
 @{
     ContentItem contentItem = Model.ContentItem;
-    var isMultiline = contentItem.DisplayText.Contains("/");
-    var displayTextWithBreaks = contentItem.DisplayText.Split("/", StringSplitOptions.TrimEntries);
+    var isMultiline = false;
+    string[] displayTextWithBreaks = [];
+    try
+    {
+        isMultiline = contentItem.DisplayText.Contains("/");
+        displayTextWithBreaks = contentItem.DisplayText.Split("/", StringSplitOptions.TrimEntries);
+    }
+    catch (Exception e)
+    {
+        isMultiline = false;
+    }
 }
 
 <div class="row">

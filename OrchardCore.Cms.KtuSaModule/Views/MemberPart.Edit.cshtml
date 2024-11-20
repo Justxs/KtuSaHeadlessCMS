@@ -1,8 +1,5 @@
 ﻿@model MemberPartViewModel
 
-<!-- TODO add localization -->
-
-
 <fieldset class="form-group" asp-validation-class-for="Name" style="margin-bottom: 20px;">
     <label asp-for="Name">
         Member Name
@@ -13,5 +10,32 @@
         class="form-control"
         value="@Model.Name"
         required 
-        />
+    />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
+    <label asp-for="Email">
+        Email address
+    </label>
+
+    <input asp-for="Email"
+           class="form-control"
+           value="@Model.Email"
+           type="email"
+           required />
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
+    <label asp-for="Index">
+        Order no.
+    </label>
+
+    <input asp-for="Index"
+           class="form-control"
+           value="@Model.Index"
+           type="number" />
+    
+    <span class="hint">
+        Set the order of the member in the list.
+    </span>
 </fieldset>
