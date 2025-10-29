@@ -120,9 +120,7 @@ public class EventsController(
                 ? part.BodyFieldLt.HtmlBody
                 : part.BodyFieldEn.HtmlBody,
             
-            FientaTicketUrl = isLithuanian
-                ? part.FientaTicketLinkLt
-                : part.FientaTicketLinkEn,
+            FientaTicketUrl = GetFientaUrl(isLithuanian ? part.FientaTicketLinkLt : part.FientaTicketLinkEn, isLithuanian),
 
             StartDate = part.StartDate,
             EndDate = part.EndDate,
@@ -133,5 +131,18 @@ public class EventsController(
         };
 
         return Ok(eventDto);
+    }
+
+    private static string? GetFientaUrl(string? raw, bool isLithuanian)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return null;
+
+        var parts = raw.Split("|||", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        return parts.Length switch
+        {
+            0 => null,
+            1 => parts[0],
+            _ => isLithuanian ? parts[0] : parts[^1]
+        };
     }
 }
