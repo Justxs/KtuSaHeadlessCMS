@@ -23,7 +23,6 @@ public class EventsController(
         var events = await repository.GetAllAsync(Event);
 
         var filteredSection = events
-            .Where(eventItem => fetchPassed || eventItem.As<EventPart>().StartDate > DateTime.Now)
             .OrderByDescending(item => item.As<EventPart>().StartDate)
             .ToList();
 
@@ -59,8 +58,7 @@ public class EventsController(
         var saUnits = await repository.GetSaUnitByName(saUnit);
 
         var filteredSection = events
-            .Where(eventItem => fetchPassed || eventItem.As<EventPart>().StartDate >= DateTime.Now)
-            .Where(eventItem => eventItem.As<EventPart>().OrganisersField.ContentItemIds.Contains(saUnits!.ContentItemId))
+            .Where(eventItem => eventItem.As<EventPart>().OrganisersField.ContentItemIds.Contains(saUnits.ContentItemId))
             .OrderByDescending(item => item.As<EventPart>().StartDate)
             .ToList();
 
@@ -106,7 +104,7 @@ public class EventsController(
 
         var saUnits = await contentManager.GetAsync(part.OrganisersField.ContentItemIds);
 
-        var organisers = saUnits
+                var organisers = saUnits
             .Select(unit => unit.As<SaUnitPart>().UnitName)
             .ToList();
 
