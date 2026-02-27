@@ -30,10 +30,10 @@
     <PackageReference Include="OrchardCore.Google" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Logging.NLog" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="2.2.1" />
-    <PackageReference Include="OrchardCoreContrib.Apis.Swagger" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OrchardCore.Cms.KtuSaApi\OrchardCore.Cms.KtuSaApi.csproj" />
     <ProjectReference Include="..\OrchardCore.Cms.KtuSaModule\OrchardCore.Cms.KtuSaModule.csproj" />
     <ProjectReference Include="..\OrchardCore.KtuSaTheme\OrchardCore.KtuSaTheme.csproj" />
   </ItemGroup>
