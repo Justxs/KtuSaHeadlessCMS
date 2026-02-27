@@ -17,5 +17,4 @@ public class MemberPart : ContentPart
     public ImageUploadField ImageUploadField { get; set; } = null!;
 
     public ContentPickerField Position { get; set; } = null!;
-
 }

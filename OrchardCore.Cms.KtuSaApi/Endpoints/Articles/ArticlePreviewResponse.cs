@@ -2,8 +2,7 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
 public class ArticlePreviewResponse
 {
-    [Description("Content item ID")]
-    public required string Id { get; set; }
+    [Description("Content item ID")] public required string Id { get; set; }
 
     [Description("Article title in the requested language")]
     public required string Title { get; set; }

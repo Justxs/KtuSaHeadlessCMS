@@ -19,7 +19,8 @@ public class GetContactsEndpoint(IRepository repository)
         Description(b => b
             .WithTags("Contacts")
             .WithSummary("Get contacts for an SA unit")
-            .WithDescription("Returns member contacts of the specified SA unit ordered by index. Includes name, email, photo, position and responsibilities. Language: 'lt' or 'en'. Allowed saUnit values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")
+            .WithDescription(
+                "Returns member contacts of the specified SA unit ordered by index. Includes name, email, photo, position and responsibilities. Language: 'lt' or 'en'. Allowed saUnit values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")
             .Produces<List<ContactResponse>>(200));
     }
 
@@ -34,26 +35,10 @@ public class GetContactsEndpoint(IRepository repository)
 
         var contactDtos = contacts
             .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitId))
-            .Select(item =>
-            {
-                var memberPart = item.As<MemberPart>();
+            .Select(item => item.ToResponse(isLithuanian, positions))
+            .OrderBy(contact => contact.Index)
+            .ToList();
 
-                var positionPart = positions
-                    .FirstOrDefault(position => memberPart.Position.ContentItemIds.Contains(position.ContentItemId))
-                    .As<PositionPart>();
-
-                return new ContactResponse
-                {
-                    Id = item.ContentItemId,
-                    Email = memberPart.Email,
-                    Name = memberPart.Name,
-                    ImageSrc = memberPart.ImageUploadField.FileId,
-                    Position = isLithuanian ? positionPart.NameLt : positionPart.NameEn,
-                    Responsibilities = isLithuanian ? positionPart.DescriptionLt : positionPart.DescriptionEn,
-                    Index = memberPart.Index,
-                };
-            }).ToList();
-
-        await Send.OkAsync(contactDtos.OrderBy(contact => contact.Index).ToList(), ct);
+        await Send.OkAsync(contactDtos, ct);
     }
 }

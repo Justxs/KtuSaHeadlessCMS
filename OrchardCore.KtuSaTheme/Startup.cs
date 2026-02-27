@@ -6,7 +6,8 @@ namespace OrchardCore.KtuSaTheme;
 
 public class Startup : StartupBase
 {
-    public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
+    public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes,
+        IServiceProvider serviceProvider)
     {
         app.UseStaticFiles();
     }

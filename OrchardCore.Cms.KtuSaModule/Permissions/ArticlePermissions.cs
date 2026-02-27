@@ -11,7 +11,7 @@ public class ArticlePermissions : IPermissionProvider
     {
         return Task.FromResult(new[]
             {
-                ManageArticles,
+                ManageArticles
             }
             .AsEnumerable());
     }
@@ -23,13 +23,13 @@ public class ArticlePermissions : IPermissionProvider
             new PermissionStereotype
             {
                 Name = Administrator,
-                Permissions = new[] { ManageArticles },
+                Permissions = new[] { ManageArticles }
             },
             new PermissionStereotype
             {
                 Name = CsaEditor,
-                Permissions = new[] { ManageArticles },
-            },
+                Permissions = new[] { ManageArticles }
+            }
         };
     }
 }

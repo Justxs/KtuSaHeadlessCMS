@@ -8,7 +8,8 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class StaticPageMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) : DataMigration
+public class StaticPageMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager)
+    : DataMigration
 {
     public async Task<int> CreateAsync()
     {
@@ -32,7 +33,8 @@ public class StaticPageMigrations(IContentDefinitionManager contentDefinitionMan
         await CreateStaticPagesAsync("Kas yra KTU SA?", "What is KTU SA?");
         await CreateStaticPagesAsync("Stipendijos", "Scholarships");
         await CreateStaticPagesAsync("Seniūnai", "Elders");
-        await CreateStaticPagesAsync("Studentų atstovai fakultetų organuose", "Student representatives in faculties bodies");
+        await CreateStaticPagesAsync("Studentų atstovai fakultetų organuose",
+            "Student representatives in faculties bodies");
         await CreateStaticPagesAsync("Studentų atstovai KTU organuose", "Student Representatives in KTU Bodies");
         await CreateStaticPagesAsync("Socialinė pagalba", "Social Help");
         await CreateStaticPagesAsync("Akademinė pagalba", "Academic Help");

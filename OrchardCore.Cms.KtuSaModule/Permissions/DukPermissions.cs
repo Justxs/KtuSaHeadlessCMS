@@ -11,7 +11,7 @@ public class DukPermissions : IPermissionProvider
     {
         return Task.FromResult(new[]
             {
-                ManageDuks,
+                ManageDuks
             }
             .AsEnumerable());
     }
@@ -23,15 +23,16 @@ public class DukPermissions : IPermissionProvider
             new PermissionStereotype
             {
                 Name = Administrator,
-                Permissions = new[] { ManageDuks },
+                Permissions = new[] { ManageDuks }
             },
             new PermissionStereotype
             {
                 Name = CsaEditor,
-                Permissions = new[] {
-                    ManageDuks,
-                },
-            },
+                Permissions = new[]
+                {
+                    ManageDuks
+                }
+            }
         };
     }
 }

@@ -2,8 +2,7 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.ActivityReports;
 
 public class ActivityReportResponse
 {
-    [Description("Content item ID")]
-    public required string Id { get; set; }
+    [Description("Content item ID")] public required string Id { get; set; }
 
     [Description("File ID of the activity report PDF in the requested language")]
     public required string PdfUrl { get; set; }

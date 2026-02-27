@@ -9,7 +9,8 @@ using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 
-public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : ContentFieldDisplayDriver<ImageUploadField>
+public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService)
+    : ContentFieldDisplayDriver<ImageUploadField>
 {
     public override IDisplayResult Display(ImageUploadField field, BuildFieldDisplayContext context)
     {
@@ -52,9 +53,8 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
         {
             var allowedContentTypes = new List<string> { "image/png", "image/jpeg" };
             if (!allowedContentTypes.Contains(viewModel.UploadedFile.ContentType.ToLowerInvariant()))
-            {
-                context.Updater.ModelState.AddModelError("ImageUploadField.UploadedFile", "Only PNG and JPEG files are allowed.");
-            }
+                context.Updater.ModelState.AddModelError("ImageUploadField.UploadedFile",
+                    "Only PNG and JPEG files are allowed.");
         }
 
         if (viewModel.UploadedFile is not null && viewModel.UploadedFile.Length != 0)

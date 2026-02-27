@@ -3,5 +3,5 @@
 public enum Languages
 {
     LT,
-    EN,
+    EN
 }

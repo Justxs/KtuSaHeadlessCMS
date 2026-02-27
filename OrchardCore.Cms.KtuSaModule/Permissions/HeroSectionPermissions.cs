@@ -5,16 +5,17 @@ namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
 public class HeroSectionPermissions : IPermissionProvider
 {
-    public static readonly Permission ManageHeroSections = new(nameof(ManageHeroSections), "Can manage Hero sections for all pages");
+    public static readonly Permission ManageHeroSections =
+        new(nameof(ManageHeroSections), "Can manage Hero sections for all pages");
 
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
         return Task.FromResult(
             new[]
-            {
-                ManageHeroSections,
-            }
-            .AsEnumerable());
+                {
+                    ManageHeroSections
+                }
+                .AsEnumerable());
     }
 
     public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
@@ -24,13 +25,13 @@ public class HeroSectionPermissions : IPermissionProvider
             new PermissionStereotype
             {
                 Name = Administrator,
-                Permissions = new[] { ManageHeroSections },
+                Permissions = new[] { ManageHeroSections }
             },
             new PermissionStereotype
             {
                 Name = CsaEditor,
-                Permissions = new[] { ManageHeroSections },
-            },
+                Permissions = new[] { ManageHeroSections }
+            }
         };
     }
 }

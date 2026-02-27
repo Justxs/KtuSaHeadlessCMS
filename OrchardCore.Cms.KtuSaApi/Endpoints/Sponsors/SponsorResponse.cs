@@ -2,8 +2,7 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Sponsors;
 
 public class SponsorResponse
 {
-    [Description("Content item ID")]
-    public string Id { get; set; } = null!;
+    [Description("Content item ID")] public string Id { get; set; } = null!;
 
     [Description("Display name of the sponsor")]
     public string Name { get; set; } = null!;

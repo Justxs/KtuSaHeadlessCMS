@@ -8,80 +8,77 @@ public static class StringExtensions
 {
     private static readonly char[] Separator = [' ', '\r', '\n'];
 
-    public static bool IsLtLanguage(this string language)
+    extension(string language)
     {
-        return language.Equals(Languages.LT.ToString(), StringComparison.CurrentCultureIgnoreCase);
-    }
-
-    public static string CalculateReadingTime(this string htmlBody)
-    {
-        var textContent = HtmlTagRemoveRegex()
-            .Replace(htmlBody, string.Empty);
-        var totalWordCount = textContent.CountWords();
-
-        var readingTimeMinutes = totalWordCount / 100;
-
-        readingTimeMinutes = Math.Max(readingTimeMinutes, 1);
-
-        return readingTimeMinutes > 1 ? $"{readingTimeMinutes} min." : "1 min.";
-    }
-
-    public static string GetPreviewText(this string htmlBody)
-    {
-        var textContent = HtmlTagRemoveRegex()
-            .Replace(htmlBody, string.Empty);
-
-        var words = textContent.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
-
-        var wordCount = Math.Min(50, words.Length);
-        var first50Words = string.Join(" ", words, 0, wordCount);
-
-        return first50Words;
-    }
-
-    private static int CountWords(this string input)
-    {
-        if (string.IsNullOrEmpty(input))
+        public bool IsLtLanguage()
         {
-            return 0;
+            return language.Equals(nameof(Languages.LT), StringComparison.CurrentCultureIgnoreCase);
         }
 
-        var matches = WordCountRegex().Matches(input);
-
-        return matches.Count;
-    }
-
-    public static List<string> GetContentList(this string htmlBody)
-    {
-        var doc = new HtmlDocument();
-        doc.LoadHtml(htmlBody);
-
-        var h1NodeCollection = doc.DocumentNode.SelectNodes("//h1");
-
-        var h1Tags = h1NodeCollection != null
-            ? h1NodeCollection.Select(node => node.InnerText).ToList()
-            : [];
-
-        return h1Tags;
-    }
-
-    public static string AddH1Id(this string htmlBody)
-    {
-
-        return H1TagRegex().Replace(htmlBody, match =>
+        public string CalculateReadingTime()
         {
-            var innerText = match.Groups[1].Value;
-            var id = innerText.GenerateIdFromInnerText();
+            var textContent = HtmlTagRemoveRegex()
+                .Replace(language, string.Empty);
+            var totalWordCount = textContent.CountWords();
 
-            return $"<h1 id=\"{id}\">{innerText}</h1>";
-        });
-    }
+            var readingTimeMinutes = totalWordCount / 100;
 
-    private static string GenerateIdFromInnerText(this string innerText)
-    {
-        var id = WhiteSpacesRegex().Replace(innerText, "-");
-        id = LettersAndNumbersRegex().Replace(id, "");
+            readingTimeMinutes = Math.Max(readingTimeMinutes, 1);
 
-        return id;
+            return readingTimeMinutes > 1 ? $"{readingTimeMinutes} min." : "1 min.";
+        }
+
+        public string GetPreviewText()
+        {
+            var textContent = HtmlTagRemoveRegex()
+                .Replace(language, string.Empty);
+
+            var words = textContent.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+
+            var wordCount = Math.Min(50, words.Length);
+            var first50Words = string.Join(" ", words, 0, wordCount);
+
+            return first50Words;
+        }
+
+        private int CountWords()
+        {
+            if (string.IsNullOrEmpty(language)) return 0;
+
+            var matches = WordCountRegex().Matches(language);
+
+            return matches.Count;
+        }
+
+        public List<string> GetContentList()
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(language);
+
+            var h1NodeCollection = doc.DocumentNode.SelectNodes("//h1");
+
+            var h1Tags = h1NodeCollection.Select(node => node.InnerText).ToList();
+
+            return h1Tags;
+        }
+
+        public string AddH1Id()
+        {
+            return H1TagRegex().Replace(language, match =>
+            {
+                var innerText = match.Groups[1].Value;
+                var id = innerText.GenerateIdFromInnerText();
+
+                return $"<h1 id=\"{id}\">{innerText}</h1>";
+            });
+        }
+
+        private string GenerateIdFromInnerText()
+        {
+            var id = WhiteSpacesRegex().Replace(language, "-");
+            id = LettersAndNumbersRegex().Replace(id, "");
+
+            return id;
+        }
     }
 }

@@ -20,6 +20,5 @@ public class ActivityReportPartHandler(IContentManager contentManager) : Content
         var saUnitName = saUnit.As<SaUnitPart>().UnitName;
 
         context.ContentItem.DisplayText = $"{saUnitName} {instance.From:yyyy-MM-dd} - {instance.To:yyyy-MM-dd}";
-
     }
 }

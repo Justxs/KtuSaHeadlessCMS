@@ -10,10 +10,10 @@ public class DocumentsPermissions : IPermissionProvider
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
         return Task.FromResult(new[]
-        {
-            ManageDocuments,
-        }
-        .AsEnumerable());
+            {
+                ManageDocuments
+            }
+            .AsEnumerable());
     }
 
     public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
@@ -23,15 +23,16 @@ public class DocumentsPermissions : IPermissionProvider
             new PermissionStereotype
             {
                 Name = Administrator,
-                Permissions = new[] { ManageDocuments },
+                Permissions = new[] { ManageDocuments }
             },
             new PermissionStereotype
             {
                 Name = CsaEditor,
-                Permissions = new[] {
-                    ManageDocuments,
-                },
-            },
+                Permissions = new[]
+                {
+                    ManageDocuments
+                }
+            }
         };
     }
 }

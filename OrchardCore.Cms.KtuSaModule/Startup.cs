@@ -39,7 +39,8 @@ public class Startup : StartupBase
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
     }
 
-    public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
+    public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes,
+        IServiceProvider serviceProvider)
     {
     }
 
@@ -52,7 +53,6 @@ public class Startup : StartupBase
         services.AddScoped<INavigationProvider, SaUnitsInfoMenu>();
         services.AddScoped<INavigationProvider, StaticInfoMenu>();
         services.AddScoped<INavigationProvider, DocumentsMenu>();
-
     }
 
     private static void AddMigrations(IServiceCollection services)
@@ -69,7 +69,6 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, DocumentMigrations>();
         services.AddScoped<IDataMigration, ActivityReportMigrations>();
         services.AddScoped<IDataMigration, StaticPageMigrations>();
-
     }
 
     private static void AddContentFields(IServiceCollection services)
@@ -99,7 +98,6 @@ public class Startup : StartupBase
         services.AddScoped<IPermissionProvider, ContactPermissions>();
         services.AddScoped<IPermissionProvider, SaUnitPermissions>();
         services.AddScoped<IPermissionProvider, DocumentsPermissions>();
-
     }
 
     private static void AddContentParts(IServiceCollection services)
@@ -166,6 +164,5 @@ public class Startup : StartupBase
 
         services.AddContentPart<HeroSectionPart>();
         services.AddContentPart<StaticPagePart>();
-
     }
 }

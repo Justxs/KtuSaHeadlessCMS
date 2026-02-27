@@ -2,8 +2,7 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
 public class EventPreviewResponse
 {
-    [Description("Content item ID")]
-    public required string Id { get; set; }
+    [Description("Content item ID")] public required string Id { get; set; }
 
     [Description("Event title in the requested language")]
     public required string Title { get; set; }

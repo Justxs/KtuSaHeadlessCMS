@@ -6,25 +6,19 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
-public class SponsorsMenu( 
+public class SponsorsMenu(
     IStringLocalizer<AdminMenu> stringLocalizer,
-    IHttpContextAccessor httpContextAccessor) 
+    IHttpContextAccessor httpContextAccessor)
     : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
 
         var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (user == null) return ValueTask.CompletedTask;
 
         builder.Add(T["Sponsors"], "1", content => content
             .AddClass("icon-class-fa-sack-dollar")
@@ -33,7 +27,7 @@ public class SponsorsMenu(
                 .Action("List", "Admin", new
                 {
                     area = "OrchardCore.Contents",
-                    contentTypeId = Sponsor,
+                    contentTypeId = Sponsor
                 })
                 .Permission(SponsorPermissions.ManageSponsors)
                 .AddClass("icon-class-fa-list")

@@ -11,8 +11,8 @@ using OrchardCore.ResourceManagement;
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 
 public class EventPartDriver(
-    IFientaService fientaService, 
-    IContentManager contentManager, 
+    IFientaService fientaService,
+    IContentManager contentManager,
     IResourceManager resourceManager) : ContentPartDisplayDriver<EventPart>
 {
     public override async Task<IDisplayResult> DisplayAsync(EventPart part, BuildPartDisplayContext context)
@@ -20,13 +20,11 @@ public class EventPartDriver(
         var organisersField = await contentManager.GetAsync(part.OrganisersField.ContentItemIds);
 
         return Initialize<EventBadgeViewModel>(
-            GetDisplayShapeType(context), model =>
-            {
-                if (organisersField != null)
+                GetDisplayShapeType(context), model =>
                 {
-                    model.SaUnitsDisplayNames = organisersField.Select(organiser => organiser.DisplayText).ToList();
-                }
-            })
+                    if (organisersField != null)
+                        model.SaUnitsDisplayNames = organisersField.Select(organiser => organiser.DisplayText).ToList();
+                })
             .Location("SummaryAdmin", "Tags:11");
     }
 
@@ -48,25 +46,25 @@ public class EventPartDriver(
                 (eventLt, eventEn) => new SelectListItem
                 {
                     Text = eventLt.Title,
-                    Value = $"{eventLt.Url}|||{eventEn.Url}",
+                    Value = $"{eventLt.Url}|||{eventEn.Url}"
                 })
             .ToList();
 
         return Initialize<EventPartViewModel>(
-            GetEditorShapeType(context), model =>
-            {
-                model.TitleLt = part.TitleLt;
-                model.TitleEn = part.TitleEn;
-                model.FbEventLink = part.FbEventLink;
-                model.FientaEventListLt = eventsLt;
-                model.FientaEventListEn = eventsEn;
-                model.FientaEventOptions = fientaEventOptions;
-                model.FientaTicketLinkLt = part.FientaTicketLinkLt;
-                model.FientaTicketLinkEn = part.FientaTicketLinkEn;
-                model.Address = part.Address;
-                model.StartDate = part.StartDate;
-                model.EndDate = part.EndDate;
-            })
+                GetEditorShapeType(context), model =>
+                {
+                    model.TitleLt = part.TitleLt;
+                    model.TitleEn = part.TitleEn;
+                    model.FbEventLink = part.FbEventLink;
+                    model.FientaEventListLt = eventsLt;
+                    model.FientaEventListEn = eventsEn;
+                    model.FientaEventOptions = fientaEventOptions;
+                    model.FientaTicketLinkLt = part.FientaTicketLinkLt;
+                    model.FientaTicketLinkEn = part.FientaTicketLinkEn;
+                    model.Address = part.Address;
+                    model.StartDate = part.StartDate;
+                    model.EndDate = part.EndDate;
+                })
             .Location("Content:2");
     }
 
@@ -74,21 +72,20 @@ public class EventPartDriver(
     {
         var model = new EventPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return await EditAsync(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return await EditAsync(part, context);
 
         if (model.StartDate <= DateTime.Today)
         {
-            context.Updater.ModelState.AddModelError(Prefix + ".StartDate", "The event start date must be later than today's date.");
+            context.Updater.ModelState.AddModelError(Prefix + ".StartDate",
+                "The event start date must be later than today's date.");
 
             return await EditAsync(part, context);
         }
 
         if (model.EndDate < model.StartDate)
         {
-            context.Updater.ModelState.AddModelError(Prefix + ".EndDate", "The event end date must be later than start date");
+            context.Updater.ModelState.AddModelError(Prefix + ".EndDate",
+                "The event end date must be later than start date");
 
             return await EditAsync(part, context);
         }

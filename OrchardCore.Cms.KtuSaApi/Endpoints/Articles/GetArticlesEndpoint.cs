@@ -1,7 +1,6 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
@@ -17,7 +16,8 @@ public class GetArticlesEndpoint(IRepository repository)
         Description(b => b
             .WithTags("Articles")
             .WithSummary("Get all articles")
-            .WithDescription("Returns a list of article previews ordered by creation date descending. Language: 'lt' or 'en'. Query parameter 'limit' optionally caps the number of results.")
+            .WithDescription(
+                "Returns a list of article previews ordered by creation date descending. Language: 'lt' or 'en'. Query parameter 'limit' optionally caps the number of results.")
             .Produces<List<ArticlePreviewResponse>>(200));
     }
 
@@ -28,27 +28,9 @@ public class GetArticlesEndpoint(IRepository repository)
 
         IEnumerable<ContentItem> query = articles.OrderByDescending(item => item.CreatedUtc);
 
-        if (req.Limit is not null)
-        {
-            query = query.Take(req.Limit.Value);
-        }
+        if (req.Limit is not null) query = query.Take(req.Limit.Value);
 
-        var articleDtos = query.Select(item =>
-        {
-            var part = item.As<CardPart>();
-            var htmlPart = item.As<ArticlePart>();
-
-            return new ArticlePreviewResponse
-            {
-                Id = item.ContentItemId,
-                Title = isLithuanian ? part.TitleLt : part.TitleEn,
-                Preview = isLithuanian
-                    ? htmlPart.HtmlContentLt.HtmlBody.GetPreviewText()
-                    : htmlPart.HtmlContentEn.HtmlBody.GetPreviewText(),
-                CreatedDate = (DateTime)item.CreatedUtc!,
-                ThumbnailImageId = part.ImageUploadField.FileId,
-            };
-        }).ToList();
+        var articleDtos = query.Select(item => item.ToPreviewResponse(isLithuanian)).ToList();
 
         await Send.OkAsync(articleDtos, ct);
     }

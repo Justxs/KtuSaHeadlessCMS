@@ -24,10 +24,7 @@ public class StaticPagesController(IRepository repository) : ControllerBase
         var filteredSection = staticPages
             .FirstOrDefault(page => page.DisplayText.Contains(pageName));
 
-        if (filteredSection == null)
-        {
-            return NotFound("Page not found");
-        }
+        if (filteredSection == null) return NotFound("Page not found");
 
         var staticPagePart = filteredSection.As<StaticPagePart>();
 
@@ -35,7 +32,7 @@ public class StaticPagesController(IRepository repository) : ControllerBase
         {
             Body = isLithuanian
                 ? staticPagePart.BodyLt.HtmlBody
-                : staticPagePart.BodyEn.HtmlBody,
+                : staticPagePart.BodyEn.HtmlBody
         };
 
         return Ok(staticPageDto);

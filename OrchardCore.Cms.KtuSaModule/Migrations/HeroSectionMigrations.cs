@@ -9,31 +9,32 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) : DataMigration
+public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager)
+    : DataMigration
 {
     public async Task<int> CreateAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(HeroSectionPart), builder => builder
-                .WithField(nameof(HeroSectionPart.DescriptionLt), field => field
-                    .OfType(nameof(TextField))
-                    .WithDisplayName("Description LT")
-                    .WithSettings(new TextFieldSettings
-                    {
-                        Required = true,
-                        Hint = "Hero content section in Lithuanian language",
-                    }))
-                .WithField(nameof(HeroSectionPart.DescriptionEn), field => field
-                    .OfType(nameof(TextField))
-                    .WithDisplayName("Description EN")
-                    .WithSettings(new TextFieldSettings
-                    {
-                        Required = true,
-                        Hint = "Hero content section in English language",
-                    }))
-                .WithField(nameof(HeroSectionPart.ImageUploadField), field => field
-                    .OfType(nameof(HeroSectionPart.ImageUploadField))
-                    .WithDisplayName("Upload hero image"))
-                .WithDescription("Hero section content part")
+            .WithField(nameof(HeroSectionPart.DescriptionLt), field => field
+                .OfType(nameof(TextField))
+                .WithDisplayName("Description LT")
+                .WithSettings(new TextFieldSettings
+                {
+                    Required = true,
+                    Hint = "Hero content section in Lithuanian language"
+                }))
+            .WithField(nameof(HeroSectionPart.DescriptionEn), field => field
+                .OfType(nameof(TextField))
+                .WithDisplayName("Description EN")
+                .WithSettings(new TextFieldSettings
+                {
+                    Required = true,
+                    Hint = "Hero content section in English language"
+                }))
+            .WithField(nameof(HeroSectionPart.ImageUploadField), field => field
+                .OfType(nameof(HeroSectionPart.ImageUploadField))
+                .WithDisplayName("Upload hero image"))
+            .WithDescription("Hero section content part")
         );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(HeroSection, type => type
@@ -58,7 +59,8 @@ public class HeroSectionMigrations(IContentDefinitionManager contentDefinitionMa
 
         await CreateHeroSectionAsync("Seniūnai", "Elders");
         await CreateHeroSectionAsync("Studentų atstovai KTU organuose", "Student representatives in KTU bodies");
-        await CreateHeroSectionAsync("Studentų atstovai fakultetų organuose", "Student representatives in faculties bodies");
+        await CreateHeroSectionAsync("Studentų atstovai fakultetų organuose",
+            "Student representatives in faculties bodies");
 
         await CreateHeroSectionAsync("Kontaktai", "Contacts");
 

@@ -27,5 +27,4 @@ public class GoogleCloudSettings
     public string UniverseDomain { get; set; } = string.Empty;
 
     public string SectionName { get; } = "GoogleCredentials";
-
 }

@@ -14,7 +14,10 @@ using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class ContactMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager, ISession session) : DataMigration
+public class ContactMigrations(
+    IContentDefinitionManager contentDefinitionManager,
+    IContentManager contentManager,
+    ISession session) : DataMigration
 {
     public async Task<int> CreateAsync()
     {
@@ -35,7 +38,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
                 {
                     Multiple = false,
                     Required = true,
-                    DisplayedContentTypes = [ContentTypeConstants.SaUnit],
+                    DisplayedContentTypes = [ContentTypeConstants.SaUnit]
                 }))
             .WithField(nameof(MemberPart.Position), field => field
                 .OfType(nameof(ContentPickerField))
@@ -44,7 +47,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
                 {
                     Multiple = false,
                     Required = true,
-                    DisplayedContentTypes = [Position],
+                    DisplayedContentTypes = [Position]
                 }))
             .WithDescription("Member info: Name, Responsibilities, Sa Unit, photo")
         );
@@ -97,10 +100,7 @@ public class ContactMigrations(IContentDefinitionManager contentDefinitionManage
             var contactPart = contentItem.As<ContactPart>();
             var memberPart = contentItem.As<MemberPart>();
 
-            if (contactPart == null || memberPart == null)
-            {
-                continue;
-            }
+            if (contactPart == null || memberPart == null) continue;
 
             memberPart.Email = contactPart.Email;
 

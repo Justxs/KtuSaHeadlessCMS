@@ -23,17 +23,13 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
                 GetEditorShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))
             .Location("Content:1");
-
     }
 
     public override async Task<IDisplayResult> UpdateAsync(CardPart part, UpdatePartEditorContext context)
     {
         var viewModel = new CardPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix))
-        {
-            return await EditAsync(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix)) return await EditAsync(part, context);
 
         part.TitleLt = viewModel.TitleLt;
         part.TitleEn = viewModel.TitleEn;

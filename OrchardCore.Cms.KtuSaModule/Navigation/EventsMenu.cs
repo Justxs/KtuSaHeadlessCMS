@@ -20,22 +20,15 @@ public class EventsMenu(
 
     public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
+        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return;
 
         var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return;
-        }
+        if (user == null) return;
 
         var eventPermissions = await new EventPermissions().GetPermissionsAsync();
         var hasEventPermission = await CheckIfUserHasPermissionAsync(eventPermissions, user);
 
         if (hasEventPermission)
-        {
             builder.Add(T["Events"], content => content
                 .AddClass("icon-class-fa-calendar-days")
                 .AddClass("icon-class-fas")
@@ -43,7 +36,7 @@ public class EventsMenu(
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
-                        contentTypeId = Event,
+                        contentTypeId = Event
                     })
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"))
@@ -52,19 +45,17 @@ public class EventsMenu(
                     .AddClass("icon-class-fa-calendar-plus")
                     .AddClass("icon-class-fas"))
             );
-        }
     }
+
     private async Task<bool> CheckIfUserHasPermissionAsync(IEnumerable<Permission> permissions, ClaimsPrincipal user)
     {
         var hasEventPermission = false;
         foreach (var permission in permissions)
-        {
             if (await authorizationService.AuthorizeAsync(user, permission))
             {
                 hasEventPermission = true;
                 break;
             }
-        }
 
         return hasEventPermission;
     }

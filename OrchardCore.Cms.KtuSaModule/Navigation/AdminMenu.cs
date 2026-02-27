@@ -8,23 +8,17 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
 public class AdminMenu(
-    IStringLocalizer<AdminMenu> stringLocalizer, 
+    IStringLocalizer<AdminMenu> stringLocalizer,
     IHttpContextAccessor httpContextAccessor) : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
 
         var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (user == null) return ValueTask.CompletedTask;
 
         builder
             .Add(T["FAQ"], "2", dukContentType => dukContentType
@@ -34,7 +28,7 @@ public class AdminMenu(
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
-                        contentTypeId = Duk,
+                        contentTypeId = Duk
                     })
                     .Permission(DukPermissions.ManageDuks)
                     .AddClass("icon-class-fa-list")
@@ -54,7 +48,7 @@ public class AdminMenu(
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
-                        contentTypeId = Contact,
+                        contentTypeId = Contact
                     })
                     .Permission(ContactPermissions.ManageCsaContacts)
                     .AddClass("icon-class-fa-list")
@@ -63,7 +57,7 @@ public class AdminMenu(
                     .Action("List", "Admin", new
                     {
                         area = "OrchardCore.Contents",
-                        contentTypeId = Position,
+                        contentTypeId = Position
                     })
                     .Permission(ContactPermissions.ManagePositions)
                     .AddClass("icon-class-fa-list")

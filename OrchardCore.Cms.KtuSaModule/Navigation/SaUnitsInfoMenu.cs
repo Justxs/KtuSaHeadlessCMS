@@ -20,16 +20,10 @@ public class SaUnitsInfoMenu(
 
     public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
+        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return;
 
         var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return;
-        }
+        if (user == null) return;
 
         var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
 
@@ -48,17 +42,14 @@ public class SaUnitsInfoMenu(
                         .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"));
-                
-                if (unitName is nameof(SaUnit.CSA) or nameof(SaUnit.BRK))
-                {
-                    continue;
-                }
+
+                if (unitName is nameof(SaUnit.CSA) or nameof(SaUnit.BRK)) continue;
 
                 content.Add(T["Edit " + unitName.Replace("_", " ") + " info"], "1", item => item
                     .Action("Edit", "Admin", new
                     {
-                        area = "OrchardCore.Contents", 
-                        contentItemId = saUnit.ContentItemId,
+                        area = "OrchardCore.Contents",
+                        contentItemId = saUnit.ContentItemId
                     })
                     .Permission(SaUnitPermissions
                         .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))

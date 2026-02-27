@@ -40,7 +40,7 @@ public class ActivityReportsController(IRepository repository) : ControllerBase
                     : part.ReportEn.FileId,
 
                 From = part.From,
-                To = part.To,
+                To = part.To
             };
 
             return dto;

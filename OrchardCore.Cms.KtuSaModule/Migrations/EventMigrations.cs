@@ -33,9 +33,9 @@ public class EventMigrations(IContentDefinitionManager contentDefinitionManager)
                 {
                     Multiple = true,
                     DisplayedContentTypes = [SaUnit],
-                    Required = true,
+                    Required = true
                 })
-            .WithDescription("Event part info"))
+                .WithDescription("Event part info"))
         );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(Event, type => type

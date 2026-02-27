@@ -29,10 +29,7 @@ public class SponsorPartDriver : ContentPartDisplayDriver<SponsorPart>
     {
         var viewModel = new SponsorPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix))
-        {
-            return await EditAsync(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix)) return await EditAsync(part, context);
 
         part.Name = viewModel.Name;
         part.WebsiteUrl = viewModel.WebsiteUrl;

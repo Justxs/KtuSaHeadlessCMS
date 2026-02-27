@@ -17,7 +17,8 @@ public class GetHeroSectionEndpoint(IRepository repository)
         Description(b => b
             .WithTags("Hero Sections")
             .WithSummary("Get a hero section by name")
-            .WithDescription("Returns the title, description and image of a hero section whose title contains the given sectionName (case-insensitive). Language: 'lt' or 'en'.")
+            .WithDescription(
+                "Returns the title, description and image of a hero section whose title contains the given sectionName (case-insensitive). Language: 'lt' or 'en'.")
             .Produces<HeroSectionResponse>(200)
             .ProducesProblem(404));
     }
@@ -27,33 +28,17 @@ public class GetHeroSectionEndpoint(IRepository repository)
         var heroSections = await repository.GetAllAsync(HeroSection);
         var isLithuanian = req.Language.IsLtLanguage();
 
-        var filteredSection = heroSections
-            .Select(section => new
-            {
-                Section = section,
-                Part = section.As<HeroSectionPart>(),
-            })
-            .FirstOrDefault(x => (isLithuanian
-                ? x.Part?.TitleLt
-                : x.Part?.TitleEn)
-                .Contains(req.SectionName, StringComparison.CurrentCultureIgnoreCase))
-            ?.Section;
+        var section = heroSections
+            .FirstOrDefault(item =>
+                (isLithuanian ? item.As<HeroSectionPart>()?.TitleLt : item.As<HeroSectionPart>()?.TitleEn)
+                .Contains(req.SectionName, StringComparison.CurrentCultureIgnoreCase));
 
-        if (filteredSection is null)
+        if (section is null)
         {
             await Send.NotFoundAsync(ct);
             return;
         }
 
-        var heroSectionPart = filteredSection.As<HeroSectionPart>();
-
-        var heroSectionDto = new HeroSectionResponse
-        {
-            Title = isLithuanian ? heroSectionPart.TitleLt : heroSectionPart.TitleEn,
-            Description = isLithuanian ? heroSectionPart.DescriptionLt.Text : heroSectionPart.DescriptionEn.Text,
-            ImgSrc = heroSectionPart.ImageUploadField.FileId,
-        };
-
-        await Send.OkAsync(heroSectionDto, ct);
+        await Send.OkAsync(section.ToResponse(isLithuanian), ct);
     }
 }

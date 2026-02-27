@@ -28,9 +28,9 @@ public class ActivityReportMigrations(IContentDefinitionManager contentDefinitio
                     {
                         Multiple = false,
                         DisplayedContentTypes = [SaUnit],
-                        Required = true,
+                        Required = true
                     }))
-            .WithDescription("Activity report content part")
+                .WithDescription("Activity report content part")
         );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(ActivityReport, type => type
@@ -38,7 +38,7 @@ public class ActivityReportMigrations(IContentDefinitionManager contentDefinitio
             .Creatable()
             .Listable()
             .WithPart(nameof(ActivityReportPart))
-        .WithDescription("Activity report content type")
+            .WithDescription("Activity report content type")
         );
 
         return 1;

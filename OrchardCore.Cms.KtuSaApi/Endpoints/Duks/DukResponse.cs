@@ -2,8 +2,7 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Duks;
 
 public class DukResponse
 {
-    [Description("Content item ID")]
-    public string Id { get; set; } = null!;
+    [Description("Content item ID")] public string Id { get; set; } = null!;
 
     [Description("FAQ question text in the requested language")]
     public string Question { get; set; } = null!;

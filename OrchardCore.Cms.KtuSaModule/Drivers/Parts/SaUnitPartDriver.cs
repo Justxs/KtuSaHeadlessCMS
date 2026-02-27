@@ -11,16 +11,16 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
     public override IDisplayResult Display(SaUnitPart part, BuildPartDisplayContext context)
     {
         return Initialize<SaUnitPartViewModel>(
-            GetDisplayShapeType(context), model =>
-            {
-                model.UnitName = part.UnitName;
-                model.DescriptionLt = part.DescriptionLt;
-                model.DescriptionEn = part.DescriptionEn;
-                model.Address = part.Address;
-                model.FacebookUrl = part.FacebookUrl;
-                model.LinkedInUrl = part.LinkedInUrl;
-                model.InstagramUrl = part.InstagramUrl;
-            })
+                GetDisplayShapeType(context), model =>
+                {
+                    model.UnitName = part.UnitName;
+                    model.DescriptionLt = part.DescriptionLt;
+                    model.DescriptionEn = part.DescriptionEn;
+                    model.Address = part.Address;
+                    model.FacebookUrl = part.FacebookUrl;
+                    model.LinkedInUrl = part.LinkedInUrl;
+                    model.InstagramUrl = part.InstagramUrl;
+                })
             .Location("Detail", "Content:10");
     }
 
@@ -43,10 +43,7 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
     {
         var model = new SaUnitPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return Edit(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         part.UnitName = model.UnitName;
         part.DescriptionLt = model.DescriptionLt;

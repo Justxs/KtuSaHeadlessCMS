@@ -13,8 +13,8 @@ namespace OrchardCore.Cms.KtuSaModule.AdminControllers;
 
 [Admin]
 public class ContactsAdminController(
-    IRepository repository, 
-    IContentItemDisplayManager contentItemDisplayManager, 
+    IRepository repository,
+    IContentItemDisplayManager contentItemDisplayManager,
     IUpdateModelAccessor updateModelAccessor) : Controller
 {
     [HttpGet]
@@ -30,7 +30,8 @@ public class ContactsAdminController(
 
         foreach (var item in contacts)
         {
-            var shape = await contentItemDisplayManager.BuildDisplayAsync(item, updateModelAccessor.ModelUpdater, "SummaryAdmin");
+            var shape = await contentItemDisplayManager.BuildDisplayAsync(item, updateModelAccessor.ModelUpdater,
+                "SummaryAdmin");
             shapes.Add(shape);
         }
 

@@ -29,10 +29,7 @@ public class DukPartDriver : ContentPartDisplayDriver<DukPart>
     {
         var viewModel = new DukPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix))
-        {
-            return await EditAsync(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix)) return await EditAsync(part, context);
 
         part.QuestionLt = viewModel.QuestionLt;
         part.QuestionEn = viewModel.QuestionEn;

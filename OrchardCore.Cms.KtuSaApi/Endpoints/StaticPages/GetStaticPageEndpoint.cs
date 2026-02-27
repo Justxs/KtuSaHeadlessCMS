@@ -1,7 +1,6 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
@@ -17,7 +16,8 @@ public class GetStaticPageEndpoint(IRepository repository)
         Description(b => b
             .WithTags("Static Pages")
             .WithSummary("Get a static page by name")
-            .WithDescription("Returns the HTML body of a static page whose display text contains the given pageName. Language: 'lt' or 'en'.")
+            .WithDescription(
+                "Returns the HTML body of a static page whose display text contains the given pageName. Language: 'lt' or 'en'.")
             .Produces<StaticPageResponse>(200)
             .ProducesProblem(404));
     }
@@ -27,22 +27,14 @@ public class GetStaticPageEndpoint(IRepository repository)
         var staticPages = await repository.GetAllAsync(StaticPage);
         var isLithuanian = req.Language.IsLtLanguage();
 
-        var filteredSection = staticPages
-            .FirstOrDefault(page => page.DisplayText.Contains(req.PageName));
+        var page = staticPages.FirstOrDefault(p => p.DisplayText.Contains(req.PageName));
 
-        if (filteredSection is null)
+        if (page is null)
         {
             await Send.NotFoundAsync(ct);
             return;
         }
 
-        var staticPagePart = filteredSection.As<StaticPagePart>();
-
-        var staticPageDto = new StaticPageResponse
-        {
-            Body = isLithuanian ? staticPagePart.BodyLt.HtmlBody : staticPagePart.BodyEn.HtmlBody,
-        };
-
-        await Send.OkAsync(staticPageDto, ct);
+        await Send.OkAsync(page.ToResponse(isLithuanian), ct);
     }
 }

@@ -21,12 +21,9 @@ public class SaUnitsController(IRepository repository) : ControllerBase
         var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
         var filterSaUnit = saUnits.FirstOrDefault(item => item.As<SaUnitPart>().UnitName == saUnit.ToString());
 
-        if (filterSaUnit == null)
-        {
-            return NotFound("Sa unit not found");
-        }
+        if (filterSaUnit == null) return NotFound("Sa unit not found");
 
-        var saUnitPart = filterSaUnit.As<SaUnitPart>(); 
+        var saUnitPart = filterSaUnit.As<SaUnitPart>();
         var contactPart = filterSaUnit.As<ContactPart>();
 
         var isLithuanian = language.IsLtLanguage();
@@ -44,7 +41,7 @@ public class SaUnitsController(IRepository repository) : ControllerBase
             InstagramUrl = saUnitPart.InstagramUrl,
             Address = saUnitPart.Address,
             Email = contactPart.Email,
-            PhoneNumber = contactPart.PhoneNumber,
+            PhoneNumber = contactPart.PhoneNumber
         };
 
         return Ok(saUnitDto);

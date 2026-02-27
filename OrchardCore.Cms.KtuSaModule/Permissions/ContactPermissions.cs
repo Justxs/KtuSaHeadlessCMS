@@ -8,12 +8,22 @@ public class ContactPermissions : IPermissionProvider
 {
     public static readonly Permission ManageCsaContacts = new(nameof(ManageCsaContacts), "Can manage CSA contacts.");
     public static readonly Permission ManageBrkContacts = new(nameof(ManageBrkContacts), "Can manage BRK contacts.");
-    public static readonly Permission ManageInfosaContacts = new(nameof(ManageInfosaContacts), "Can manage InfoSA contacts.");
-    public static readonly Permission ManageVivatChemijaContacts = new(nameof(ManageVivatChemijaContacts), "Can manage Vivat chemija contacts.");
+
+    public static readonly Permission ManageInfosaContacts =
+        new(nameof(ManageInfosaContacts), "Can manage InfoSA contacts.");
+
+    public static readonly Permission ManageVivatChemijaContacts =
+        new(nameof(ManageVivatChemijaContacts), "Can manage Vivat chemija contacts.");
+
     public static readonly Permission ManageIndiContacts = new(nameof(ManageIndiContacts), "Can manage InDi contacts.");
     public static readonly Permission ManageEsaContacts = new(nameof(ManageEsaContacts), "Can manage ESA contacts.");
-    public static readonly Permission ManageFumsaContacts = new(nameof(ManageFumsaContacts), "Can manage FUMSA contacts.");
-    public static readonly Permission ManageStatiusContacts = new(nameof(ManageStatiusContacts), "Can manage STATIUS contacts.");
+
+    public static readonly Permission ManageFumsaContacts =
+        new(nameof(ManageFumsaContacts), "Can manage FUMSA contacts.");
+
+    public static readonly Permission ManageStatiusContacts =
+        new(nameof(ManageStatiusContacts), "Can manage STATIUS contacts.");
+
     public static readonly Permission ManageVfsaContacts = new(nameof(ManageVfsaContacts), "Can manage VFSA contacts.");
     public static readonly Permission ManageShmContacts = new(nameof(ManageShmContacts), "Can manage SHM contacts.");
     public static readonly Permission ManagePositions = new(nameof(ManagePositions), "Can manage KTU SA positions.");
@@ -21,20 +31,20 @@ public class ContactPermissions : IPermissionProvider
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
         return Task.FromResult(new[]
-        {
-            ManageCsaContacts,
-            ManageBrkContacts,
-            ManageInfosaContacts,
-            ManageVivatChemijaContacts,
-            ManageIndiContacts,
-            ManageEsaContacts,
-            ManageFumsaContacts,
-            ManageStatiusContacts,
-            ManageVfsaContacts,
-            ManageShmContacts,
-            ManagePositions,
-        }
-        .AsEnumerable());
+            {
+                ManageCsaContacts,
+                ManageBrkContacts,
+                ManageInfosaContacts,
+                ManageVivatChemijaContacts,
+                ManageIndiContacts,
+                ManageEsaContacts,
+                ManageFumsaContacts,
+                ManageStatiusContacts,
+                ManageVfsaContacts,
+                ManageShmContacts,
+                ManagePositions
+            }
+            .AsEnumerable());
     }
 
     public static Permission GetPermission(SaUnit saUnit)
@@ -51,7 +61,7 @@ public class ContactPermissions : IPermissionProvider
             SaUnit.SHM => ManageShmContacts,
             SaUnit.VFSA => ManageVfsaContacts,
             SaUnit.BRK => ManageBrkContacts,
-            _ => throw new ArgumentException("Invalid SaUnit", nameof(saUnit)),
+            _ => throw new ArgumentException("Invalid SaUnit", nameof(saUnit))
         };
 
         return permission;
@@ -75,20 +85,22 @@ public class ContactPermissions : IPermissionProvider
                     ManageFumsaContacts,
                     ManageStatiusContacts,
                     ManageVfsaContacts,
-                    ManageShmContacts,
-                },
+                    ManageShmContacts
+                }
             },
             new PermissionStereotype
             {
                 Name = President,
-                Permissions = new[] {
-                    ManagePositions,
-                },
+                Permissions = new[]
+                {
+                    ManagePositions
+                }
             },
             new PermissionStereotype
             {
                 Name = CsaEditor,
-                Permissions = new[] { 
+                Permissions = new[]
+                {
                     ManageCsaContacts,
                     ManageBrkContacts,
                     ManageInfosaContacts,
@@ -98,53 +110,53 @@ public class ContactPermissions : IPermissionProvider
                     ManageFumsaContacts,
                     ManageStatiusContacts,
                     ManageVfsaContacts,
-                    ManageShmContacts,
-                },
+                    ManageShmContacts
+                }
             },
             new PermissionStereotype
             {
                 Name = BrkEditor,
-                Permissions = new[] { ManageBrkContacts },
+                Permissions = new[] { ManageBrkContacts }
             },
             new PermissionStereotype
             {
                 Name = InfosaEditor,
-                Permissions = new[] { ManageInfosaContacts },
+                Permissions = new[] { ManageInfosaContacts }
             },
             new PermissionStereotype
             {
                 Name = VivatChemijaEditor,
-                Permissions = new[] { ManageVivatChemijaContacts },
+                Permissions = new[] { ManageVivatChemijaContacts }
             },
             new PermissionStereotype
             {
                 Name = IndiEditor,
-                Permissions = new[] { ManageIndiContacts },
+                Permissions = new[] { ManageIndiContacts }
             },
             new PermissionStereotype
             {
                 Name = EsaEditor,
-                Permissions = new[] { ManageEsaContacts },
+                Permissions = new[] { ManageEsaContacts }
             },
             new PermissionStereotype
             {
                 Name = FumsaEditor,
-                Permissions = new[] { ManageFumsaContacts },
+                Permissions = new[] { ManageFumsaContacts }
             },
             new PermissionStereotype
             {
-                Name = StatiusEditor    ,
-                Permissions = new[] { ManageStatiusContacts },
+                Name = StatiusEditor,
+                Permissions = new[] { ManageStatiusContacts }
             },
             new PermissionStereotype
             {
                 Name = VfsaEditor,
-                Permissions = new[] { ManageVfsaContacts },
+                Permissions = new[] { ManageVfsaContacts }
             },
             new PermissionStereotype
             {
                 Name = ShmEditor,
-                Permissions = new[] { ManageShmContacts },
+                Permissions = new[] { ManageShmContacts }
             }
         };
     }

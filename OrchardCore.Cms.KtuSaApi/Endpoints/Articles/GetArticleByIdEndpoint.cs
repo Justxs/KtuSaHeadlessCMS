@@ -1,6 +1,5 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
@@ -15,7 +14,8 @@ public class GetArticleByIdEndpoint(IContentManager contentManager)
         Description(b => b
             .WithTags("Articles")
             .WithSummary("Get an article by ID")
-            .WithDescription("Returns the full content of an article including HTML body, reading time estimate and a structured content list. Language: 'lt' or 'en'.")
+            .WithDescription(
+                "Returns the full content of an article including HTML body, reading time estimate and a structured content list. Language: 'lt' or 'en'.")
             .Produces<ArticleContentResponse>(200)
             .ProducesProblem(404));
     }
@@ -34,21 +34,6 @@ public class GetArticleByIdEndpoint(IContentManager contentManager)
 
         var isLithuanian = req.Language.IsLtLanguage();
 
-        var part = article.As<CardPart>();
-        var htmlPart = article.As<ArticlePart>();
-
-        var articleDto = new ArticleContentResponse
-        {
-            Title = (isLithuanian ? part?.TitleLt : part?.TitleEn)!,
-            HtmlBody = (isLithuanian ? htmlPart?.HtmlContentLt.HtmlBody : htmlPart?.HtmlContentEn.HtmlBody)!,
-            Id = article.ContentItemId,
-            CreatedDate = (DateTime)article.CreatedUtc!,
-            ThumbnailImageId = part!.ImageUploadField.FileId,
-        };
-
-        articleDto.ReadingTime = articleDto.HtmlBody.CalculateReadingTime();
-        articleDto.ContentList = articleDto.HtmlBody.GetContentList();
-
-        await Send.OkAsync(articleDto, ct);
+        await Send.OkAsync(article.ToContentResponse(isLithuanian), ct);
     }
 }

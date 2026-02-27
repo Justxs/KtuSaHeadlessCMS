@@ -9,7 +9,10 @@ public class SaUnitPermissions : IPermissionProvider
     public static readonly Permission ManageCsaInfo = new(nameof(ManageCsaInfo), "Can manage CSA info.");
     public static readonly Permission ManageBrkInfo = new(nameof(ManageBrkInfo), "Can manage BRK info.");
     public static readonly Permission ManageInfosaInfo = new(nameof(ManageInfosaInfo), "Can manage InfoSA info.");
-    public static readonly Permission ManageVivatChemijaInfo = new(nameof(ManageVivatChemijaInfo), "Can manage Vivat chemija info.");
+
+    public static readonly Permission ManageVivatChemijaInfo =
+        new(nameof(ManageVivatChemijaInfo), "Can manage Vivat chemija info.");
+
     public static readonly Permission ManageIndiInfo = new(nameof(ManageIndiInfo), "Can manage InDi info.");
     public static readonly Permission ManageEsaInfo = new(nameof(ManageEsaInfo), "Can manage ESA info.");
     public static readonly Permission ManageFumsaInfo = new(nameof(ManageFumsaInfo), "Can manage FUMSA info.");
@@ -20,19 +23,19 @@ public class SaUnitPermissions : IPermissionProvider
     public Task<IEnumerable<Permission>> GetPermissionsAsync()
     {
         return Task.FromResult(new[]
-        {
-            ManageCsaInfo,
-            ManageBrkInfo,
-            ManageInfosaInfo,
-            ManageVivatChemijaInfo,
-            ManageIndiInfo,
-            ManageEsaInfo,
-            ManageFumsaInfo,
-            ManageStatiusInfo,
-            ManageVfsaInfo,
-            ManageShmInfo,
-        }
-        .AsEnumerable());
+            {
+                ManageCsaInfo,
+                ManageBrkInfo,
+                ManageInfosaInfo,
+                ManageVivatChemijaInfo,
+                ManageIndiInfo,
+                ManageEsaInfo,
+                ManageFumsaInfo,
+                ManageStatiusInfo,
+                ManageVfsaInfo,
+                ManageShmInfo
+            }
+            .AsEnumerable());
     }
 
     public static Permission GetPermission(SaUnit saUnit)
@@ -49,7 +52,7 @@ public class SaUnitPermissions : IPermissionProvider
             SaUnit.SHM => ManageShmInfo,
             SaUnit.VFSA => ManageVfsaInfo,
             SaUnit.BRK => ManageBrkInfo,
-            _ => throw new ArgumentException("Invalid SaUnit", nameof(saUnit)),
+            _ => throw new ArgumentException("Invalid SaUnit", nameof(saUnit))
         };
 
         return permission;
@@ -62,7 +65,8 @@ public class SaUnitPermissions : IPermissionProvider
             new PermissionStereotype
             {
                 Name = Administrator,
-                Permissions = new[] { 
+                Permissions = new[]
+                {
                     ManageCsaInfo,
                     ManageBrkInfo,
                     ManageInfosaInfo,
@@ -72,64 +76,64 @@ public class SaUnitPermissions : IPermissionProvider
                     ManageFumsaInfo,
                     ManageStatiusInfo,
                     ManageVfsaInfo,
-                    ManageShmInfo,
-                },
+                    ManageShmInfo
+                }
             },
             new PermissionStereotype
             {
                 Name = President,
-                Permissions = new[] { ManageCsaInfo },
+                Permissions = new[] { ManageCsaInfo }
             },
             new PermissionStereotype
             {
                 Name = CsaEditor,
-                Permissions = new[] { ManageCsaInfo },
+                Permissions = new[] { ManageCsaInfo }
             },
             new PermissionStereotype
             {
                 Name = BrkEditor,
-                Permissions = new[] { ManageBrkInfo },
+                Permissions = new[] { ManageBrkInfo }
             },
             new PermissionStereotype
             {
                 Name = InfosaEditor,
-                Permissions = new[] { ManageInfosaInfo },
+                Permissions = new[] { ManageInfosaInfo }
             },
             new PermissionStereotype
             {
                 Name = VivatChemijaEditor,
-                Permissions = new[] { ManageVivatChemijaInfo },
+                Permissions = new[] { ManageVivatChemijaInfo }
             },
             new PermissionStereotype
             {
                 Name = IndiEditor,
-                Permissions = new[] { ManageIndiInfo },
+                Permissions = new[] { ManageIndiInfo }
             },
             new PermissionStereotype
             {
                 Name = EsaEditor,
-                Permissions = new[] { ManageEsaInfo },
+                Permissions = new[] { ManageEsaInfo }
             },
             new PermissionStereotype
             {
                 Name = FumsaEditor,
-                Permissions = new[] { ManageFumsaInfo },
+                Permissions = new[] { ManageFumsaInfo }
             },
             new PermissionStereotype
             {
                 Name = StatiusEditor,
-                Permissions = new[] { ManageStatiusInfo },
+                Permissions = new[] { ManageStatiusInfo }
             },
             new PermissionStereotype
             {
                 Name = VfsaEditor,
-                Permissions = new[] { ManageVfsaInfo },
+                Permissions = new[] { ManageVfsaInfo }
             },
             new PermissionStereotype
             {
                 Name = ShmEditor,
-                Permissions = new[] { ManageShmInfo },
-            },
+                Permissions = new[] { ManageShmInfo }
+            }
         };
     }
 }

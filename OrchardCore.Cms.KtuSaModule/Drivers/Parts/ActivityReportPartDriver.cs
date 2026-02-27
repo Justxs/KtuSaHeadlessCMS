@@ -29,14 +29,12 @@ public class ActivityReportPartDriver(IResourceManager resourceManager) : Conten
     {
         var model = new ActivityReportPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return Edit(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         if (model.To < model.From)
         {
-            context.Updater.ModelState.AddModelError(Prefix + ".To", "The activity report to date must be later than from date");
+            context.Updater.ModelState.AddModelError(Prefix + ".To",
+                "The activity report to date must be later than from date");
 
             return await EditAsync(part, context);
         }

@@ -1,6 +1,5 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
@@ -24,19 +23,10 @@ public class GetSponsorsEndpoint(IRepository repository)
     {
         var sponsors = await repository.GetAllAsync(Sponsor);
 
-        sponsors = sponsors.OrderByDescending(item => item.CreatedUtc);
-
-        var sponsorDtos = sponsors.Select(item =>
-        {
-            var part = item.As<SponsorPart>();
-            return new SponsorResponse
-            {
-                Id = item.ContentItemId,
-                Name = part.Name,
-                WebsiteUrl = part.WebsiteUrl,
-                LogoId = part.ImageUploadField.FileId,
-            };
-        }).ToList();
+        var sponsorDtos = sponsors
+            .OrderByDescending(item => item.CreatedUtc)
+            .Select(item => item.ToResponse())
+            .ToList();
 
         await Send.OkAsync(sponsorDtos, ct);
     }

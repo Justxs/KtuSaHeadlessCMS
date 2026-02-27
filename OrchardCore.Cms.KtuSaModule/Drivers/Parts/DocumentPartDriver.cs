@@ -22,10 +22,7 @@ public class DocumentPartDriver : ContentPartDisplayDriver<DocumentPart>
     {
         var model = new DocumentPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return Edit(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         part.TitleLt = model.TitleLt;
         part.TitleEn = model.TitleEn;

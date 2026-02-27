@@ -20,9 +20,9 @@
         <div class="selectors-container d-flex">
             @if (Model.Selectors != null)
             {
-            <div class="selectors cursor-pointer">
-                @await DisplayAsync(Model.Selectors)
-            </div>
+                <div class="selectors cursor-pointer">
+                    @await DisplayAsync(Model.Selectors)
+                </div>
             }
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" value="@contentItem.Id" name="itemIds" id="itemIds-@contentItem.Id">
@@ -75,7 +75,6 @@
                     else
                     {
                         @displayTextWithBreaks[0]
-                       
                     }
                 }
                 else
@@ -92,21 +91,21 @@
             </div>
             @if (Model.Header != null)
             {
-            <div class="header me-1">
-                @await DisplayAsync(Model.Header)
-            </div>
+                <div class="header me-1">
+                    @await DisplayAsync(Model.Header)
+                </div>
             }
             @if (Model.Tags != null)
             {
-            <div class="tags me-1">
-                @await DisplayAsync(Model.Tags)
-            </div>
+                <div class="tags me-1">
+                    @await DisplayAsync(Model.Tags)
+                </div>
             }
             @if (Model.Meta != null)
             {
-            <div class="metadata me-1">
-                @await DisplayAsync(Model.Meta)
-            </div>
+                <div class="metadata me-1">
+                    @await DisplayAsync(Model.Meta)
+                </div>
             }
         </div>
     </div>
@@ -114,19 +113,19 @@
         <div class="actions">
             @if (Model.Actions != null)
             {
-            @await DisplayAsync(Model.Actions)
+                @await DisplayAsync(Model.Actions)
             }
 
             @if (Model.ActionsMenu != null && Model.ActionsMenu.HasItems)
             {
-            <div class="btn-group" title="@T["Actions"]">
-                <button type="button" class="btn btn-sm btn-secondary dropdown-toggle actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span>@T["Actions"]</span>
-                </button>
-                <div class="actions-menu dropdown-menu dropdown-menu-end">
-                    @await DisplayAsync(Model.ActionsMenu)
+                <div class="btn-group" title="@T["Actions"]">
+                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>@T["Actions"]</span>
+                    </button>
+                    <div class="actions-menu dropdown-menu dropdown-menu-end">
+                        @await DisplayAsync(Model.ActionsMenu)
+                    </div>
                 </div>
-            </div>
             }
         </div>
     </div>
@@ -134,9 +133,9 @@
 
 @if (Model.Content != null)
 {
-<div class="row">
-    <div class="col primary">
-        @await DisplayAsync(Model.Content)
+    <div class="row">
+        <div class="col primary">
+            @await DisplayAsync(Model.Content)
+        </div>
     </div>
-</div>
 }

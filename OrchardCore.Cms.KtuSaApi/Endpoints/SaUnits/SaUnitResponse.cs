@@ -8,14 +8,11 @@ public class SaUnitResponse
     [Description("SA unit description in the requested language")]
     public required string Description { get; set; }
 
-    [Description("Contact email address")]
-    public required string Email { get; set; }
+    [Description("Contact email address")] public required string Email { get; set; }
 
-    [Description("Contact phone number")]
-    public required string PhoneNumber { get; set; }
+    [Description("Contact phone number")] public required string PhoneNumber { get; set; }
 
-    [Description("Physical address")]
-    public required string Address { get; set; }
+    [Description("Physical address")] public required string Address { get; set; }
 
     [Description("URL of the SA unit's LinkedIn page")]
     public required string LinkedInUrl { get; set; }

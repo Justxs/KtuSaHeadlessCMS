@@ -20,5 +20,4 @@ public class SaUnitPart : ContentPart
     public string FacebookUrl { get; set; } = null!;
 
     public string InstagramUrl { get; set; } = null!;
-
 }

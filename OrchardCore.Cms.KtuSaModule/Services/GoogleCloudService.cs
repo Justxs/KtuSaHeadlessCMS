@@ -14,7 +14,6 @@ public class GoogleCloudService : IGoogleCloudService
 
     public GoogleCloudService(GoogleCloudSettings settings)
     {
-
         var jsonCredentials = JsonConvert.SerializeObject(
             new
             {
@@ -27,7 +26,7 @@ public class GoogleCloudService : IGoogleCloudService
                 auth_uri = settings.AuthUri,
                 token_uri = settings.TokenUri,
                 auth_provider_x509_cert_url = settings.AuthProviderX509CertUrl,
-                client_x509_cert_url = settings.ClientX509CertUrl,
+                client_x509_cert_url = settings.ClientX509CertUrl
             });
 
         var googleCredential = GoogleCredential.FromJson(jsonCredentials);
@@ -38,10 +37,7 @@ public class GoogleCloudService : IGoogleCloudService
 
     public async Task<string> UploadImageAsync(ImageUploadFieldViewModel viewModel)
     {
-        if (viewModel.FileId is not null)
-        {
-            await RemoveFileAsync(viewModel.FileId);
-        }
+        if (viewModel.FileId is not null) await RemoveFileAsync(viewModel.FileId);
 
         var fileName = $"{Guid.NewGuid()}-{viewModel.UploadedFile.FileName}";
         var contentType = viewModel.UploadedFile.ContentType;
@@ -49,10 +45,10 @@ public class GoogleCloudService : IGoogleCloudService
         await using var stream = viewModel.UploadedFile.OpenReadStream();
 
         var storageObject = await _storageClient.UploadObjectAsync(
-            bucket: _bucketName,
-            objectName: fileName,
-            contentType: contentType,
-            source: stream
+            _bucketName,
+            fileName,
+            contentType,
+            stream
         );
 
         return storageObject.MediaLink;
@@ -60,10 +56,7 @@ public class GoogleCloudService : IGoogleCloudService
 
     public async Task<string> UploadPdfAsync(PdfUploadFieldViewModel viewModel)
     {
-        if (viewModel.FileId is not null)
-        {
-            await RemoveFileAsync(viewModel.FileId);
-        }
+        if (viewModel.FileId is not null) await RemoveFileAsync(viewModel.FileId);
 
         var fileName = $"{Guid.NewGuid()}-{viewModel.UploadedFile.FileName.Replace(" ", "")}";
         var contentType = viewModel.UploadedFile.ContentType;
@@ -71,10 +64,10 @@ public class GoogleCloudService : IGoogleCloudService
         await using var stream = viewModel.UploadedFile.OpenReadStream();
 
         var storageObject = await _storageClient.UploadObjectAsync(
-            bucket: _bucketName,
-            objectName: fileName,
-            contentType: contentType,
-            source: stream
+            _bucketName,
+            fileName,
+            contentType,
+            stream
         );
 
         var lastIndex = storageObject.Id.LastIndexOf('/');
@@ -93,10 +86,7 @@ public class GoogleCloudService : IGoogleCloudService
 
             var queryIndex = fileName.IndexOf('?');
 
-            if (queryIndex != -1)
-            {
-                fileName = fileName[..queryIndex];
-            }
+            if (queryIndex != -1) fileName = fileName[..queryIndex];
 
             await _storageClient.DeleteObjectAsync(_bucketName, fileName);
         }

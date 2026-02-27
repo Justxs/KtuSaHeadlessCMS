@@ -40,9 +40,7 @@ public class PdfUploadFieldDriver(IGoogleCloudService googleCloudService) : Cont
         {
             var allowedContentTypes = new List<string> { "application/pdf" };
             if (!allowedContentTypes.Contains(viewModel.UploadedFile.ContentType.ToLowerInvariant()))
-            {
                 context.Updater.ModelState.AddModelError($"{Prefix}.UploadedFile", "Only PDF files are allowed.");
-            }
         }
 
         if (viewModel.UploadedFile is not null && viewModel.UploadedFile.Length != 0)

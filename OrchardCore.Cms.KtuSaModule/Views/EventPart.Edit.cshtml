@@ -6,7 +6,7 @@
         var combinedEventData = new
         {
             FientaEventListLt = Model.FientaEventListLt,
-            FientaEventListEn = Model.FientaEventListEn,
+            FientaEventListEn = Model.FientaEventListEn
         };
     }
     @Html.Raw(JsonSerializer.Serialize(combinedEventData))
@@ -20,7 +20,7 @@
     <input asp-for="TitleLt"
            class="form-control"
            value="@Model.TitleLt"
-           required />
+           required/>
 
     <span class="hint">
         Title in Lithuanian language
@@ -35,7 +35,7 @@
     <input asp-for="TitleEn"
            class="form-control"
            value="@Model.TitleEn"
-           required />
+           required/>
 
     <span class="hint">
         Title in English language
@@ -52,7 +52,7 @@
            class="form-control"
            value="@Model.FbEventLink"
            type="url"
-           required />
+           required/>
 
     <span class="hint">
         Insert event facebook url. Example: https://www.facebook.com/events/3526931650915426
@@ -80,8 +80,7 @@
             type="button"
             id="importDataButton"
             class="btn btn-primary"
-            style="display:none;"
-        >
+            style="display:none;">
             Import data from Fienta
         </button>
     </div>
@@ -96,12 +95,11 @@
     </label>
 
     <input asp-for="Address"
-        class="form-control"
-        value="@Model.Address"
-    />
+           class="form-control"
+           value="@Model.Address"/>
 
     <span class="hint">
-       Insert location of the event.
+        Insert location of the event.
     </span>
 </fieldset>
 
@@ -113,13 +111,12 @@
                 <span asp-validation-for="StartDate"></span>
             </label>
 
-            <input 
+            <input
                 asp-for="StartDate"
                 type="text"
                 class="form-control datetimepicker"
                 value="@Model.StartDate.ToString("yyyy-MM-dd HH:mm")"
-                required
-            />
+                required/>
         </div>
     </fieldset>
 
@@ -130,13 +127,12 @@
                 <span asp-validation-for="EndDate"></span>
             </label>
 
-            <input 
+            <input
                 asp-for="EndDate"
                 type="text"
                 class="form-control datetimepicker"
                 value="@Model.EndDate.ToString("yyyy-MM-dd hh:mm")"
-                required
-            />
+                required/>
         </div>
     </fieldset>
 </div>

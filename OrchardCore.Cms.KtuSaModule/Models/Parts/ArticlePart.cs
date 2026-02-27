@@ -7,5 +7,5 @@ public class ArticlePart : ContentPart
 {
     public QuillField HtmlContentLt { get; set; } = null!;
 
-    public QuillField HtmlContentEn { get; set;} = null!;
+    public QuillField HtmlContentEn { get; set; } = null!;
 }

@@ -9,7 +9,8 @@ using OrchardCore.Data.Migration;
 
 namespace OrchardCore.Cms.KtuSaModule.Migrations;
 
-public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) : DataMigration
+public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager)
+    : DataMigration
 {
     public async Task<int> CreateAsync()
     {
@@ -26,10 +27,7 @@ public class SaUnitMigrations(IContentDefinitionManager contentDefinitionManager
             .WithPart(nameof(ContactPart))
             .WithDescription("Sa unit content type"));
 
-        foreach (var saUnit in (SaUnit[])Enum.GetValues(typeof(SaUnit)))
-        {
-            await CreateSaUnitsAsync(saUnit);
-        }
+        foreach (var saUnit in (SaUnit[])Enum.GetValues(typeof(SaUnit))) await CreateSaUnitsAsync(saUnit);
 
         return 1;
     }

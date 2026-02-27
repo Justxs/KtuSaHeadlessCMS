@@ -1,6 +1,5 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -17,27 +16,24 @@ public class GetMainContactsEndpoint(IRepository repository)
         Description(b => b
             .WithTags("Main Contacts")
             .WithSummary("Get main contact for an SA unit")
-            .WithDescription("Returns the primary address and contact details for a specific student association unit. Allowed saUnit values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")
-            .Produces<MainContactResponse>(200));
+            .WithDescription(
+                "Returns the primary address and contact details for a specific student association unit. Allowed saUnit values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")
+            .Produces<MainContactResponse>(200)
+            .ProducesProblem(404));
     }
 
     public override async Task HandleAsync(GetMainContactsRequest req, CancellationToken ct)
     {
         var contacts = await repository.GetAllAsync(MainContact);
 
-        var filteredContact = contacts
-            .FirstOrDefault(part => part.As<AddressPart>().SaUnit == req.SaUnit.ToString());
+        var contact = contacts.FirstOrDefault(item => item.As<AddressPart>().SaUnit == req.SaUnit.ToString());
 
-        var addressPart = filteredContact.As<AddressPart>();
-        var contactPart = filteredContact.As<ContactPart>();
-
-        var contactDto = new MainContactResponse
+        if (contact is null)
         {
-            Address = addressPart.Address,
-            Email = contactPart.Email,
-            PhoneNumber = contactPart.PhoneNumber,
-        };
+            await Send.NotFoundAsync(ct);
+            return;
+        }
 
-        await Send.OkAsync(contactDto, ct);
+        await Send.OkAsync(contact.ToResponse(), ct);
     }
 }

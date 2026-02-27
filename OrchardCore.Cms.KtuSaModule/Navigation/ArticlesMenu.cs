@@ -16,16 +16,10 @@ public class ArticlesMenu(
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
 
         var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (user == null) return ValueTask.CompletedTask;
 
         builder.Add(T["Articles"], content => content
             .AddClass("icon-class-fa-newspaper")
@@ -34,7 +28,7 @@ public class ArticlesMenu(
                 .Action("List", "Admin", new
                 {
                     area = "OrchardCore.Contents",
-                    contentTypeId = Article,
+                    contentTypeId = Article
                 })
                 .Permission(ArticlePermissions.ManageArticles)
                 .AddClass("icon-class-fa-list")

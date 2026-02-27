@@ -11,7 +11,7 @@ public class SponsorPermissions : IPermissionProvider
     {
         return Task.FromResult(new[]
             {
-                ManageSponsors,
+                ManageSponsors
             }
             .AsEnumerable());
     }
@@ -23,13 +23,13 @@ public class SponsorPermissions : IPermissionProvider
             new PermissionStereotype
             {
                 Name = Administrator,
-                Permissions = new[] { ManageSponsors },
+                Permissions = new[] { ManageSponsors }
             },
             new PermissionStereotype
             {
                 Name = Marketing,
-                Permissions = new[] { ManageSponsors },
-            },
+                Permissions = new[] { ManageSponsors }
+            }
         };
     }
 }

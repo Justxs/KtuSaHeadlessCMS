@@ -29,7 +29,7 @@ public class MainContactsController(IRepository repository) : ControllerBase
         {
             Address = addressPart.Address,
             Email = contactPart.Email,
-            PhoneNumber = contactPart.PhoneNumber,
+            PhoneNumber = contactPart.PhoneNumber
         };
 
         return Ok(contactDto);

@@ -17,7 +17,8 @@ public class GetEventsEndpoint(IRepository repository)
         Description(b => b
             .WithTags("Events")
             .WithSummary("Get all events")
-            .WithDescription("Returns a list of event previews ordered by start date descending. Language: 'lt' or 'en'. Pass fetchPassed=true to include past events.")
+            .WithDescription(
+                "Returns a list of event previews ordered by start date descending. Language: 'lt' or 'en'. Pass fetchPassed=true to include past events.")
             .Produces<List<EventPreviewResponse>>(200));
     }
 
@@ -28,17 +29,8 @@ public class GetEventsEndpoint(IRepository repository)
 
         var eventDtos = events
             .OrderByDescending(item => item.As<EventPart>().StartDate)
-            .Select(item =>
-            {
-                var part = item.As<EventPart>();
-                return new EventPreviewResponse
-                {
-                    Id = item.ContentItemId,
-                    Title = isLithuanian ? part.TitleLt : part.TitleEn,
-                    StartDate = part.StartDate,
-                    CoverImageUrl = part.ImageUploadField.FileId,
-                };
-            }).ToList();
+            .Select(item => item.ToPreviewResponse(isLithuanian))
+            .ToList();
 
         await Send.OkAsync(eventDtos, ct);
     }

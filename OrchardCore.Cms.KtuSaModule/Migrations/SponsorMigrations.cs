@@ -11,13 +11,13 @@ public class SponsorMigrations(IContentDefinitionManager contentDefinitionManage
 {
     public async Task<int> CreateAsync()
     {
-        await contentDefinitionManager.AlterPartDefinitionAsync(nameof(SponsorPart), part => 
+        await contentDefinitionManager.AlterPartDefinitionAsync(nameof(SponsorPart), part =>
             part.Attachable()
                 .WithField(nameof(SponsorPart.ImageUploadField), field => field
                     .OfType(nameof(ImageUploadField))
                     .WithDisplayName("Upload company Logo"))
                 .WithDescription("Sponsors content part")
-            );
+        );
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(Sponsor, type => type
             .Draftable()

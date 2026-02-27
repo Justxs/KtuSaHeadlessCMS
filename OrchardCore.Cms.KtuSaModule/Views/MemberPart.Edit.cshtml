@@ -5,12 +5,11 @@
         Member Name
     </label>
 
-    <input 
+    <input
         asp-for="Name"
         class="form-control"
         value="@Model.Name"
-        required 
-    />
+        required/>
 </fieldset>
 
 <fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
@@ -22,7 +21,7 @@
            class="form-control"
            value="@Model.Email"
            type="email"
-           required />
+           required/>
 </fieldset>
 
 <fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
@@ -33,8 +32,8 @@
     <input asp-for="Index"
            class="form-control"
            value="@Model.Index"
-           type="number" />
-    
+           type="number"/>
+
     <span class="hint">
         Set the order of the member in the list.
     </span>

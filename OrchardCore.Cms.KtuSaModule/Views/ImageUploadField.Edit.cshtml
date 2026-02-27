@@ -7,14 +7,13 @@
         </label>
 
         <input asp-for="UploadedFile"
-               type="file" 
+               type="file"
                class="form-control"
-               accept="image/png, image/jpeg" 
-               onchange="PreviewImage(this);" 
-               style="display: flex;"
-        />
+               accept="image/png, image/jpeg"
+               onchange="PreviewImage(this);"
+               style="display: flex;"/>
     </div>
-    
+
     <div>
         @if (!string.IsNullOrEmpty(Model.FileId))
         {

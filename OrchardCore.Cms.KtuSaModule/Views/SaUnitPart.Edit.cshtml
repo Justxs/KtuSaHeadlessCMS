@@ -5,11 +5,10 @@
         Sa unit Name
     </label>
 
-    <input 
+    <input
         asp-for="UnitName"
         class="form-control"
-        value="@Model.UnitName"
-    />
+        value="@Model.UnitName"/>
 </fieldset>
 
 <fieldset class="form-group" asp-validation-class-for="DescriptionLt" style="margin-bottom: 20px;">
@@ -52,7 +51,7 @@
     <input asp-for="Address"
            class="form-control"
            value="@Model.Address"
-           required />
+           required/>
 
     <span class="hint">
         Write here what does this position
@@ -68,7 +67,7 @@
            class="form-control"
            value="@Model.LinkedInUrl"
            type="url"
-           required />
+           required/>
 
     <span class="hint">
         Example: https://www.linkedin.com/company/ktu-fsa-infosa/
@@ -84,7 +83,7 @@
            class="form-control"
            value="@Model.FacebookUrl"
            type="url"
-           required />
+           required/>
 
     <span class="hint">
         Example: https://www.facebook.com/InfoSA
@@ -100,7 +99,7 @@
            class="form-control"
            value="@Model.InstagramUrl"
            type="url"
-           required />
+           required/>
 
     <span class="hint">
         Example: https://www.instagram.com/ktu_infosa/
