@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.14.0" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
     <PackageReference Include="OrchardCore.ContentFields" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Google" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Html" Version="2.2.1" />

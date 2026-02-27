@@ -1,4 +1,4 @@
-using OrchardCore.Cms.KtuSaModule.Extensions;
+using OrchardCore.Cms.KtuSaApi.Extensions;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 

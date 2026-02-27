@@ -13,7 +13,7 @@ public sealed class Startup : StartupBase
     {
         services.AddFastEndpoints(o => { o.Assemblies = [typeof(Startup).Assembly]; });
         services.AddOpenApi("ktu-sa-api",
-            options => { options.ShouldInclude = (description) => description.GroupName == "ktu-sa-api"; });
+            options => { options.ShouldInclude = description => description.GroupName == "ktu-sa-api"; });
     }
 
     public override void Configure(IApplicationBuilder app, IEndpointRouteBuilder routes,

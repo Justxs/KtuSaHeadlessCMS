@@ -1,4 +1,4 @@
-﻿using OrchardCore.Cms.KtuSaModule.Dtos.ExternalApiResponse;
+﻿using OrchardCore.Cms.KtuSaModule.Dtos;
 
 namespace OrchardCore.Cms.KtuSaModule.Interfaces;
 
