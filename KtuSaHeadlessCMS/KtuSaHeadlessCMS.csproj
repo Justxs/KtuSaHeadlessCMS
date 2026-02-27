@@ -7,10 +7,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Localization\" />
-  </ItemGroup>
-
   <!-- Watcher include and excludes -->
   <ItemGroup>
       <Watch Include="**\*.cs" Exclude="Recipes\**;Assets\**;node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
@@ -29,11 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lombiq.LoginAsAnybody" Version="3.0.0" />
-    <PackageReference Include="OrchardCore.Google" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.Logging.NLog" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="1.8.3" />
-    <PackageReference Include="OrchardCoreContrib.Apis.Swagger" Version="1.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.3.0" />
+    <PackageReference Include="OrchardCore.Google" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Logging.NLog" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Application.Cms.Targets" Version="2.2.1" />
+    <PackageReference Include="OrchardCoreContrib.Apis.Swagger" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>

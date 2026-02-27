@@ -2,7 +2,6 @@
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
-using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Parts;
@@ -27,11 +26,11 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
 
     }
 
-    public override async Task<IDisplayResult> UpdateAsync(CardPart part, IUpdateModel updater, UpdatePartEditorContext context)
+    public override async Task<IDisplayResult> UpdateAsync(CardPart part, UpdatePartEditorContext context)
     {
         var viewModel = new CardPartViewModel();
 
-        if (!await updater.TryUpdateModelAsync(viewModel, Prefix))
+        if (!await context.Updater.TryUpdateModelAsync(viewModel, Prefix))
         {
             return await EditAsync(part, context);
         }

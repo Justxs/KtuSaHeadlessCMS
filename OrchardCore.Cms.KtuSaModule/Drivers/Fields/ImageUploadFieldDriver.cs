@@ -5,7 +5,6 @@ using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.ContentManagement.Metadata.Models;
-using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Fields;
@@ -36,15 +35,15 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
             .Location("Content");
     }
 
-    public override async Task<IDisplayResult> UpdateAsync(ImageUploadField field, IUpdateModel updater, UpdateFieldEditorContext context)
+    public override async Task<IDisplayResult> UpdateAsync(ImageUploadField field, UpdateFieldEditorContext context)
     {
         var viewModel = new ImageUploadFieldViewModel();
 
-        await updater.TryUpdateModelAsync(viewModel, Prefix);
+        await context.Updater.TryUpdateModelAsync(viewModel, Prefix);
 
         if (viewModel.UploadedFile is null && field.FileId is not null)
         {
-            updater.ModelState[$"{Prefix}.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
+            context.Updater.ModelState[$"{Prefix}.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
 
             return await EditAsync(field, context);
         }
@@ -54,7 +53,7 @@ public class ImageUploadFieldDriver(IGoogleCloudService googleCloudService) : Co
             var allowedContentTypes = new List<string> { "image/png", "image/jpeg" };
             if (!allowedContentTypes.Contains(viewModel.UploadedFile.ContentType.ToLowerInvariant()))
             {
-                updater.ModelState.AddModelError("ImageUploadField.UploadedFile", "Only PNG and JPEG files are allowed.");
+                context.Updater.ModelState.AddModelError("ImageUploadField.UploadedFile", "Only PNG and JPEG files are allowed.");
             }
         }
 

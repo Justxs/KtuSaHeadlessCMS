@@ -5,7 +5,6 @@ using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.ContentManagement.Metadata.Models;
-using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 
 namespace OrchardCore.Cms.KtuSaModule.Drivers.Fields;
@@ -24,15 +23,15 @@ public class PdfUploadFieldDriver(IGoogleCloudService googleCloudService) : Cont
             .Location("Content");
     }
 
-    public override async Task<IDisplayResult> UpdateAsync(PdfUploadField field, IUpdateModel updater, UpdateFieldEditorContext context)
+    public override async Task<IDisplayResult> UpdateAsync(PdfUploadField field, UpdateFieldEditorContext context)
     {
         var viewModel = new PdfUploadFieldViewModel();
 
-        await updater.TryUpdateModelAsync(viewModel, Prefix);
+        await context.Updater.TryUpdateModelAsync(viewModel, Prefix);
 
         if (viewModel.UploadedFile is null && field.FileId is not null)
         {
-            updater.ModelState[$"{Prefix}.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
+            context.Updater.ModelState[$"{Prefix}.UploadedFile"]!.ValidationState = ModelValidationState.Valid;
 
             return await EditAsync(field, context);
         }
@@ -42,7 +41,7 @@ public class PdfUploadFieldDriver(IGoogleCloudService googleCloudService) : Cont
             var allowedContentTypes = new List<string> { "application/pdf" };
             if (!allowedContentTypes.Contains(viewModel.UploadedFile.ContentType.ToLowerInvariant()))
             {
-                updater.ModelState.AddModelError($"{Prefix}.UploadedFile", "Only PDF files are allowed.");
+                context.Updater.ModelState.AddModelError($"{Prefix}.UploadedFile", "Only PDF files are allowed.");
             }
         }
 

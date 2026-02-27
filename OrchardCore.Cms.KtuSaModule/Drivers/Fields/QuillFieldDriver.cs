@@ -4,7 +4,6 @@ using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.ContentManagement.Metadata.Models;
-using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
 using OrchardCore.ResourceManagement;
 
@@ -42,11 +41,11 @@ public class QuillFieldDriver(IResourceManager resourceManager) : ContentFieldDi
             .Location("Content");
     }
 
-    public override async Task<IDisplayResult> UpdateAsync(QuillField field, IUpdateModel updater, UpdateFieldEditorContext context)
+    public override async Task<IDisplayResult> UpdateAsync(QuillField field, UpdateFieldEditorContext context)
     {
         var viewModel = new QuillFieldViewModel();
 
-        await updater.TryUpdateModelAsync(viewModel, Prefix);
+        await context.Updater.TryUpdateModelAsync(viewModel, Prefix);
 
         field.HtmlBody = viewModel.HtmlBody.AddH1Id();
 

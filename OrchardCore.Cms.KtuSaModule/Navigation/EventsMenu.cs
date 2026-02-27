@@ -18,7 +18,7 @@ public class EventsMenu(
     private readonly IStringLocalizer T = stringLocalizer;
 
 
-    public async Task BuildNavigationAsync(string name, NavigationBuilder builder)
+    public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
         if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
         {

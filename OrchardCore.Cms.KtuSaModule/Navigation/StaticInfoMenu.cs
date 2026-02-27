@@ -12,17 +12,17 @@ public class StaticInfoMenu(
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
-    public Task BuildNavigationAsync(string name, NavigationBuilder builder)
+    public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
         if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
         {
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         var user = httpContextAccessor.HttpContext?.User;
         if (user == null)
         {
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         builder.Add(T["Static info"], "2", content => content
@@ -40,6 +40,6 @@ public class StaticInfoMenu(
             )
         );
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

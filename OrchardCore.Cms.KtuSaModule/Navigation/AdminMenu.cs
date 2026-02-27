@@ -13,17 +13,17 @@ public class AdminMenu(
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
-    public Task BuildNavigationAsync(string name, NavigationBuilder builder)
+    public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
         if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
         {
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         var user = httpContextAccessor.HttpContext?.User;
         if (user == null)
         {
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
 
         builder
@@ -70,6 +70,6 @@ public class AdminMenu(
                     .AddClass("icon-class-fas"))
             );
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }
