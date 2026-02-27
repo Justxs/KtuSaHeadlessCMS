@@ -5,15 +5,18 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Sponsors;
 
 public static class SponsorMapper
 {
-    public static SponsorResponse ToResponse(this ContentItem item)
+    extension(ContentItem item)
     {
-        var part = item.As<SponsorPart>();
-        return new SponsorResponse
+        public SponsorResponse ToResponse()
         {
-            Id = item.ContentItemId,
-            Name = part.Name,
-            WebsiteUrl = part.WebsiteUrl,
-            LogoId = part.ImageUploadField.FileId
-        };
+            var part = item.As<SponsorPart>();
+            return new SponsorResponse
+            {
+                Id = item.ContentItemId,
+                Name = part.Name,
+                WebsiteUrl = part.WebsiteUrl,
+                LogoId = part.ImageUploadField.FileId
+            };
+        }
     }
 }

@@ -7,5 +7,9 @@ public interface IRepository
 {
     Task<IEnumerable<ContentItem>> GetAllAsync(string contentTypeName);
 
-    Task<ContentItem> GetSaUnitByName(SaUnit saUnit);
+    Task<ContentItem?> GetByIdAsync(string contentItemId);
+
+    Task<IEnumerable<ContentItem>> GetByIdsAsync(IEnumerable<string> contentItemIds);
+
+    Task<ContentItem?> GetSaUnitByNameAsync(SaUnit saUnit);
 }

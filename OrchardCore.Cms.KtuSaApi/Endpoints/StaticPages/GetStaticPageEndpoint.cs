@@ -11,13 +11,14 @@ public class GetStaticPageEndpoint(IRepository repository)
 {
     public override void Configure()
     {
-        Get("api/{language}/StaticPages/{pageName}");
+        Get("api/static-pages/{pageName}");
         AllowAnonymous();
         Description(b => b
             .WithTags("Static Pages")
             .WithSummary("Get a static page by name")
             .WithDescription(
-                "Returns the HTML body of a static page whose display text contains the given pageName. Language: 'lt' or 'en'.")
+                "Returns the HTML body of a static page whose display text contains the given pageName. " +
+                "Pass language=lt or language=en.")
             .Produces<StaticPageResponse>(200)
             .ProducesProblem(404));
     }

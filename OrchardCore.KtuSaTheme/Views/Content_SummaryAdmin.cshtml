@@ -9,7 +9,7 @@
         isMultiline = contentItem.DisplayText.Contains("/");
         displayTextWithBreaks = contentItem.DisplayText.Split("/", StringSplitOptions.TrimEntries);
     }
-    catch (Exception e)
+    catch (Exception)
     {
         isMultiline = false;
     }

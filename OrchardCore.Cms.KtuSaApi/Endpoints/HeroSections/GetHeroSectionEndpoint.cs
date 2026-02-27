@@ -12,13 +12,14 @@ public class GetHeroSectionEndpoint(IRepository repository)
 {
     public override void Configure()
     {
-        Get("api/{language}/HeroSections/{sectionName}");
+        Get("api/hero-sections/{sectionName}");
         AllowAnonymous();
         Description(b => b
             .WithTags("Hero Sections")
             .WithSummary("Get a hero section by name")
             .WithDescription(
-                "Returns the title, description and image of a hero section whose title contains the given sectionName (case-insensitive). Language: 'lt' or 'en'.")
+                "Returns the title, description and image of a hero section whose title contains the given sectionName (case-insensitive). " +
+                "Pass language=lt or language=en.")
             .Produces<HeroSectionResponse>(200)
             .ProducesProblem(404));
     }
@@ -30,7 +31,7 @@ public class GetHeroSectionEndpoint(IRepository repository)
 
         var section = heroSections
             .FirstOrDefault(item =>
-                (isLithuanian ? item.As<HeroSectionPart>()?.TitleLt : item.As<HeroSectionPart>()?.TitleEn)
+                ((isLithuanian ? item.As<HeroSectionPart>()?.TitleLt : item.As<HeroSectionPart>()?.TitleEn)!)
                 .Contains(req.SectionName, StringComparison.CurrentCultureIgnoreCase));
 
         if (section is null)

@@ -1,3 +1,5 @@
+using OrchardCore.Cms.KtuSaModule.Models.Enums;
+
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
 public class GetEventsRequest
@@ -7,4 +9,7 @@ public class GetEventsRequest
 
     [Description("When true, includes events whose start date is in the past")]
     public bool FetchPassed { get; set; }
+
+    [Description("Optional SA unit filter. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK")]
+    public SaUnit? SaUnit { get; set; }
 }

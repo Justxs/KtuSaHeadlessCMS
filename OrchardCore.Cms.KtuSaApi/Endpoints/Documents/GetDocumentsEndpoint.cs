@@ -11,13 +11,15 @@ public class GetDocumentsEndpoint(IRepository repository)
 {
     public override void Configure()
     {
-        Get("api/{language}/Documents");
+        Get("api/documents");
         AllowAnonymous();
         Description(b => b
             .WithTags("Documents")
             .WithSummary("Get documents grouped by category")
             .WithDescription(
-                "Returns all documents grouped by their category. Each entry contains a category name and a list of documents with titles and PDF file URLs. Language: 'lt' or 'en'.")
+                "Returns all documents grouped by their category. " +
+                "Each entry contains a category name and a list of documents with titles and PDF file URLs. " +
+                "Pass language=lt or language=en.")
             .Produces<List<DocumentCategoryResponse>>(200));
     }
 
@@ -27,10 +29,10 @@ public class GetDocumentsEndpoint(IRepository repository)
         var documents = await repository.GetAllAsync(Document);
         var isLithuanian = req.Language.IsLtLanguage();
 
-        var categoriesDto = documentsCategories
+        var response = documentsCategories
             .Select(item => item.ToCategoryResponse(isLithuanian, documents))
             .ToList();
 
-        await Send.OkAsync(categoriesDto, ct);
+        await Send.OkAsync(response, ct);
     }
 }

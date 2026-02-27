@@ -10,7 +10,7 @@ public class GetSponsorsEndpoint(IRepository repository)
 {
     public override void Configure()
     {
-        Get("api/Sponsors");
+        Get("api/sponsors");
         AllowAnonymous();
         Description(b => b
             .WithTags("Sponsors")
@@ -23,11 +23,11 @@ public class GetSponsorsEndpoint(IRepository repository)
     {
         var sponsors = await repository.GetAllAsync(Sponsor);
 
-        var sponsorDtos = sponsors
+        var response = sponsors
             .OrderByDescending(item => item.CreatedUtc)
             .Select(item => item.ToResponse())
             .ToList();
 
-        await Send.OkAsync(sponsorDtos, ct);
+        await Send.OkAsync(response, ct);
     }
 }

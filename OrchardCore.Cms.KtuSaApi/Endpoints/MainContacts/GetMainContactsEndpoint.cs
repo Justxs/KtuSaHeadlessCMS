@@ -11,13 +11,13 @@ public class GetMainContactsEndpoint(IRepository repository)
 {
     public override void Configure()
     {
-        Get("api/MainContacts/{saUnit}");
+        Get("api/sa-units/{saUnit}/main-contact");
         AllowAnonymous();
         Description(b => b
             .WithTags("Main Contacts")
             .WithSummary("Get main contact for an SA unit")
             .WithDescription(
-                "Returns the primary address and contact details for a specific student association unit. Allowed saUnit values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")
+                "Returns the primary address and contact details for a specific student association unit.")
             .Produces<MainContactResponse>(200)
             .ProducesProblem(404));
     }

@@ -11,27 +11,28 @@ public class GetDuksEndpoint(IRepository repository)
 {
     public override void Configure()
     {
-        Get("api/{language}/Duks");
+        Get("api/duks");
         AllowAnonymous();
         Description(b => b
-            .WithTags("Duks")
-            .WithSummary("Get DUK (FAQ) items")
+            .WithTags("Faqs")
+            .WithSummary("Get FAQ items")
             .WithDescription(
-                "Returns a list of frequently asked questions in the specified language. Query parameter 'limit' optionally returns a random subset.")
+                "Returns a list of frequently asked questions in the specified language. " +
+                "Pass language=lt or language=en. Query parameter 'limit' optionally returns a random subset.")
             .Produces<List<DukResponse>>(200));
     }
 
     public override async Task HandleAsync(GetDuksRequest req, CancellationToken ct)
     {
-        var duks = await repository.GetAllAsync(Duk);
+        var query = await repository.GetAllAsync(Duk);
         var isLithuanian = req.Language.IsLtLanguage();
-
-        IEnumerable<ContentItem> query = duks.OrderByDescending(item => item.ModifiedUtc);
 
         if (req.Limit is not null) query = query.OrderBy(_ => Guid.NewGuid()).Take(req.Limit.Value);
 
-        var dukDtos = query.Select(item => item.ToResponse(isLithuanian)).ToList();
+        var response = query.Select(item => item.ToResponse(isLithuanian))
+            .OrderByDescending(item => item.ModifiedDate)
+            .ToList();
 
-        await Send.OkAsync(dukDtos, ct);
+        await Send.OkAsync(response, ct);
     }
 }

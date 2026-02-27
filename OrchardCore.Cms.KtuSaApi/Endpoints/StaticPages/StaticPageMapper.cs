@@ -5,12 +5,15 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.StaticPages;
 
 public static class StaticPageMapper
 {
-    public static StaticPageResponse ToResponse(this ContentItem item, bool isLithuanian)
+    extension(ContentItem item)
     {
-        var part = item.As<StaticPagePart>();
-        return new StaticPageResponse
+        public StaticPageResponse ToResponse(bool isLithuanian)
         {
-            Body = isLithuanian ? part.BodyLt.HtmlBody : part.BodyEn.HtmlBody
-        };
+            var part = item.As<StaticPagePart>();
+            return new StaticPageResponse
+            {
+                Body = isLithuanian ? part.BodyLt.HtmlBody : part.BodyEn.HtmlBody
+            };
+        }
     }
 }

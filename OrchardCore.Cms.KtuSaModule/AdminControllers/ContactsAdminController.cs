@@ -22,9 +22,11 @@ public class ContactsAdminController(
     public async Task<IActionResult> ListContacts(SaUnit saUnit)
     {
         var contacts = await repository.GetAllAsync(Contact);
-        var saUnits = await repository.GetSaUnitByName(saUnit);
+        var saUnitItem = await repository.GetSaUnitByNameAsync(saUnit);
 
-        contacts = contacts.Where(c => c.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnits.ContentItemId));
+        if (saUnitItem is null) return NotFound();
+
+        contacts = contacts.Where(c => c.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId));
 
         var shapes = new List<IShape>();
 
