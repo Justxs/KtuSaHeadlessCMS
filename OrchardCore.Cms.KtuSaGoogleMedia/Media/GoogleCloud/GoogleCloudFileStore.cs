@@ -13,7 +13,7 @@ public sealed class GoogleCloudFileStore(
     GoogleCloudMediaStorageOptions options,
     IClock clock,
     IContentTypeProvider contentTypeProvider)
-    : IFileStore
+    : IFileStore, IDisposable
 {
     private const string DirectoryMarkerFileName = "OrchardCore.Media.txt";
     private static readonly byte[] MarkerFileContent =
@@ -23,6 +23,11 @@ public sealed class GoogleCloudFileStore(
     private readonly string _basePrefix = string.IsNullOrWhiteSpace(options.BasePath)
         ? string.Empty
         : NormalizePrefix(options.BasePath);
+
+    public void Dispose()
+    {
+        _storageClient.Dispose();
+    }
 
     public async Task<IFileStoreEntry?> GetFileInfoAsync(string path)
     {

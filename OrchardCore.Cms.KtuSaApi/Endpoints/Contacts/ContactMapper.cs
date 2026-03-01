@@ -12,9 +12,9 @@ public static class ContactMapper
         public ContactResponse ToResponse(bool isLithuanian, IEnumerable<ContentItem> positions, IMediaFileStore mediaFileStore)
         {
             var memberPart = item.As<MemberPart>();
-            var positionPart = positions
-                .FirstOrDefault(p => memberPart.Position.ContentItemIds.Contains(p.ContentItemId))
-                .As<PositionPart>();
+            var positionItem = positions
+                .FirstOrDefault(p => memberPart.Position.ContentItemIds.Contains(p.ContentItemId));
+            var positionPart = positionItem?.As<PositionPart>();
 
             return new ContactResponse
             {
@@ -22,8 +22,8 @@ public static class ContactMapper
                 Name = memberPart.Name,
                 Email = memberPart.Email,
                 ImageSrc = memberPart.MemberPhoto.ToPublicUrl(mediaFileStore),
-                Position = isLithuanian ? positionPart.NameLt : positionPart.NameEn,
-                Responsibilities = isLithuanian ? positionPart.DescriptionLt : positionPart.DescriptionEn,
+                Position = positionPart is not null ? (isLithuanian ? positionPart.NameLt : positionPart.NameEn) : string.Empty,
+                Responsibilities = positionPart is not null ? (isLithuanian ? positionPart.DescriptionLt : positionPart.DescriptionEn) : string.Empty,
                 Index = memberPart.Index
             };
         }

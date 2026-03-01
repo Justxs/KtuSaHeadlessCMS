@@ -14,6 +14,7 @@ public class GetDocumentsEndpoint(IRepository repository, IMediaFileStore mediaF
     {
         Get("api/documents");
         AllowAnonymous();
+        ResponseCache(300);
         Description(b => b
             .WithTags("Documents")
             .WithSummary("Get documents grouped by category")

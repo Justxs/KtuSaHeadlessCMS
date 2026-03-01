@@ -6,8 +6,9 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 public class GetEventsRequest
 {
     [QueryParam]
+    [AllowedValues("lt", "en")]
     [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
-    public string Language { get; set; } = null!;
+    public string Language { get; set; } = "en";
 
     [QueryParam]
     [Description("When true, includes events whose start date is in the past")]

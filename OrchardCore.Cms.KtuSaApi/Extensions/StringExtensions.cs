@@ -15,7 +15,7 @@ public static class StringExtensions
                 .Replace(text, string.Empty);
             var totalWordCount = textContent.CountWords();
 
-            var readingTimeMinutes = totalWordCount / 100;
+            var readingTimeMinutes = totalWordCount / 200;
 
             readingTimeMinutes = Math.Max(readingTimeMinutes, 1);
 
@@ -49,12 +49,13 @@ public static class StringExtensions
             var doc = new HtmlDocument();
             doc.LoadHtml(text);
 
-            var h1NodeCollection = doc.DocumentNode.SelectNodes("//h1");
-
-            var h1Tags = h1NodeCollection.Select(node => node.InnerText).ToList();
-
-            return h1Tags;
-        }
-
+            var headingNodes = doc.DocumentNode.SelectNodes("//h1 | //h2");
+            if (headingNodes is null)
+            {
+                return [];
             }
+
+            return headingNodes.Select(node => node.InnerText).ToList();
         }
+    }
+}

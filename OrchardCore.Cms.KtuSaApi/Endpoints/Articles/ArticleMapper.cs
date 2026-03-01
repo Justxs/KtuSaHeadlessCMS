@@ -20,8 +20,8 @@ public static class ArticleMapper
                 Preview = isLithuanian
                     ? articlePart.HtmlContentLt.HtmlBody.GetPreviewText()
                     : articlePart.HtmlContentEn.HtmlBody.GetPreviewText(),
-                CreatedDate = (DateTime)item.CreatedUtc!,
-                ThumbnailImageId = articlePart?.ThumbnailImage.ToPublicUrl(mediaFileStore) ?? string.Empty
+                CreatedDate = item.CreatedUtc ?? DateTime.MinValue,
+                ThumbnailImageUrl = articlePart?.ThumbnailImage.ToPublicUrl(mediaFileStore) ?? string.Empty
             };
         }
 
@@ -34,8 +34,8 @@ public static class ArticleMapper
                 Id = item.ContentItemId,
                 Title = (isLithuanian ? cardPart?.TitleLt : cardPart?.TitleEn)!,
                 HtmlBody = (isLithuanian ? articlePart?.HtmlContentLt.HtmlBody : articlePart?.HtmlContentEn.HtmlBody)!,
-                CreatedDate = (DateTime)item.CreatedUtc!,
-                ThumbnailImageId = articlePart?.ThumbnailImage.ToPublicUrl(mediaFileStore) ?? string.Empty
+                CreatedDate = item.CreatedUtc ?? DateTime.MinValue,
+                ThumbnailImageUrl = articlePart?.ThumbnailImage.ToPublicUrl(mediaFileStore) ?? string.Empty
             };
             response.ReadingTime = response.HtmlBody.CalculateReadingTime();
             response.ContentList = response.HtmlBody.GetContentList();

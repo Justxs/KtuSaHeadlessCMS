@@ -3,7 +3,7 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.StaticPages;
 public class StaticPageResponse
 {
     [Description("Title in the requested language")]
-    public string Title { get; set; } = null!;
+    public required string Title { get; set; }
 
     [Description("Hero section description text in the requested language")]
     public string? Description { get; set; }

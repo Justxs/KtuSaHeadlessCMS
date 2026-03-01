@@ -13,6 +13,6 @@ public class ArticlePreviewResponse
     [Description("Date and time the article was created (UTC)")]
     public DateTime CreatedDate { get; set; }
 
-    [Description("File ID of the article thumbnail image")]
-    public required string ThumbnailImageId { get; set; }
+    [Description("Public URL of the article thumbnail image")]
+    public required string ThumbnailImageUrl { get; set; }
 }

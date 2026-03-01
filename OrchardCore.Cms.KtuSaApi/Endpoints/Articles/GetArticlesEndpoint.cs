@@ -13,6 +13,7 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
     {
         Get("api/articles");
         AllowAnonymous();
+        ResponseCache(300);
         Description(b => b
             .WithTags("Articles")
             .WithSummary("Get all articles")
@@ -27,13 +28,15 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
         var query = await repository.GetAllAsync(Article);
         var isLithuanian = req.Language.IsLtLanguage();
 
-        if (req.Limit is not null) query = query.Take(req.Limit.Value);
-
-        var response = query
+        IEnumerable<ArticlePreviewResponse> response = query
             .Select(item => item.ToPreviewResponse(isLithuanian, mediaFileStore))
-            .OrderByDescending(item => item.CreatedDate)
-            .ToList();
+            .OrderByDescending(item => item.CreatedDate);
 
-        await Send.OkAsync(response, ct);
+        if (req.Limit is not null)
+        {
+            response = response.Take(req.Limit.Value);
+        }
+
+        await Send.OkAsync(response.ToList(), ct);
     }
 }

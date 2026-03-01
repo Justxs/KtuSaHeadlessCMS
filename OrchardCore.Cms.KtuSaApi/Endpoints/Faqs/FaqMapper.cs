@@ -15,7 +15,7 @@ public static class FaqMapper
                 Id = item.ContentItemId,
                 Question = (isLithuanian ? part?.QuestionLt : part?.QuestionEn)!,
                 Answer = (isLithuanian ? part?.AnswerLt : part?.AnswerEn)!,
-                ModifiedDate = (DateTime)item.ModifiedUtc!
+                ModifiedDate = item.ModifiedUtc ?? DateTime.MinValue
             };
         }
     }

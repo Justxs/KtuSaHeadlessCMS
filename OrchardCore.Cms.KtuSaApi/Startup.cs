@@ -21,6 +21,7 @@ public sealed class Startup : StartupBase
         routes.MapFastEndpoints(c =>
         {
             c.Endpoints.Configurator = ep => { ep.Options(x => x.WithGroupName("ktu-sa-api")); };
+            c.Errors.UseProblemDetails();
         });
         routes.MapOpenApi();
         routes.MapScalarApiReference();

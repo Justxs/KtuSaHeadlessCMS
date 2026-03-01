@@ -12,6 +12,7 @@ public class GetSaUnitEndpoint(IRepository repository, IMediaFileStore mediaFile
     {
         Get("api/sa-units/{saUnit}");
         AllowAnonymous();
+        ResponseCache(300);
         Description(b => b
             .WithTags("SA Units")
             .WithSummary("Get SA unit details")

@@ -17,7 +17,7 @@ public static class SponsorMapper
                 Id = item.ContentItemId,
                 Name = part.Name,
                 WebsiteUrl = part.WebsiteUrl,
-                LogoId = part.Logo.ToPublicUrl(mediaFileStore)
+                LogoUrl = part.Logo.ToPublicUrl(mediaFileStore)
             };
         }
     }

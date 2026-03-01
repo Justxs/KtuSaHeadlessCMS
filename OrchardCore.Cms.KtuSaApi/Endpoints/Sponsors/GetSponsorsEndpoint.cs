@@ -13,6 +13,7 @@ public class GetSponsorsEndpoint(IRepository repository, IMediaFileStore mediaFi
     {
         Get("api/sponsors");
         AllowAnonymous();
+        ResponseCache(300);
         Description(b => b
             .WithTags("Sponsors")
             .WithSummary("Get all sponsors")

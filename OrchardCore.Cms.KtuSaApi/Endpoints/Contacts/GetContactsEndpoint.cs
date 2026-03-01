@@ -15,6 +15,7 @@ public class GetContactsEndpoint(IRepository repository, IMediaFileStore mediaFi
     {
         Get("api/sa-units/{saUnit}/contacts");
         AllowAnonymous();
+        ResponseCache(300);
         Description(b => b
             .WithTags("Contacts")
             .WithSummary("Get contacts for an SA unit")

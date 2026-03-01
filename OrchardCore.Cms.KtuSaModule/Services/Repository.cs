@@ -30,7 +30,10 @@ public class Repository(ISession session, IContentManager contentManager) : IRep
 
     public async Task<ContentItem?> GetSaUnitByNameAsync(SaUnit saUnit)
     {
-        var saUnits = await GetAllAsync(ContentTypeConstants.SaUnit);
+        var saUnits = await session
+            .Query<ContentItem, ContentItemIndex>(index =>
+                index.ContentType == ContentTypeConstants.SaUnit && index.Published)
+            .ListAsync();
 
         return saUnits.FirstOrDefault(unit => unit.As<SaUnitPart>().UnitName == saUnit.ToString());
     }
