@@ -1,6 +1,7 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
@@ -10,9 +11,9 @@ public class DocumentPart : ContentPart
 
     public string TitleEn { get; set; } = null!;
 
-    public PdfUploadField DocumentLt { get; set; } = null!;
+    public MediaField FileLt { get; set; } = new();
 
-    public PdfUploadField DocumentEn { get; set; } = null!;
+    public MediaField FileEn { get; set; } = new();
 
     public ContentPickerField CategoryField { get; set; } = null!;
 }

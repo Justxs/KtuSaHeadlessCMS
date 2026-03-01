@@ -3,36 +3,11 @@ using static OrchardCore.Cms.KtuSaModule.Constants.RolesConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
-public class DocumentsPermissions : IPermissionProvider
+public class DocumentsPermissions : SimplePermissionProvider
 {
     public static readonly Permission ManageDocuments = new(nameof(ManageDocuments), "Can manage Documents content.");
 
-    public Task<IEnumerable<Permission>> GetPermissionsAsync()
-    {
-        return Task.FromResult(new[]
-            {
-                ManageDocuments
-            }
-            .AsEnumerable());
-    }
+    protected override Permission Permission => ManageDocuments;
 
-    public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
-    {
-        return new[]
-        {
-            new PermissionStereotype
-            {
-                Name = Administrator,
-                Permissions = new[] { ManageDocuments }
-            },
-            new PermissionStereotype
-            {
-                Name = CsaEditor,
-                Permissions = new[]
-                {
-                    ManageDocuments
-                }
-            }
-        };
-    }
+    protected override string[] Roles => [Administrator, CsaEditor];
 }

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OrchardCore.Abstractions" Version="2.2.1" />
+    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.14.0" />
+    <PackageReference Include="OrchardCore.FileStorage.Abstractions" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Media.Abstractions" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Media.Core" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Module.Targets" Version="2.2.1" />
+  </ItemGroup>
+
+</Project>

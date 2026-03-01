@@ -3,10 +3,11 @@ using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
-public class GetEventByIdEndpoint(IRepository repository)
+public class GetEventByIdEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetEventByIdRequest, EventContentResponse>
 {
     public override void Configure()
@@ -37,6 +38,6 @@ public class GetEventByIdEndpoint(IRepository repository)
         var saUnits = await repository.GetByIdsAsync(part.OrganisersField.ContentItemIds);
         var organisers = saUnits.Select(unit => unit.As<SaUnitPart>().UnitName).ToList();
 
-        await Send.OkAsync(eventItem.ToContentResponse(isLithuanian, organisers), ct);
+        await Send.OkAsync(eventItem.ToContentResponse(isLithuanian, organisers, mediaFileStore), ct);
     }
 }

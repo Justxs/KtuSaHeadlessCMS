@@ -1,4 +1,5 @@
-﻿using OrchardCore.Cms.KtuSaModule.Extensions;
+﻿using OrchardCore.Cms.KtuSaModule.Constants;
+using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Fields;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
@@ -11,13 +12,13 @@ namespace OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 
 public class QuillFieldDriver(IResourceManager resourceManager) : ContentFieldDisplayDriver<QuillField>
 {
-    public override IDisplayResult Display(QuillField field, BuildFieldDisplayContext context)
+    public override IDisplayResult Display(QuillField field, BuildFieldDisplayContext fieldDisplayContext)
     {
         return Initialize<QuillFieldViewModel>(
-                GetDisplayShapeType(context),
+                GetDisplayShapeType(fieldDisplayContext),
                 viewModel =>
                 {
-                    viewModel.Label = context.PartFieldDefinition.DisplayName();
+                    viewModel.Label = fieldDisplayContext.PartFieldDefinition.DisplayName();
                     viewModel.HtmlBody = field.HtmlBody;
                 })
             .Location("Summary", "Content:5");
@@ -25,11 +26,8 @@ public class QuillFieldDriver(IResourceManager resourceManager) : ContentFieldDi
 
     public override IDisplayResult Edit(QuillField field, BuildFieldEditorContext context)
     {
-        var settings = resourceManager.RegisterResource("script", "QuillJs");
-        settings.AtHead();
-
-        settings = resourceManager.RegisterResource("stylesheet", "QuillCss");
-        settings.AtHead();
+        resourceManager.RegisterResource("script", ResourceNames.QuillFieldJs).AtHead();
+        resourceManager.RegisterResource("stylesheet", ResourceNames.QuillFieldCss).AtHead();
 
         return Initialize<QuillFieldViewModel>(
                 GetEditorShapeType(context),

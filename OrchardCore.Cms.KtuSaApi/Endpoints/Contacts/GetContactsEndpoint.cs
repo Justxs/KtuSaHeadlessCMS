@@ -3,11 +3,12 @@ using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Contacts;
 
-public class GetContactsEndpoint(IRepository repository)
+public class GetContactsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetContactsRequest, List<ContactResponse>>
 {
     public override void Configure()
@@ -40,7 +41,7 @@ public class GetContactsEndpoint(IRepository repository)
 
         var response = contacts
             .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnit.ContentItemId))
-            .Select(item => item.ToResponse(isLithuanian, positions))
+            .Select(item => item.ToResponse(isLithuanian, positions, mediaFileStore))
             .OrderBy(contact => contact.Index)
             .ToList();
 

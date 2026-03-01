@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.ResourceManagement;
 
 namespace OrchardCore.Cms.KtuSaModule;
@@ -7,29 +8,45 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
 {
     private static readonly ResourceManifest Manifest = new();
 
-    private const string QuillCssUrl = "https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.snow.css";
-    private const string QuillJsUrl = "https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.js";
-    private const string FlatpickrCssUrl = "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css";
-    private const string FlatpickrJsUrl = "https://cdn.jsdelivr.net/npm/flatpickr";
+    private const string QuillVersion = "2.0.0-rc.5";
+    private const string QuillCdnBase = $"https://cdn.jsdelivr.net/npm/quill@{QuillVersion}/dist";
+    private const string FlatpickrCdnBase = "https://cdn.jsdelivr.net/npm/flatpickr";
+    private const string ModuleBase = "~/OrchardCore.Cms.KtuSaModule";
 
     static ResourceManagementOptionsConfiguration()
     {
-        Manifest.DefineStyle("QuillCss")
-            .SetUrl(QuillCssUrl)
-            .SetCdn(QuillCssUrl);
+        // Quill (CDN)
+        Manifest.DefineStyle(ResourceNames.QuillCss)
+            .SetUrl($"{QuillCdnBase}/quill.snow.css")
+            .SetCdn($"{QuillCdnBase}/quill.snow.css");
 
-        Manifest.DefineScript("QuillJs")
-            .SetUrl(QuillJsUrl)
-            .SetCdn(QuillJsUrl)
+        Manifest.DefineScript(ResourceNames.QuillJs)
+            .SetUrl($"{QuillCdnBase}/quill.js")
+            .SetCdn($"{QuillCdnBase}/quill.js")
             .SetDependencies("jQuery");
 
-        Manifest.DefineStyle("FlatpickrCss")
-            .SetUrl(FlatpickrCssUrl)
-            .SetCdn(FlatpickrCssUrl);
+        // Quill field (local)
+        Manifest.DefineStyle(ResourceNames.QuillFieldCss)
+            .SetUrl($"{ModuleBase}/css/quill-field.css")
+            .SetDependencies(ResourceNames.QuillCss);
 
-        Manifest.DefineScript("FlatpickrJs")
-            .SetUrl(FlatpickrJsUrl)
-            .SetCdn(FlatpickrJsUrl);
+        Manifest.DefineScript(ResourceNames.QuillFieldJs)
+            .SetUrl($"{ModuleBase}/js/quill-field.js")
+            .SetDependencies(ResourceNames.QuillJs);
+
+        // Flatpickr (CDN)
+        Manifest.DefineStyle(ResourceNames.FlatpickrCss)
+            .SetUrl($"{FlatpickrCdnBase}/dist/flatpickr.min.css")
+            .SetCdn($"{FlatpickrCdnBase}/dist/flatpickr.min.css");
+
+        Manifest.DefineScript(ResourceNames.FlatpickrJs)
+            .SetUrl(FlatpickrCdnBase)
+            .SetCdn(FlatpickrCdnBase);
+
+        // Flatpickr field (local)
+        Manifest.DefineScript(ResourceNames.FlatpickrFieldJs)
+            .SetUrl($"{ModuleBase}/js/flatpickr-field.js")
+            .SetDependencies(ResourceNames.FlatpickrJs);
     }
 
     public void Configure(ResourceManagementOptions options)

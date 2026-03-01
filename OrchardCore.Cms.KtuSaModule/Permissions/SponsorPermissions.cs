@@ -3,33 +3,11 @@ using static OrchardCore.Cms.KtuSaModule.Constants.RolesConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
-public class SponsorPermissions : IPermissionProvider
+public class SponsorPermissions : SimplePermissionProvider
 {
     public static readonly Permission ManageSponsors = new(nameof(ManageSponsors), "Can manage Sponsors content.");
 
-    public Task<IEnumerable<Permission>> GetPermissionsAsync()
-    {
-        return Task.FromResult(new[]
-            {
-                ManageSponsors
-            }
-            .AsEnumerable());
-    }
+    protected override Permission Permission => ManageSponsors;
 
-    public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
-    {
-        return new[]
-        {
-            new PermissionStereotype
-            {
-                Name = Administrator,
-                Permissions = new[] { ManageSponsors }
-            },
-            new PermissionStereotype
-            {
-                Name = Marketing,
-                Permissions = new[] { ManageSponsors }
-            }
-        };
-    }
+    protected override string[] Roles => [Administrator, Marketing];
 }

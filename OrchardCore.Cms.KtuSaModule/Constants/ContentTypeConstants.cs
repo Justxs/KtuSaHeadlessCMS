@@ -3,11 +3,11 @@
 public static class ContentTypeConstants
 {
     public const string Article = "Article";
-    public const string Duk = "Duk";
+    public const string Faq = "Faq";
+    public const string FaqPage = "FaqPage";
     public const string Sponsor = "Sponsor";
     public const string MainContact = "MainContact";
     public const string Contact = "Contact";
-    public const string HeroSection = "HeroSection";
     public const string Event = "Event";
     public const string SaUnit = "SaUnit";
     public const string UserProfile = "UserProfile";

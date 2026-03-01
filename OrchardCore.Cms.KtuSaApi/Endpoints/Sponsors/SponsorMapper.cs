@@ -1,5 +1,7 @@
+using OrchardCore.Cms.KtuSaApi.Extensions;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Sponsors;
 
@@ -7,7 +9,7 @@ public static class SponsorMapper
 {
     extension(ContentItem item)
     {
-        public SponsorResponse ToResponse()
+        public SponsorResponse ToResponse(IMediaFileStore mediaFileStore)
         {
             var part = item.As<SponsorPart>();
             return new SponsorResponse
@@ -15,7 +17,7 @@ public static class SponsorMapper
                 Id = item.ContentItemId,
                 Name = part.Name,
                 WebsiteUrl = part.WebsiteUrl,
-                LogoId = part.ImageUploadField.FileId
+                LogoId = part.Logo.ToPublicUrl(mediaFileStore)
             };
         }
     }

@@ -12,20 +12,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Cloud.Storage.V1" Version="4.14.0" />
     <PackageReference Include="OrchardCore.ContentFields" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Lists" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Google" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Html" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Localization" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Module.Targets" Version="2.2.1" />
     <PackageReference Include="OrchardCore.ContentManagement" Version="2.2.1" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Media.Abstractions" Version="2.2.1" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="2.2.1" />
     <PackageReference Include="OrchardCore.Navigation.Core" Version="2.2.1" />
     <PackageReference Include="OrchardCore.ResourceManagement" Version="2.2.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OrchardCore.Cms.KtuSaGoogleMedia\OrchardCore.Cms.KtuSaGoogleMedia.csproj" />
     <ProjectReference Include="..\OrchardCore.KtuSaTheme\OrchardCore.KtuSaTheme.csproj" />
   </ItemGroup>
 

@@ -1,0 +1,57 @@
+@model FaqPartViewModel
+<!-- TODO add localization -->
+
+<fieldset class="form-group" asp-validation-class-for="QuestionLt" style="margin-bottom: 20px;">
+    <label asp-for="QuestionLt">
+        Question LT
+    </label>
+
+    <input asp-for="QuestionLt"
+           name="FaqPart.QuestionLt"
+           class="form-control"
+           value="@Model.QuestionLt"
+           required/>
+
+    <span class="hint">
+        Frequently asked question in Lithuanian language
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="QuestionEn" style="margin-bottom: 20px;">
+    <label asp-for="QuestionEn">
+        Question EN
+    </label>
+
+    <input asp-for="QuestionEn"
+           class="form-control"
+           value="@Model.QuestionEn"
+           required/>
+
+    <span class="hint">
+        Frequently asked question in English language
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="AnswerLt" style="margin-bottom: 20px;">
+    <label asp-for="AnswerLt">
+        Answer LT
+    </label>
+
+    <textarea asp-for="AnswerLt" class="form-control" required>@Model.AnswerLt</textarea>
+
+    <span class="hint">
+        Answer of the question in Lithuanian language
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="AnswerEn" style="margin-bottom: 20px;">
+    <label asp-for="AnswerEn">
+        Answer EN
+    </label>
+
+    <textarea asp-for="AnswerEn" class="form-control" required>@Model.AnswerEn</textarea>
+
+    <span class="hint">
+        Answer of the question in English language
+    </span>
+</fieldset>

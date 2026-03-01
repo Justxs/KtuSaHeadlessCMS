@@ -1,11 +1,12 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 public class SaUnitPart : ContentPart
 {
-    public ImageUploadField SaPhoto { get; set; } = null!;
+    public MediaField UnitPhoto { get; set; } = new();
 
     public string UnitName { get; set; } = null!;
 

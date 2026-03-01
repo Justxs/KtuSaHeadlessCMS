@@ -1,12 +1,14 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.StaticPages;
 
-public class GetStaticPageEndpoint(IRepository repository)
+public class GetStaticPageEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetStaticPageRequest, StaticPageResponse>
 {
     public override void Configure()
@@ -17,7 +19,7 @@ public class GetStaticPageEndpoint(IRepository repository)
             .WithTags("Static Pages")
             .WithSummary("Get a static page by name")
             .WithDescription(
-                "Returns the HTML body of a static page whose display text contains the given pageName. " +
+                "Returns the title, description, image and HTML body of a static page whose title contains the given pageName (case-insensitive). " +
                 "Pass language=lt or language=en.")
             .Produces<StaticPageResponse>(200)
             .ProducesProblem(404));
@@ -28,7 +30,9 @@ public class GetStaticPageEndpoint(IRepository repository)
         var staticPages = await repository.GetAllAsync(StaticPage);
         var isLithuanian = req.Language.IsLtLanguage();
 
-        var page = staticPages.FirstOrDefault(p => p.DisplayText.Contains(req.PageName));
+        var page = staticPages.FirstOrDefault(p =>
+            ((isLithuanian ? p.As<StaticPagePart>()?.TitleLt : p.As<StaticPagePart>()?.TitleEn)!)
+            .Contains(req.PageName, StringComparison.CurrentCultureIgnoreCase));
 
         if (page is null)
         {
@@ -36,6 +40,6 @@ public class GetStaticPageEndpoint(IRepository repository)
             return;
         }
 
-        await Send.OkAsync(page.ToResponse(isLithuanian), ct);
+        await Send.OkAsync(page.ToResponse(isLithuanian, mediaFileStore), ct);
     }
 }

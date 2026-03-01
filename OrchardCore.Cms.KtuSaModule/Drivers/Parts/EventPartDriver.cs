@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
@@ -30,11 +31,8 @@ public class EventPartDriver(
 
     public override async Task<IDisplayResult> EditAsync(EventPart part, BuildPartEditorContext context)
     {
-        var settings = resourceManager.RegisterResource("script", "FlatpickrJs");
-        settings.AtHead();
-
-        settings = resourceManager.RegisterResource("stylesheet", "FlatpickrCss");
-        settings.AtHead();
+        resourceManager.RegisterResource("script", ResourceNames.FlatpickrFieldJs).AtHead();
+        resourceManager.RegisterResource("stylesheet", ResourceNames.FlatpickrCss).AtHead();
 
         var eventsLt = await fientaService.FetchKtuSaEventsAsync("lt");
         var eventsEn = await fientaService.FetchKtuSaEventsAsync("en");

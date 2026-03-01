@@ -1,4 +1,5 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
+﻿using OrchardCore.Cms.KtuSaModule.Constants;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
@@ -11,11 +12,8 @@ public class ActivityReportPartDriver(IResourceManager resourceManager) : Conten
 {
     public override IDisplayResult Edit(ActivityReportPart part, BuildPartEditorContext context)
     {
-        var settings = resourceManager.RegisterResource("script", "FlatpickrJs");
-        settings.AtHead();
-
-        settings = resourceManager.RegisterResource("stylesheet", "FlatpickrCss");
-        settings.AtHead();
+        resourceManager.RegisterResource("script", ResourceNames.FlatpickrFieldJs).AtHead();
+        resourceManager.RegisterResource("stylesheet", ResourceNames.FlatpickrCss).AtHead();
 
         return Initialize<ActivityReportPartViewModel>(
             GetEditorShapeType(context), model =>

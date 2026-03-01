@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Navigation;
 using OrchardCore.Cms.KtuSaModule.Permissions;
@@ -11,8 +10,7 @@ using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
 public class SaUnitsInfoMenu(
-    IStringLocalizer<AdminMenu> stringLocalizer,
-    IHttpContextAccessor httpContextAccessor,
+    IStringLocalizer<SaUnitsInfoMenu> stringLocalizer,
     IRepository repository)
     : INavigationProvider
 {
@@ -21,9 +19,6 @@ public class SaUnitsInfoMenu(
     public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
         if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return;
-
-        var user = httpContextAccessor.HttpContext?.User;
-        if (user == null) return;
 
         var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
 

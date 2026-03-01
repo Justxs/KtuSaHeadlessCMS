@@ -34,6 +34,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OrchardCore.Cms.KtuSaApi\OrchardCore.Cms.KtuSaApi.csproj" />
+		<ProjectReference Include="..\OrchardCore.Cms.KtuSaGoogleMedia\OrchardCore.Cms.KtuSaGoogleMedia.csproj" />
 		<ProjectReference Include="..\OrchardCore.Cms.KtuSaModule\OrchardCore.Cms.KtuSaModule.csproj" />
 		<ProjectReference Include="..\OrchardCore.KtuSaTheme\OrchardCore.KtuSaTheme.csproj" />
 	</ItemGroup>

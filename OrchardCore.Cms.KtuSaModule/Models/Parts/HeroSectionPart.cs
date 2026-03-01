@@ -1,6 +1,7 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
+using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
@@ -14,5 +15,5 @@ public class HeroSectionPart : ContentPart
 
     public TextField DescriptionEn { get; set; } = null!;
 
-    public ImageUploadField ImageUploadField { get; set; } = null!;
+    public MediaField ImageUploadField { get; set; } = new();
 }

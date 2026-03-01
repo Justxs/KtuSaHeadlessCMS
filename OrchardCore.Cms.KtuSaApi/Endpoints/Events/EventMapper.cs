@@ -1,5 +1,7 @@
+using OrchardCore.Cms.KtuSaApi.Extensions;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
@@ -7,7 +9,7 @@ public static class EventMapper
 {
     extension(ContentItem item)
     {
-        public EventPreviewResponse ToPreviewResponse(bool isLithuanian)
+        public EventPreviewResponse ToPreviewResponse(bool isLithuanian, IMediaFileStore mediaFileStore)
         {
             var part = item.As<EventPart>();
             return new EventPreviewResponse
@@ -15,12 +17,13 @@ public static class EventMapper
                 Id = item.ContentItemId,
                 Title = isLithuanian ? part.TitleLt : part.TitleEn,
                 StartDate = part.StartDate,
-                CoverImageUrl = part.ImageUploadField.FileId
+                CoverImageUrl = part.CoverImage.ToPublicUrl(mediaFileStore)
             };
         }
 
         public EventContentResponse ToContentResponse(bool isLithuanian,
-            List<string> organisers)
+            List<string> organisers,
+            IMediaFileStore mediaFileStore)
         {
             var part = item.As<EventPart>();
             return new EventContentResponse
@@ -34,7 +37,7 @@ public static class EventMapper
                 EndDate = part.EndDate,
                 Address = part.Address,
                 FacebookUrl = part.FbEventLink,
-                CoverImageUrl = part.ImageUploadField.FileId,
+                CoverImageUrl = part.CoverImage.ToPublicUrl(mediaFileStore),
                 Organisers = organisers
             };
         }

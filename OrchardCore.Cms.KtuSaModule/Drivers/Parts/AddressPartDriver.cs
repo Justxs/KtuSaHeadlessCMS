@@ -1,4 +1,4 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.ViewModels;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;

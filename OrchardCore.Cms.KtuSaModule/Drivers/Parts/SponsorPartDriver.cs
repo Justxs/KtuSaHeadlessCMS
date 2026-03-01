@@ -18,7 +18,6 @@ public class SponsorPartDriver : ContentPartDisplayDriver<SponsorPart>
 
     public override IDisplayResult Edit(SponsorPart part, BuildPartEditorContext context)
     {
-        var test = GetEditorShapeType(context);
         return Initialize<SponsorPartViewModel>(
                 GetEditorShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))

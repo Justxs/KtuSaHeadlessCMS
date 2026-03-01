@@ -1,21 +1,8 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Models.Parts;
-using OrchardCore.ContentManagement.Handlers;
 
 namespace OrchardCore.Cms.KtuSaModule.Handlers;
 
-public class CardPartHandler : ContentPartHandler<CardPart>
+public class CardPartHandler : DisplayTextPartHandler<CardPart>
 {
-    public override Task UpdatedAsync(UpdateContentContext context, CardPart instance)
-    {
-        context.ContentItem.DisplayText = $"{instance.TitleLt} / {instance.TitleEn}";
-
-        return Task.CompletedTask;
-    }
-
-    public override Task CreatedAsync(CreateContentContext context, CardPart instance)
-    {
-        context.ContentItem.DisplayText = $"{instance.TitleLt} / {instance.TitleEn}";
-
-        return Task.CompletedTask;
-    }
+    protected override string GetDisplayText(CardPart part) => $"{part.TitleLt} / {part.TitleEn}";
 }

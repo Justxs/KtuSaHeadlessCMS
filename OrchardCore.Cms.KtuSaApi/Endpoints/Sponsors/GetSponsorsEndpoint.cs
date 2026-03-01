@@ -1,11 +1,12 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Sponsors;
 
-public class GetSponsorsEndpoint(IRepository repository)
+public class GetSponsorsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : EndpointWithoutRequest<List<SponsorResponse>>
 {
     public override void Configure()
@@ -25,7 +26,7 @@ public class GetSponsorsEndpoint(IRepository repository)
 
         var response = sponsors
             .OrderByDescending(item => item.CreatedUtc)
-            .Select(item => item.ToResponse())
+            .Select(item => item.ToResponse(mediaFileStore))
             .ToList();
 
         await Send.OkAsync(response, ct);

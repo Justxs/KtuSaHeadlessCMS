@@ -2,11 +2,12 @@ using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Documents;
 
-public class GetDocumentsEndpoint(IRepository repository)
+public class GetDocumentsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetDocumentsRequest, List<DocumentCategoryResponse>>
 {
     public override void Configure()
@@ -30,7 +31,7 @@ public class GetDocumentsEndpoint(IRepository repository)
         var isLithuanian = req.Language.IsLtLanguage();
 
         var response = documentsCategories
-            .Select(item => item.ToCategoryResponse(isLithuanian, documents))
+            .Select(item => item.ToCategoryResponse(isLithuanian, documents, mediaFileStore))
             .ToList();
 
         await Send.OkAsync(response, ct);

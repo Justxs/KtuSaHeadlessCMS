@@ -1,10 +1,11 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Media;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
-public class GetArticleByIdEndpoint(IRepository repository)
+public class GetArticleByIdEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetArticleByIdRequest, ArticleContentResponse>
 {
     public override void Configure()
@@ -33,6 +34,6 @@ public class GetArticleByIdEndpoint(IRepository repository)
 
         var isLithuanian = req.Language.IsLtLanguage();
 
-        await Send.OkAsync(article.ToContentResponse(isLithuanian), ct);
+        await Send.OkAsync(article.ToContentResponse(isLithuanian, mediaFileStore), ct);
     }
 }

@@ -3,11 +3,12 @@ using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.ActivityReports;
 
-public class GetActivityReportsEndpoint(IRepository repository)
+public class GetActivityReportsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetActivityReportsRequest, List<ActivityReportResponse>>
 {
     public override void Configure()
@@ -39,7 +40,7 @@ public class GetActivityReportsEndpoint(IRepository repository)
         var response = activityReports
             .Where(item => item.As<ActivityReportPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId))
             .OrderByDescending(item => item.As<ActivityReportPart>().From)
-            .Select(item => item.ToResponse(isLithuanian))
+            .Select(item => item.ToResponse(isLithuanian, mediaFileStore))
             .ToList();
 
         await Send.OkAsync(response, ct);

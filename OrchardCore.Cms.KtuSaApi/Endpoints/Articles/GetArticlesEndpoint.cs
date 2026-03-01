@@ -1,11 +1,12 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
-public class GetArticlesEndpoint(IRepository repository)
+public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetArticlesRequest, List<ArticlePreviewResponse>>
 {
     public override void Configure()
@@ -29,7 +30,7 @@ public class GetArticlesEndpoint(IRepository repository)
         if (req.Limit is not null) query = query.Take(req.Limit.Value);
 
         var response = query
-            .Select(item => item.ToPreviewResponse(isLithuanian))
+            .Select(item => item.ToPreviewResponse(isLithuanian, mediaFileStore))
             .OrderByDescending(item => item.CreatedDate)
             .ToList();
 

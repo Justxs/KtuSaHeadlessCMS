@@ -16,7 +16,7 @@ public class MemberPartDriver(IContentManager contentManager) : ContentPartDispl
         return Initialize<MemberPartViewModel>(
                 GetDisplayShapeType(context), model =>
                 {
-                    if (saUnitField == null)
+                    if (saUnitField != null)
                         model.SaUnit = saUnitField.Select(organiser => organiser.DisplayText).FirstOrDefault();
 
                     model.Email = part.Email;

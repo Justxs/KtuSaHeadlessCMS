@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
+﻿using Microsoft.Extensions.Localization;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -9,38 +8,28 @@ namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
 public class AdminMenu(
     IStringLocalizer<AdminMenu> stringLocalizer,
-    IHttpContextAccessor httpContextAccessor) : INavigationProvider
+    IRepository repository) : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
-    public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
+    public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
+        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return;
 
-        var user = httpContextAccessor.HttpContext?.User;
-        if (user == null) return ValueTask.CompletedTask;
+        var faqPages = await repository.GetAllAsync(FaqPage);
+        var faqPage = faqPages.FirstOrDefault();
 
-        builder
-            .Add(T["FAQ"], "2", dukContentType => dukContentType
+        if (faqPage is not null)
+        {
+            builder.Add(T["FAQ"], "2", faq => faq
+                .Url($"/Admin/Contents/ContentItems/{faqPage.ContentItemId}/Display")
+                .Permission(FaqPermissions.ManageFaqs)
                 .AddClass("icon-class-fa-circle-question")
                 .AddClass("icon-class-fas")
-                .Add(T["All FAQs"], duk => duk
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentTypeId = Duk
-                    })
-                    .Permission(DukPermissions.ManageDuks)
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas")
-                )
-                .Add(T["Create new FAQ"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{Duk}/Create")
-                    .Permission(DukPermissions.ManageDuks)
-                    .AddClass("icon-class-fa-circle-plus")
-                    .AddClass("icon-class-fas")
-                )
-            )
+            );
+        }
+
+        builder
             .Add(T["Contacts"], "1", content => content
                 .AddClass("icon-class-fa-address-book")
                 .AddClass("icon-class-fas")
@@ -49,6 +38,15 @@ public class AdminMenu(
                     {
                         area = "OrchardCore.Contents",
                         contentTypeId = Contact
+                    })
+                    .Permission(ContactPermissions.ManageCsaContacts)
+                    .AddClass("icon-class-fa-list")
+                    .AddClass("icon-class-fas"))
+                .Add(T["Main contacts"], mainContacts => mainContacts
+                    .Action("List", "Admin", new
+                    {
+                        area = "OrchardCore.Contents",
+                        contentTypeId = MainContact
                     })
                     .Permission(ContactPermissions.ManageCsaContacts)
                     .AddClass("icon-class-fa-list")
@@ -62,8 +60,24 @@ public class AdminMenu(
                     .Permission(ContactPermissions.ManagePositions)
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"))
+            )
+            .Add(T["Activity Reports"], "3", activityReports => activityReports
+                .AddClass("icon-class-fa-clipboard-list")
+                .AddClass("icon-class-fas")
+                .Add(T["All activity reports"], list => list
+                    .Action("List", "Admin", new
+                    {
+                        area = "OrchardCore.Contents",
+                        contentTypeId = ActivityReport
+                    })
+                    .Permission(ActivityReportPermissions.ManageActivityReports)
+                    .AddClass("icon-class-fa-list")
+                    .AddClass("icon-class-fas"))
+                .Add(T["Create activity report"], create => create
+                    .Url($"/Admin/Contents/ContentTypes/{ActivityReport}/Create")
+                    .Permission(ActivityReportPermissions.ManageActivityReports)
+                    .AddClass("icon-class-fa-circle-plus")
+                    .AddClass("icon-class-fas"))
             );
-
-        return ValueTask.CompletedTask;
     }
 }

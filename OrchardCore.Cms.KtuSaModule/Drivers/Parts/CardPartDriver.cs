@@ -18,7 +18,6 @@ public class CardPartDriver : ContentPartDisplayDriver<CardPart>
 
     public override IDisplayResult Edit(CardPart part, BuildPartEditorContext context)
     {
-        var test = GetEditorShapeType(context);
         return Initialize<CardPartViewModel>(
                 GetEditorShapeType(context),
                 viewModel => PopulateViewModel(part, viewModel))

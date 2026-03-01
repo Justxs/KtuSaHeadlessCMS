@@ -1,24 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
-public class SponsorsMenu(
-    IStringLocalizer<AdminMenu> stringLocalizer,
-    IHttpContextAccessor httpContextAccessor)
-    : INavigationProvider
+public class SponsorsMenu(IStringLocalizer<SponsorsMenu> stringLocalizer) : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
         if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
-
-        var user = httpContextAccessor.HttpContext?.User;
-        if (user == null) return ValueTask.CompletedTask;
 
         builder.Add(T["Sponsors"], "1", content => content
             .AddClass("icon-class-fa-sack-dollar")

@@ -3,11 +3,12 @@ using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
-public class GetEventsEndpoint(IRepository repository)
+public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetEventsRequest, List<EventPreviewResponse>>
 {
     public override void Configure()
@@ -41,7 +42,7 @@ public class GetEventsEndpoint(IRepository repository)
 
         var response = query
             .OrderByDescending(item => item.As<EventPart>().StartDate)
-            .Select(item => item.ToPreviewResponse(isLithuanian))
+            .Select(item => item.ToPreviewResponse(isLithuanian, mediaFileStore))
             .ToList();
 
         await Send.OkAsync(response, ct);
