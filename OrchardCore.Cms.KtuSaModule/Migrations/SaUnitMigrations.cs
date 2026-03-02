@@ -21,7 +21,7 @@ public class SaUnitMigrations(
     {
         await ApplySchemaAsync();
 
-        foreach (var saUnit in (SaUnit[])Enum.GetValues(typeof(SaUnit)))
+        foreach (var saUnit in Enum.GetValues<SaUnit>())
         {
             await CreateSaUnitsAsync(saUnit);
         }

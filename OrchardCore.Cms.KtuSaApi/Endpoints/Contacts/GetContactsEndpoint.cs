@@ -1,5 +1,4 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
@@ -38,11 +37,11 @@ public class GetContactsEndpoint(IRepository repository, IMediaFileStore mediaFi
 
         var contacts = await repository.GetAllAsync(Contact);
         var positions = await repository.GetAllAsync(Position);
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
 
         var response = contacts
             .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnit.ContentItemId))
-            .Select(item => item.ToResponse(isLithuanian, positions, mediaFileStore))
+            .Select(item => item.ToResponse(language, positions, mediaFileStore))
             .OrderBy(contact => contact.Index)
             .ToList();
 

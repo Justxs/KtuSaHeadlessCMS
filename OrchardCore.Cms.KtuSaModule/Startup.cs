@@ -1,17 +1,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 using OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Migrations;
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Models.Parts.Widgets;
 using OrchardCore.Cms.KtuSaModule.Navigation;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
+using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
@@ -28,15 +28,21 @@ public class Startup : StartupBase
         services.AddScoped<IRepository, Repository>();
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
 
-        services
-            .AddContentField<QuillField>()
-            .UseDisplayDriver<QuillFieldDriver>();
-
         // Core content parts (shared across features)
         services.AddContentPart<ArticlePart>();
         services.AddContentPart<UserProfilePart>();
         services.AddContentPart<HeroSectionPart>();
         services.AddContentPart<StaticPagePart>();
+
+        // Widget content parts
+        services.AddContentPart<ParagraphWidgetPart>();
+        services.AddContentPart<ImageWidgetPart>();
+        services.AddContentPart<VideoWidgetPart>();
+        services.AddContentPart<PdfDocumentWidgetPart>();
+        services.AddContentPart<ImageCarouselWidgetPart>();
+
+        // Content handlers
+        services.AddScoped<IContentHandler, ContentFlowInitializationHandler>();
 
         services
             .AddContentPart<CategoryPart>()
@@ -90,6 +96,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, PositionMigrations>();
         services.AddScoped<IDataMigration, ActivityReportMigrations>();
         services.AddScoped<IDataMigration, StaticPageMigrations>();
+        services.AddScoped<IDataMigration, WidgetMigrations>();
 
         // Core permissions
         services.AddScoped<IPermissionProvider, FaqPermissions>();

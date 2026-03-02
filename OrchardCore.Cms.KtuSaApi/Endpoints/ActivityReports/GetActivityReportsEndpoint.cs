@@ -1,5 +1,4 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
@@ -36,12 +35,12 @@ public class GetActivityReportsEndpoint(IRepository repository, IMediaFileStore 
         }
 
         var activityReports = await repository.GetAllAsync(ActivityReport);
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
 
         var response = activityReports
             .Where(item => item.As<ActivityReportPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId))
             .OrderByDescending(item => item.As<ActivityReportPart>().From)
-            .Select(item => item.ToResponse(isLithuanian, mediaFileStore))
+            .Select(item => item.ToResponse(language, mediaFileStore))
             .ToList();
 
         await Send.OkAsync(response, ct);

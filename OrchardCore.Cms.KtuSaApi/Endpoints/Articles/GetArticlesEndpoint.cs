@@ -1,5 +1,4 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -26,10 +25,10 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
     public override async Task HandleAsync(GetArticlesRequest req, CancellationToken ct)
     {
         var query = await repository.GetAllAsync(Article);
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
 
         IEnumerable<ArticlePreviewResponse> response = query
-            .Select(item => item.ToPreviewResponse(isLithuanian, mediaFileStore))
+            .Select(item => item.ToPreviewResponse(language, mediaFileStore))
             .OrderByDescending(item => item.CreatedDate);
 
         if (req.Limit is not null)
@@ -37,6 +36,6 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
             response = response.Take(req.Limit.Value);
         }
 
-        await Send.OkAsync(response.ToList(), ct);
+        await Send.OkAsync([.. response], ct);
     }
 }

@@ -1,4 +1,5 @@
 using FastEndpoints;
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.SaUnits;
@@ -6,9 +7,8 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.SaUnits;
 public class GetSaUnitRequest
 {
     [QueryParam]
-    [AllowedValues("lt", "en")]
     [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
-    public string Language { get; set; } = "en";
+    public Language Language { get; set; } = Language.EN;
 
     [BindFrom("saUnit")]
     [Description(

@@ -7,5 +7,5 @@ using OrchardCore.Modules.Manifest;
     Version = "0.0.1",
     Description = "KTU SA Module provides all functionality to manage KTU SA Content",
     Category = "Content Management",
-    Dependencies = ["OrchardCore.Lists", "KtuSaGoogleMedia"]
+    Dependencies = ["OrchardCore.Lists", "OrchardCore.Flows", "KtuSaGoogleMedia"]
 )]

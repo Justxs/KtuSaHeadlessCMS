@@ -1,6 +1,6 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media;
@@ -29,10 +29,10 @@ public class GetStaticPageEndpoint(IRepository repository, IMediaFileStore media
     public override async Task HandleAsync(GetStaticPageRequest req, CancellationToken ct)
     {
         var staticPages = await repository.GetAllAsync(StaticPage);
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
 
         var page = staticPages.FirstOrDefault(p =>
-            ((isLithuanian ? p.As<StaticPagePart>()?.TitleLt : p.As<StaticPagePart>()?.TitleEn)!)
+            language.Resolve(p.As<StaticPagePart>()?.TitleLt, p.As<StaticPagePart>()?.TitleEn)!
             .Contains(req.PageName, StringComparison.CurrentCultureIgnoreCase));
 
         if (page is null)
@@ -41,6 +41,6 @@ public class GetStaticPageEndpoint(IRepository repository, IMediaFileStore media
             return;
         }
 
-        await Send.OkAsync(page.ToResponse(isLithuanian, mediaFileStore), ct);
+        await Send.OkAsync(page.ToResponse(language, mediaFileStore), ct);
     }
 }

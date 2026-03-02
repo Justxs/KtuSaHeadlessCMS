@@ -1,3 +1,4 @@
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 
@@ -7,14 +8,14 @@ public static class FaqMapper
 {
     extension(ContentItem item)
     {
-        public FaqResponse ToFaqResponse(bool isLithuanian)
+        public FaqResponse ToFaqResponse(Language language)
         {
             var part = item.As<FaqPart>();
             return new FaqResponse
             {
                 Id = item.ContentItemId,
-                Question = (isLithuanian ? part?.QuestionLt : part?.QuestionEn)!,
-                Answer = (isLithuanian ? part?.AnswerLt : part?.AnswerEn)!,
+                Question = language.Resolve(part?.QuestionLt, part?.QuestionEn)!,
+                Answer = language.Resolve(part?.AnswerLt, part?.AnswerEn)!,
                 ModifiedDate = item.ModifiedUtc ?? DateTime.MinValue
             };
         }

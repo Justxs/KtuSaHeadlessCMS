@@ -1,4 +1,3 @@
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Settings;
@@ -7,6 +6,7 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.Data.Migration;
+using OrchardCore.Flows.Models;
 using OrchardCore.Media.Fields;
 using OrchardCore.Media.Settings;
 using YesSql;
@@ -20,26 +20,12 @@ public class StaticPageMigrations(
     ISession session)
     : DataMigration
 {
-    private const int CurrentVersion = 7;
+    private const int CurrentVersion = 13;
 
     public async Task<int> CreateAsync()
     {
-        await contentDefinitionManager.AlterPartDefinitionAsync(nameof(StaticPagePart), part =>
-            part.Attachable()
-                .WithField(nameof(StaticPagePart.BodyLt), field => field
-                    .OfType(nameof(QuillField))
-                    .WithDisplayName("Page body LT"))
-                .WithField(nameof(StaticPagePart.BodyEn), field => field
-                    .OfType(nameof(QuillField))
-                    .WithDisplayName("Page body EN"))
-                .WithDescription("Static page content part")
-        );
-
-        await contentDefinitionManager.AlterTypeDefinitionAsync(StaticPage, type => type
-            .Listable()
-            .WithPart(nameof(StaticPagePart))
-            .WithDescription("Static page content type")
-        );
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        await AlterTypeDefinitionForCurrentSchemaAsync();
 
         await CreateStaticPagesAsync("Kas yra KTU SA?", "What is KTU SA?");
         await CreateStaticPagesAsync("Stipendijos", "Scholarships");
@@ -143,17 +129,57 @@ public class StaticPageMigrations(
         await contentDefinitionManager.DeleteTypeDefinitionAsync(StaticPage);
         await contentDefinitionManager.DeletePartDefinitionAsync(nameof(StaticPagePart));
         await AlterPartDefinitionForCurrentSchemaAsync();
-        await contentDefinitionManager.AlterTypeDefinitionAsync(StaticPage, type => type
-            .Listable()
-            .WithPart(nameof(StaticPagePart))
-            .WithDescription("Static page content type"));
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom7Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom8Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom9Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom10Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom11Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom12Async()
+    {
+        await AlterTypeDefinitionForCurrentSchemaAsync();
         return CurrentVersion;
     }
 
     private Task AlterPartDefinitionForCurrentSchemaAsync()
     {
         return contentDefinitionManager.AlterPartDefinitionAsync(nameof(StaticPagePart), part =>
-            part.WithField(nameof(StaticPagePart.DescriptionLt), field => field
+            part.RemoveField("BodyLt")
+                .RemoveField("BodyEn")
+                .WithField(nameof(StaticPagePart.DescriptionLt), field => field
                     .OfType(nameof(TextField))
                     .WithDisplayName("Description LT")
                     .WithPosition("0")
@@ -181,15 +207,31 @@ public class StaticPageMigrations(
                         AllowMediaText = false,
                         AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]
                     }))
-                .WithField(nameof(StaticPagePart.BodyLt), field => field
-                    .OfType(nameof(QuillField))
-                    .WithDisplayName("Page body LT")
-                    .WithPosition("3"))
-                .WithField(nameof(StaticPagePart.BodyEn), field => field
-                    .OfType(nameof(QuillField))
-                    .WithDisplayName("Page body EN")
-                    .WithPosition("4"))
         );
+    }
+
+    private Task AlterTypeDefinitionForCurrentSchemaAsync()
+    {
+        return contentDefinitionManager.AlterTypeDefinitionAsync(StaticPage, type => type
+            .Listable()
+            .WithPart(nameof(StaticPagePart))
+            .RemovePart("ContentLt")
+            .RemovePart("ContentEn")
+            .WithPart("ContentLt", nameof(FlowPart), part => part
+                .WithDisplayName("Body (Lithuanian)")
+                .WithPosition("3")
+                .WithSettings(new FlowPartSettings
+                {
+                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                }))
+            .WithPart("ContentEn", nameof(FlowPart), part => part
+                .WithDisplayName("Body (English)")
+                .WithPosition("4")
+                .WithSettings(new FlowPartSettings
+                {
+                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                }))
+            .WithDescription("Static page content type"));
     }
 
     private static MediaField CreateMediaField(string? path)

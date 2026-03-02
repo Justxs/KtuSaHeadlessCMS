@@ -34,7 +34,7 @@ public class SaUnitsInfoMenu(
                 content.Add(T[$"All {unitName.Replace("_", " ")} contacts"], type => type
                     .Url($"/Contacts/List/{unitName}")
                     .Permission(ContactPermissions
-                        .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))
+                        .GetPermission(Enum.Parse<SaUnit>(unitName, true)))
                     .AddClass("icon-class-fa-list")
                     .AddClass("icon-class-fas"));
 
@@ -47,7 +47,7 @@ public class SaUnitsInfoMenu(
                         contentItemId = saUnit.ContentItemId
                     })
                     .Permission(SaUnitPermissions
-                        .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))
+                        .GetPermission(Enum.Parse<SaUnit>(unitName, true)))
                     .AddClass("icon-class-fa-pen-to-square")
                     .AddClass("icon-class-fas"));
             }

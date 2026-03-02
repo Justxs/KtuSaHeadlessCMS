@@ -1,3 +1,5 @@
+using OrchardCore.Cms.KtuSaApi.Endpoints.Shared;
+
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
 public class EventContentResponse
@@ -16,8 +18,8 @@ public class EventContentResponse
     [Description("Physical address of the event; null if not set")]
     public string? Address { get; set; }
 
-    [Description("Full HTML body of the event description in the requested language")]
-    public string? HtmlBody { get; set; }
+    [Description("Structured content blocks of the event body in the requested language")]
+    public List<ContentBlockResponse>? Blocks { get; set; }
 
     [Description("Event start date and time (UTC)")]
     public DateTime StartDate { get; set; }

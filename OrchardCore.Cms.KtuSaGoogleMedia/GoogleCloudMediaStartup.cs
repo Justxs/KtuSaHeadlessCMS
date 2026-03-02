@@ -22,7 +22,6 @@ public sealed class GoogleCloudMediaStartup(
     IConfiguration hostConfiguration)
     : StartupBase
 {
-
     public override int Order => 1000;
 
     public override void ConfigureServices(IServiceCollection services)
@@ -45,7 +44,7 @@ public sealed class GoogleCloudMediaStartup(
             return;
         }
 
-        services.AddSingleton<IOptions<GoogleCloudMediaStorageOptions>>(Options.Create(storageOptions));
+        services.AddSingleton(Options.Create(storageOptions));
 
         services.Replace(ServiceDescriptor.Singleton<IFileStore>(serviceProvider =>
         {

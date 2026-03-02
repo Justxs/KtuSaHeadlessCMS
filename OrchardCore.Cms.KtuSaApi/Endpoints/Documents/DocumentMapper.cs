@@ -1,4 +1,5 @@
 using OrchardCore.Cms.KtuSaApi.Extensions;
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media;
@@ -9,27 +10,27 @@ public static class DocumentMapper
 {
     extension(ContentItem item)
     {
-        public DocumentCategoryResponse ToCategoryResponse(bool isLithuanian,
+        public DocumentCategoryResponse ToCategoryResponse(Language language,
             IEnumerable<ContentItem> documents,
             IMediaFileStore mediaFileStore)
         {
             var category = item.As<CategoryPart>();
             return new DocumentCategoryResponse
             {
-                Category = isLithuanian ? category.TitleLt : category.TitleEn,
+                Category = language.Resolve(category.TitleLt, category.TitleEn),
                 Documents = [.. documents
                     .Where(d => d.As<DocumentPart>().CategoryField.ContentItemIds.Contains(item.ContentItemId))
-                    .Select(d => d.ToResponse(isLithuanian, mediaFileStore))]
+                    .Select(d => d.ToResponse(language, mediaFileStore))]
             };
         }
 
-        public DocumentResponse ToResponse(bool isLithuanian, IMediaFileStore mediaFileStore)
+        public DocumentResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
             var document = item.As<DocumentPart>();
             return new DocumentResponse
             {
-                Title = isLithuanian ? document.TitleLt : document.TitleEn,
-                PdfUrl = (isLithuanian ? document.FileLt : document.FileEn).ToPublicUrl(mediaFileStore)
+                Title = language.Resolve(document.TitleLt, document.TitleEn),
+                PdfUrl = language.Resolve(document.FileLt, document.FileEn).ToPublicUrl(mediaFileStore)
             };
         }
     }

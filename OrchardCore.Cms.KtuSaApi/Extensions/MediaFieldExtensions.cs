@@ -19,5 +19,17 @@ public static class MediaFieldExtensions
                 ? path 
                 : mediaFileStore.MapPathToPublicUrl(path.TrimStart('/'));
         }
+
+        public List<string> ToPublicUrls(IMediaFileStore mediaFileStore)
+        {
+            if (mediaField?.Paths is null or { Length: 0 })
+                return [];
+
+            return [.. mediaField.Paths
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .Select(p => Uri.TryCreate(p, UriKind.Absolute, out _)
+                    ? p
+                    : mediaFileStore.MapPathToPublicUrl(p.TrimStart('/')))];
+        }
     }
 }

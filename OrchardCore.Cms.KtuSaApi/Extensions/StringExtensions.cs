@@ -1,4 +1,3 @@
-using HtmlAgilityPack;
 using static OrchardCore.Cms.KtuSaModule.Constants.RegexConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Extensions;
@@ -42,20 +41,6 @@ public static class StringExtensions
             var matches = WordCountRegex().Matches(text);
 
             return matches.Count;
-        }
-
-        public List<string> GetContentList()
-        {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(text);
-
-            var headingNodes = doc.DocumentNode.SelectNodes("//h1 | //h2");
-            if (headingNodes is null)
-            {
-                return [];
-            }
-
-            return headingNodes.Select(node => node.InnerText).ToList();
         }
     }
 }

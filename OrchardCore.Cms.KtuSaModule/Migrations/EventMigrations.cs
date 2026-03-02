@@ -1,10 +1,10 @@
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentFields.Settings;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
+using OrchardCore.Flows.Models;
 using OrchardCore.Media.Fields;
 using OrchardCore.Media.Settings;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -14,7 +14,7 @@ namespace OrchardCore.Cms.KtuSaModule.Migrations;
 public class EventMigrations(
     IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
-    private const int CurrentVersion = 6;
+    private const int CurrentVersion = 12;
 
     public async Task<int> CreateAsync()
     {
@@ -54,10 +54,48 @@ public class EventMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom6Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom7Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom8Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom9Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom10Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
+    public async Task<int> UpdateFrom11Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
     private async Task ApplySchemaAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(EventPart), part => part
             .Attachable()
+            .RemoveField("BodyFieldLt")
+            .RemoveField("BodyFieldEn")
             .WithField(nameof(EventPart.CoverImage), field => field
                 .OfType(nameof(MediaField))
                 .WithDisplayName("Upload cover image")
@@ -67,14 +105,6 @@ public class EventMigrations(
                     AllowMediaText = false,
                     AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]
                 }))
-            .WithField(nameof(EventPart.BodyFieldLt), field => field
-                .OfType(nameof(QuillField))
-                .WithDisplayName("Event text LT")
-                .WithPosition("7"))
-            .WithField(nameof(EventPart.BodyFieldEn), field => field
-                .OfType(nameof(QuillField))
-                .WithDisplayName("Event text EN")
-                .WithPosition("8"))
             .WithField(nameof(EventPart.OrganisersField), field => field
                 .OfType(nameof(ContentPickerField))
                 .WithDisplayName("Select event organisers")
@@ -92,6 +122,22 @@ public class EventMigrations(
             .Listable()
             .WithPart(nameof(EventPart), part => part
                 .WithPosition("2"))
+            .RemovePart("ContentLt")
+            .RemovePart("ContentEn")
+            .WithPart("ContentLt", nameof(FlowPart), part => part
+                .WithDisplayName("Event Body (Lithuanian)")
+                .WithPosition("3")
+                .WithSettings(new FlowPartSettings
+                {
+                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                }))
+            .WithPart("ContentEn", nameof(FlowPart), part => part
+                .WithDisplayName("Event Body (English)")
+                .WithPosition("4")
+                .WithSettings(new FlowPartSettings
+                {
+                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                }))
             .WithDescription("Event content type"));
     }
 }

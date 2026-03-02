@@ -1,3 +1,5 @@
+using OrchardCore.Cms.KtuSaApi.Endpoints.Shared;
+
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
 public class ArticleContentResponse
@@ -7,8 +9,8 @@ public class ArticleContentResponse
     [Description("Article title in the requested language")]
     public required string Title { get; set; }
 
-    [Description("Full HTML body of the article in the requested language")]
-    public required string HtmlBody { get; set; }
+    [Description("Structured content blocks of the article body in the requested language")]
+    public required List<ContentBlockResponse> Blocks { get; set; }
 
     [Description("Estimated reading time (e.g. '3 min read')")]
     public string? ReadingTime { get; set; }
@@ -19,6 +21,6 @@ public class ArticleContentResponse
     [Description("Public URL of the article thumbnail image")]
     public required string ThumbnailImageUrl { get; set; }
 
-    [Description("Section headings extracted from the HTML body for a table of contents")]
+    [Description("Section headings extracted from h1-h6 tags for a table of contents")]
     public List<string>? ContentList { get; set; }
 }

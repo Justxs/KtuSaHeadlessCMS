@@ -1,5 +1,4 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
@@ -29,7 +28,7 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
     public override async Task HandleAsync(GetEventsRequest req, CancellationToken ct)
     {
         var query = await repository.GetAllAsync(Event);
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
 
         if (req.SaUnit is not null)
         {
@@ -48,7 +47,7 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
 
         var response = query
             .OrderByDescending(item => item.As<EventPart>().StartDate)
-            .Select(item => item.ToPreviewResponse(isLithuanian, mediaFileStore))
+            .Select(item => item.ToPreviewResponse(language, mediaFileStore))
             .ToList();
 
         await Send.OkAsync(response, ct);

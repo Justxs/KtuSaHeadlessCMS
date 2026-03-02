@@ -1,4 +1,3 @@
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media.Fields;
@@ -22,10 +21,6 @@ public class EventPart : ContentPart
     public DateTime StartDate { get; set; }
 
     public DateTime EndDate { get; set; }
-
-    public QuillField BodyFieldLt { get; set; } = null!;
-
-    public QuillField BodyFieldEn { get; set; } = null!;
 
     public MediaField CoverImage { get; set; } = new();
 

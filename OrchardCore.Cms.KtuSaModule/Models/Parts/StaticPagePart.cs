@@ -1,4 +1,3 @@
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media.Fields;
@@ -16,8 +15,4 @@ public class StaticPagePart : ContentPart
     public TextField DescriptionEn { get; set; } = null!;
 
     public MediaField HeroImage { get; set; } = new();
-
-    public QuillField BodyLt { get; set; } = null!;
-
-    public QuillField BodyEn { get; set; } = null!;
 }

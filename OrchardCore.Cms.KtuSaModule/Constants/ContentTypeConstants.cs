@@ -16,4 +16,10 @@ public static class ContentTypeConstants
     public const string Document = "Document";
     public const string StaticPage = "StaticPage";
     public const string ActivityReport = "ActivityReport";
+    public const string HeadingWidget = "HeadingWidget";
+    public const string ParagraphWidget = "ParagraphWidget";
+    public const string ImageWidget = "ImageWidget";
+    public const string VideoWidget = "VideoWidget";
+    public const string PdfDocumentWidget = "PdfDocumentWidget";
+    public const string ImageCarouselWidget = "ImageCarouselWidget";
 }

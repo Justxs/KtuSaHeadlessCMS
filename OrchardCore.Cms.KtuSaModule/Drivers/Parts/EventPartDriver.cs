@@ -24,7 +24,7 @@ public class EventPartDriver(
                 GetDisplayShapeType(context), model =>
                 {
                     if (organisersField != null)
-                        model.SaUnitsDisplayNames = organisersField.Select(organiser => organiser.DisplayText).ToList();
+                        model.SaUnitsDisplayNames = [.. organisersField.Select(organiser => organiser.DisplayText)];
                 })
             .Location("SummaryAdmin", "Tags:11");
     }

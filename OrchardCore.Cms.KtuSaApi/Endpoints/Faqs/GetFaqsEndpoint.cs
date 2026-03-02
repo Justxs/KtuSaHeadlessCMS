@@ -1,5 +1,4 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.ContentManagement;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -26,11 +25,11 @@ public class GetFaqsEndpoint(IRepository repository)
     public override async Task HandleAsync(GetFaqsRequest req, CancellationToken ct)
     {
         var query = await repository.GetAllAsync(Faq);
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
 
         if (req.Limit is not null) query = query.OrderBy(_ => Guid.NewGuid()).Take(req.Limit.Value);
 
-        var response = query.Select(item => item.ToFaqResponse(isLithuanian))
+        var response = query.Select(item => item.ToFaqResponse(language))
             .OrderByDescending(item => item.ModifiedDate)
             .ToList();
 

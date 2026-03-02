@@ -1,5 +1,4 @@
 using FastEndpoints;
-using OrchardCore.Cms.KtuSaModule.Extensions;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
@@ -34,11 +33,11 @@ public class GetEventByIdEndpoint(IRepository repository, IMediaFileStore mediaF
             return;
         }
 
-        var isLithuanian = req.Language.IsLtLanguage();
+        var language = req.Language;
         var part = eventItem.As<EventPart>();
         var saUnits = await repository.GetByIdsAsync(part.OrganisersField.ContentItemIds);
         var organisers = saUnits.Select(unit => unit.As<SaUnitPart>().UnitName).ToList();
 
-        await Send.OkAsync(eventItem.ToContentResponse(isLithuanian, organisers, mediaFileStore), ct);
+        await Send.OkAsync(eventItem.ToContentResponse(language, organisers, mediaFileStore), ct);
     }
 }

@@ -1,0 +1,723 @@
+/*
+ * Media Picker Override — KtuSaAdmin Theme
+ * Comprehensive redesign of the OrchardCore media selection dialog.
+ * Pairs with overridden MediaField.Edit.cshtml and Admin/MediaApplication.cshtml views.
+ */
+
+/* ───────────── CSS Variables ───────────── */
+:root {
+    --mp-radius: 0.5rem;
+    --mp-radius-sm: 0.375rem;
+    --mp-accent: var(--bs-primary, #0d6efd);
+    --mp-accent-subtle: rgba(13, 110, 253, 0.1);
+    --mp-hover-bg: var(--bs-tertiary-bg, rgba(0, 0, 0, 0.035));
+    --mp-selected-border: var(--bs-primary, #0d6efd);
+    --mp-transition: 0.2s ease;
+    --mp-sidebar-width: 240px;
+}
+
+
+/* ═══════════════════════════════════════════
+   1. MODAL — wider, taller
+   ═══════════════════════════════════════════ */
+@media only screen and (min-width: 576px) {
+    .modal-dialog.media-modal {
+        max-width: min(1400px, 95vw) !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+.media-modal.modal-dialog,
+.media-modal .modal-content {
+    height: 92vh !important;
+}
+
+.media-modal .modal-body {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 !important;
+}
+
+/* Let the inner mediaApp fill the modal body */
+.modal-content .modal-body #mediaApp {
+    position: static;
+    height: 100%;
+}
+
+
+/* ═══════════════════════════════════════════
+   2. FOLDER TREE SIDEBAR
+   ═══════════════════════════════════════════ */
+.media-modal .modal-body #mediaContainer #navigationApp {
+    min-width: var(--mp-sidebar-width);
+    max-width: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid var(--bs-border-color, #dee2e6) !important;
+}
+
+#folder-tree {
+    list-style: none;
+    padding-left: 0;
+}
+
+#folder-tree ol {
+    list-style: none;
+    padding-left: 0.75rem;
+}
+
+#folder-tree a {
+    display: block;
+    font-size: 0.84rem !important;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--mp-radius-sm);
+    transition: background var(--mp-transition), color var(--mp-transition);
+    text-decoration: none !important;
+    color: var(--bs-body-color, inherit);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#folder-tree a:hover {
+    background: var(--mp-hover-bg);
+}
+
+#folder-tree .active > a,
+#folder-tree a.active,
+#folder-tree li.selected > a,
+#folder-tree a[style*="font-weight: bold"],
+#folder-tree a[style*="font-weight:bold"] {
+    background: var(--mp-accent-subtle) !important;
+    color: var(--mp-accent) !important;
+    font-weight: 600 !important;
+}
+
+/* Folder icon enhancement */
+#folder-tree .fa-folder,
+#folder-tree .fa-folder-open {
+    margin-right: 0.35rem;
+    font-size: 0.9em;
+}
+
+
+/* ═══════════════════════════════════════════
+   3. TOOLBAR (action-bar)
+   ═══════════════════════════════════════════ */
+.action-bar {
+    gap: 0.4rem !important;
+}
+
+.action-bar .btn {
+    border-radius: var(--mp-radius-sm) !important;
+    font-size: 0.8rem;
+    transition: all var(--mp-transition);
+}
+
+/* View/Thumb toggle buttons */
+.visibility-buttons .btn {
+    border-radius: 0 !important;
+}
+
+.visibility-buttons .btn:first-child {
+    border-top-left-radius: var(--mp-radius-sm) !important;
+    border-bottom-left-radius: var(--mp-radius-sm) !important;
+}
+
+.visibility-buttons .btn:last-child {
+    border-top-right-radius: var(--mp-radius-sm) !important;
+    border-bottom-right-radius: var(--mp-radius-sm) !important;
+}
+
+.visibility-buttons .btn.active,
+.visibility-buttons .btn.selected {
+    background: var(--mp-accent) !important;
+    border-color: var(--mp-accent) !important;
+    color: #fff !important;
+}
+
+/* Upload button */
+.upload-button {
+    font-weight: 600 !important;
+    border-radius: var(--mp-radius-sm) !important;
+}
+
+.upload-button input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+/* Filter input */
+.media-filter .input-group {
+    min-width: 180px;
+}
+
+.media-filter .input-group .form-control:focus {
+    box-shadow: none;
+    border-color: var(--mp-accent);
+}
+
+.media-filter .input-group .input-group-text {
+    border-right: none;
+}
+
+
+/* ═══════════════════════════════════════════
+   4. BREADCRUMB
+   ═══════════════════════════════════════════ */
+.breadcrumb-path {
+    font-size: 0.82rem;
+}
+
+.breadcrumb-path .breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    color: var(--bs-secondary-color, #6c757d);
+    padding: 0 0.35rem;
+}
+
+.breadcrumb-path .breadcrumb-item a {
+    text-decoration: none;
+    color: var(--mp-accent);
+}
+
+.breadcrumb-path .breadcrumb-item.active a {
+    color: var(--bs-body-color, inherit);
+    font-weight: 600;
+    pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════
+   5. TABLE / LIST VIEW
+   ═══════════════════════════════════════════ */
+.media-items-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.media-items-table thead .header-row th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.6rem 0.75rem;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 2px solid var(--bs-border-color, #dee2e6);
+    background: var(--bs-body-bg, #fff);
+}
+
+.media-items-table tbody tr.media-item {
+    transition: background var(--mp-transition);
+    cursor: pointer;
+}
+
+.media-items-table tbody tr.media-item:hover {
+    background: var(--mp-hover-bg) !important;
+}
+
+.media-items-table tbody tr.media-item.selected {
+    background: var(--mp-accent-subtle) !important;
+    box-shadow: inset 3px 0 0 0 var(--mp-selected-border);
+}
+
+.media-items-table tbody tr.media-item td {
+    padding: 0.45rem 0.75rem;
+    vertical-align: middle;
+    font-size: 0.84rem;
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+/* Larger thumbnails in table */
+.media-items-table .thumbnail-column {
+    width: 80px !important;
+    min-width: 80px;
+    padding: 0.35rem 0.5rem !important;
+}
+
+.media-items-table .thumbnail-column .img-wrapper {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: var(--mp-radius-sm);
+    background: var(--bs-tertiary-bg, rgba(0, 0, 0, 0.08));
+}
+
+.media-items-table .thumbnail-column .img-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+/* Name column */
+.media-items-table .media-name-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.media-items-table .media-name-cell .break-word {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 420px;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+/* Reveal actions on hover */
+.media-items-table .media-name-cell .buttons-container {
+    display: flex;
+    gap: 0.15rem;
+    opacity: 0;
+    transition: opacity var(--mp-transition);
+    flex-shrink: 0;
+}
+
+.media-items-table tbody tr.media-item:hover .buttons-container {
+    opacity: 1;
+}
+
+.media-items-table .text-col {
+    white-space: nowrap;
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.8rem;
+}
+
+
+/* ═══════════════════════════════════════════
+   6. GRID VIEW — modern cards
+   ═══════════════════════════════════════════ */
+.media-container-middle .row.media-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+    gap: 0.75rem;
+    padding: 0.5rem;
+    list-style: none;
+    margin: 0;
+}
+
+.media-items-grid .media-container-main-list-item {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: var(--mp-radius) !important;
+    overflow: hidden;
+    border: 2px solid transparent !important;
+    transition: border-color var(--mp-transition),
+                transform var(--mp-transition),
+                box-shadow var(--mp-transition);
+    cursor: pointer;
+}
+
+.media-items-grid .media-container-main-list-item:hover {
+    border-color: var(--bs-border-color, #dee2e6) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.media-items-grid .media-container-main-list-item.selected {
+    border-color: var(--mp-selected-border) !important;
+    box-shadow: 0 0 0 2px var(--mp-accent-subtle),
+                0 4px 14px rgba(13, 110, 253, 0.18) !important;
+}
+
+/* Thumbnail area */
+.media-items-grid .thumb-container {
+    position: relative;
+    height: 145px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--bs-tertiary-bg, rgba(0, 0, 0, 0.04));
+}
+
+.media-items-grid .thumb-container img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.media-items-grid .media-container-main-list-item:hover .thumb-container img {
+    transform: scale(1.05);
+}
+
+/* Non-image icon */
+.media-items-grid .thumb-container i.fa-4x,
+.media-items-grid .thumb-container i.fa-5x {
+    opacity: 0.5;
+}
+
+/* Title area */
+.media-items-grid .media-container-main-item-title {
+    padding: 0.45rem 0.55rem !important;
+    border-top: 1px solid var(--bs-border-color, #dee2e6) !important;
+    min-height: 0;
+}
+
+.media-items-grid .media-container-main-item-title .media-filename {
+    font-size: 0.73rem;
+    line-height: 1.3;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal !important;
+    word-break: break-all;
+}
+
+/* Hide action buttons until hover */
+.media-items-grid .inline-media-button {
+    opacity: 0;
+    transition: opacity var(--mp-transition);
+    padding: 0.12rem 0.3rem !important;
+    font-size: 0.68rem !important;
+}
+
+.media-items-grid .media-container-main-list-item:hover .inline-media-button {
+    opacity: 1;
+}
+
+/* ── Selection checkmark overlay ── */
+.media-items-grid .media-container-main-list-item.selected .thumb-container::after {
+    content: "\f00c";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--mp-accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    z-index: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    animation: mp-pop-in 0.2s ease;
+}
+
+@keyframes mp-pop-in {
+    0%   { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
+/* ═══════════════════════════════════════════
+   7. PAGINATION
+   ═══════════════════════════════════════════ */
+.media-container-footer {
+    display: flex;
+    justify-content: center;
+}
+
+#media-pager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+}
+
+#media-pager .btn {
+    border-radius: var(--mp-radius-sm);
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+}
+
+#media-pager select {
+    border-radius: var(--mp-radius-sm);
+    font-size: 0.8rem;
+    padding: 0.25rem 0.4rem;
+}
+
+.modal-body #media-pager .page-number,
+.modal-body #media-pager .media-first-button,
+.modal-body #media-pager .media-last-button {
+    display: none;
+}
+
+
+/* ═══════════════════════════════════════════
+   8. EMPTY STATES
+   ═══════════════════════════════════════════ */
+.media-container-middle .text-center.text-muted {
+    opacity: 0.7;
+}
+
+
+/* ═══════════════════════════════════════════
+   9. DROPZONE OVERLAY
+   ═══════════════════════════════════════════ */
+#customdropzone {
+    z-index: 9999 !important;
+    backdrop-filter: blur(4px);
+}
+
+#customdropzone h3,
+#customdropzone h4 {
+    letter-spacing: 0.02em;
+}
+
+
+/* ═══════════════════════════════════════════
+   10. SUB-MODALS (Create Folder / Rename)
+   ═══════════════════════════════════════════ */
+#createFolderModal,
+#renameMediaModal {
+    z-index: 100000;
+}
+
+#createFolderModal .modal-content,
+#renameMediaModal .modal-content {
+    border: none;
+}
+
+#createFolderModal .form-control,
+#renameMediaModal .form-control {
+    border-radius: var(--mp-radius-sm);
+}
+
+#createFolderModal .form-control:focus,
+#renameMediaModal .form-control:focus {
+    box-shadow: 0 0 0 0.2rem var(--mp-accent-subtle);
+    border-color: var(--mp-accent);
+}
+
+
+/* ═══════════════════════════════════════════
+   11. UPLOAD LIST
+   ═══════════════════════════════════════════ */
+.upload-list .upload {
+    border-radius: var(--mp-radius-sm);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+.upload-list .progress-bar {
+    border-radius: var(--mp-radius-sm);
+}
+
+
+/* ═══════════════════════════════════════════
+   12. SCROLLBARS (subtle)
+   ═══════════════════════════════════════════ */
+.media-modal .modal-body::-webkit-scrollbar,
+#mediaContainerMain::-webkit-scrollbar,
+#navigationApp::-webkit-scrollbar {
+    width: 5px;
+}
+
+.media-modal .modal-body::-webkit-scrollbar-track,
+#mediaContainerMain::-webkit-scrollbar-track,
+#navigationApp::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.media-modal .modal-body::-webkit-scrollbar-thumb,
+#mediaContainerMain::-webkit-scrollbar-thumb,
+#navigationApp::-webkit-scrollbar-thumb {
+    background: var(--bs-border-color, #555);
+    border-radius: 3px;
+}
+
+.media-modal .modal-body::-webkit-scrollbar-thumb:hover,
+#mediaContainerMain::-webkit-scrollbar-thumb:hover,
+#navigationApp::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-secondary-color, #888);
+}
+
+
+/* ═══════════════════════════════════════════
+   13. MEDIA FIELD TOOLBAR (on content editor)
+   ═══════════════════════════════════════════ */
+.media-field-toolbar {
+    display: flex;
+    align-items: center;
+}
+
+.media-field-toolbar .btn-group .btn {
+    border-radius: 0;
+}
+
+.media-field-toolbar .btn-group .btn:first-child {
+    border-top-left-radius: var(--mp-radius-sm);
+    border-bottom-left-radius: var(--mp-radius-sm);
+}
+
+.media-field-toolbar .btn-group .btn:last-child {
+    border-top-right-radius: var(--mp-radius-sm);
+    border-bottom-right-radius: var(--mp-radius-sm);
+}
+
+
+/* ═══════════════════════════════════════════
+   14. RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .media-container-middle .row.media-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .media-items-grid .thumb-container {
+        height: 110px !important;
+    }
+
+    .media-items-table .thumbnail-column {
+        width: 56px !important;
+        min-width: 56px;
+    }
+
+    .media-items-table .thumbnail-column .img-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+
+    .media-items-table .optional-col {
+        display: none;
+    }
+
+    .action-bar {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .media-filter .input-group {
+        min-width: unset;
+    }
+
+    .media-modal .modal-body #mediaContainer #navigationApp {
+        min-width: 160px;
+        max-width: 180px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .media-container-middle .row.media-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    }
+
+    .media-items-grid .thumb-container {
+        height: 165px !important;
+    }
+
+    .media-items-table .media-name-cell .break-word {
+        max-width: 500px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .media-container-middle .row.media-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    }
+
+    .media-items-grid .thumb-container {
+        height: 180px !important;
+    }
+}
+
+
+/* ═══════════════════════════════════════════
+   15. MISC OVERRIDES
+   ═══════════════════════════════════════════ */
+
+/* Reset the original module border rules that conflict */
+.media-modal .modal-body #mediaContainer #mediaContainerMain {
+    border-left: 0 !important;
+    border-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.media-modal .modal-body #mediaContainer #navigationApp {
+    border-right: 1px solid var(--bs-border-color, #dee2e6) !important;
+    border-left: none !important;
+}
+
+.media-container-main-item-title {
+    border-top: 1px solid var(--bs-border-color, #dee2e6) !important;
+}
+
+/* Prevent break-word from overflowing in filename column */
+.break-word {
+    word-break: break-word !important;
+    word-wrap: break-word;
+}
+
+[v-cloak] {
+    display: none !important;
+}
+
+
+/* ═══════════════════════════════════════════
+   16. DARK MODE
+   ═══════════════════════════════════════════ */
+[data-bs-theme="dark"] {
+    --mp-hover-bg: rgba(255, 255, 255, 0.05);
+    --mp-accent-subtle: rgba(13, 110, 253, 0.18);
+}
+
+[data-bs-theme="dark"] .media-items-grid .media-container-main-list-item:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+[data-bs-theme="dark"] .media-items-grid .media-container-main-list-item.selected {
+    box-shadow: 0 0 0 2px var(--mp-accent-subtle),
+                0 4px 14px rgba(13, 110, 253, 0.3) !important;
+}
+
+[data-bs-theme="dark"] .media-items-table thead .header-row th {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-bs-theme="dark"] .media-items-table tbody tr.media-item td {
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-bs-theme="dark"] .media-items-grid .thumb-container {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+[data-bs-theme="dark"] .media-items-table .thumbnail-column .img-wrapper {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .media-items-grid .media-container-main-item-title {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-bs-theme="dark"] .media-container-main-item-title {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-bs-theme="dark"] .media-filter .input-group-text {
+    background-color: var(--bs-input-bg, #2b3035);
+}
+
+[data-bs-theme="dark"] #customdropzone {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+[data-bs-theme="dark"] .visibility-buttons .btn.active {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}

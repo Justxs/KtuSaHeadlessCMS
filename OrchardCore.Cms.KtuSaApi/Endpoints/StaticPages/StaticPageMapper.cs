@@ -1,4 +1,5 @@
 using OrchardCore.Cms.KtuSaApi.Extensions;
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media;
@@ -9,15 +10,15 @@ public static class StaticPageMapper
 {
     extension(ContentItem item)
     {
-        public StaticPageResponse ToResponse(bool isLithuanian, IMediaFileStore mediaFileStore)
+        public StaticPageResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
             var part = item.As<StaticPagePart>();
             return new StaticPageResponse
             {
-                Title = isLithuanian ? part.TitleLt : part.TitleEn,
-                Description = isLithuanian ? part.DescriptionLt?.Text : part.DescriptionEn?.Text,
+                Title = language.Resolve(part.TitleLt, part.TitleEn),
+                Description = language.Resolve(part.DescriptionLt.Text, part.DescriptionEn.Text),
                 ImgSrc = part.HeroImage.ToPublicUrl(mediaFileStore),
-                Body = isLithuanian ? part.BodyLt?.HtmlBody : part.BodyEn?.HtmlBody
+                Blocks = item.ToContentBlocks(language, mediaFileStore)
             };
         }
     }

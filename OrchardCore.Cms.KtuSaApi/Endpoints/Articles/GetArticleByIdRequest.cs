@@ -1,13 +1,13 @@
 using FastEndpoints;
+using OrchardCore.Cms.KtuSaModule.Models;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
 public class GetArticleByIdRequest
 {
     [QueryParam]
-    [AllowedValues("lt", "en")]
     [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
-    public string Language { get; set; } = "en";
+    public Language Language { get; set; } = Language.EN;
 
     [BindFrom("id")]
     [Description("Content item ID of the article")]

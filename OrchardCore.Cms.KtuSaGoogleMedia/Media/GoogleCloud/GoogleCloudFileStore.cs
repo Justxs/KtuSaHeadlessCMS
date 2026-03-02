@@ -66,7 +66,8 @@ public sealed class GoogleCloudFileStore(
             var prefix = GetObjectPrefix(normalizedPath);
             var listOptions = new ListObjectsOptions { PageSize = 1 };
 
-            await foreach (var _ in _storageClient.ListObjectsAsync(options.BucketName, prefix, listOptions))
+            await using var enumerator = _storageClient.ListObjectsAsync(options.BucketName, prefix, listOptions).GetAsyncEnumerator();
+            if (await enumerator.MoveNextAsync())
             {
                 return new GoogleCloudDirectory(normalizedPath, clock.UtcNow);
             }
@@ -99,112 +100,13 @@ public sealed class GoogleCloudFileStore(
 
             if (!includeSubDirectories)
             {
-                var listOptions = new ListObjectsOptions { Delimiter = "/" };
-
-                await foreach (var response in _storageClient.ListObjectsAsync(options.BucketName, objectPrefix, listOptions)
-                                   .AsRawResponses())
-                {
-                    if (response.Prefixes is not null)
-                    {
-                        foreach (var prefix in response.Prefixes)
-                        {
-                            var relativePrefix = RemoveBasePrefix(prefix).TrimEnd('/');
-                            if (string.IsNullOrWhiteSpace(relativePrefix))
-                            {
-                                continue;
-                            }
-
-                            if (!relativePrefix.StartsWith(requestedPrefix, StringComparison.Ordinal))
-                            {
-                                continue;
-                            }
-
-                            var childPath = relativePrefix[requestedPrefix.Length..];
-                            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/'))
-                            {
-                                continue;
-                            }
-
-                            AddDirectory(directories, relativePrefix);
-                        }
-                    }
-
-                    if (response.Items is null)
-                    {
-                        continue;
-                    }
-
-                    foreach (var storageObject in response.Items)
-                    {
-                        var relativePath = RemoveBasePrefix(storageObject.Name);
-                        if (string.IsNullOrWhiteSpace(relativePath))
-                        {
-                            continue;
-                        }
-
-                        if (!relativePath.StartsWith(requestedPrefix, StringComparison.Ordinal))
-                        {
-                            continue;
-                        }
-
-                        if (relativePath.EndsWith('/'))
-                        {
-                            AddDirectory(directories, relativePath.TrimEnd('/'));
-                            continue;
-                        }
-
-                        var childPath = relativePath[requestedPrefix.Length..];
-                        if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/'))
-                        {
-                            continue;
-                        }
-
-                        if (Path.GetFileName(childPath).Equals(DirectoryMarkerFileName, StringComparison.Ordinal))
-                        {
-                            continue;
-                        }
-
-                        files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size), GetLastModifiedUtc(storageObject));
-                    }
-                }
+                await ProcessNonRecursiveListingAsync(objectPrefix, requestedPrefix, directories, files);
             }
             else
             {
-                await foreach (var storageObject in _storageClient.ListObjectsAsync(options.BucketName, objectPrefix))
-                {
-                    var relativePath = RemoveBasePrefix(storageObject.Name);
-                    if (string.IsNullOrWhiteSpace(relativePath))
-                    {
-                        continue;
-                    }
-
-                    if (!relativePath.StartsWith(requestedPrefix, StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    var pathAfterRequest = relativePath[requestedPrefix.Length..];
-                    if (string.IsNullOrWhiteSpace(pathAfterRequest))
-                    {
-                        continue;
-                    }
-
-                    if (relativePath.EndsWith('/'))
-                    {
-                        AddDirectory(directories, relativePath.TrimEnd('/'));
-                        continue;
-                    }
-
-                    AddAllParentDirectories(directories, normalizedPath, pathAfterRequest);
-
-                    if (Path.GetFileName(pathAfterRequest).Equals(DirectoryMarkerFileName, StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size), GetLastModifiedUtc(storageObject));
-                }
+                await ProcessRecursiveListingAsync(objectPrefix, requestedPrefix, normalizedPath, directories, files);
             }
+            
             entries.AddRange(directories.Values.OrderBy(x => x.Path, StringComparer.OrdinalIgnoreCase)
                 .Select(directory => directory));
             entries.AddRange(files.Values.OrderBy(x => x.Path, StringComparer.OrdinalIgnoreCase));
@@ -218,6 +120,141 @@ public sealed class GoogleCloudFileStore(
         {
             yield return entry;
         }
+    }
+
+    private async Task ProcessNonRecursiveListingAsync(
+        string objectPrefix,
+        string requestedPrefix,
+        IDictionary<string, GoogleCloudDirectory> directories,
+        IDictionary<string, GoogleCloudFile> files)
+    {
+        var listOptions = new ListObjectsOptions { Delimiter = "/" };
+
+        await foreach (var response in _storageClient.ListObjectsAsync(options.BucketName, objectPrefix, listOptions)
+                           .AsRawResponses())
+        {
+            if (response.Prefixes is not null)
+            {
+                ProcessPrefixes(response.Prefixes, requestedPrefix, directories);
+            }
+
+            if (response.Items is not null)
+            {
+                ProcessItems(response.Items, requestedPrefix, files, directories);
+            }
+        }
+    }
+
+    private async Task ProcessRecursiveListingAsync(
+        string objectPrefix,
+        string requestedPrefix,
+        string normalizedPath,
+        IDictionary<string, GoogleCloudDirectory> directories,
+        IDictionary<string, GoogleCloudFile> files)
+    {
+        await foreach (var storageObject in _storageClient.ListObjectsAsync(options.BucketName, objectPrefix))
+        {
+            var relativePath = RemoveBasePrefix(storageObject.Name);
+            if (!IsValidPathForRequest(relativePath, requestedPrefix))
+            {
+                continue;
+            }
+
+            var pathAfterRequest = relativePath[requestedPrefix.Length..];
+            if (string.IsNullOrWhiteSpace(pathAfterRequest))
+            {
+                continue;
+            }
+
+            if (relativePath.EndsWith('/'))
+            {
+                AddDirectory(directories, relativePath.TrimEnd('/'));
+                continue;
+            }
+
+            AddAllParentDirectories(directories, normalizedPath, pathAfterRequest);
+
+            if (IsMarkerFile(pathAfterRequest))
+            {
+                continue;
+            }
+
+            files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size), GetLastModifiedUtc(storageObject));
+        }
+    }
+
+    private void ProcessPrefixes(
+        IEnumerable<string> prefixes,
+        string requestedPrefix,
+        IDictionary<string, GoogleCloudDirectory> directories)
+    {
+        foreach (var prefix in prefixes)
+        {
+            var relativePrefix = RemoveBasePrefix(prefix).TrimEnd('/');
+            if (string.IsNullOrWhiteSpace(relativePrefix))
+            {
+                continue;
+            }
+
+            if (!relativePrefix.StartsWith(requestedPrefix, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            var childPath = relativePrefix[requestedPrefix.Length..];
+            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/'))
+            {
+                continue;
+            }
+
+            AddDirectory(directories, relativePrefix);
+        }
+    }
+
+    private void ProcessItems(
+        IEnumerable<StorageObject> items,
+        string requestedPrefix,
+        IDictionary<string, GoogleCloudFile> files,
+        IDictionary<string, GoogleCloudDirectory> directories)
+    {
+        foreach (var storageObject in items)
+        {
+            var relativePath = RemoveBasePrefix(storageObject.Name);
+            if (!IsValidPathForRequest(relativePath, requestedPrefix))
+            {
+                continue;
+            }
+
+            if (relativePath.EndsWith('/'))
+            {
+                AddDirectory(directories, relativePath.TrimEnd('/'));
+                continue;
+            }
+
+            var childPath = relativePath[requestedPrefix.Length..];
+            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/'))
+            {
+                continue;
+            }
+
+            if (IsMarkerFile(childPath))
+            {
+                continue;
+            }
+
+            files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size), GetLastModifiedUtc(storageObject));
+        }
+    }
+
+    private static bool IsValidPathForRequest(string relativePath, string requestedPrefix)
+    {
+        return !string.IsNullOrWhiteSpace(relativePath) 
+               && relativePath.StartsWith(requestedPrefix, StringComparison.Ordinal);
+    }
+
+    private static bool IsMarkerFile(string path)
+    {
+        return Path.GetFileName(path).Equals(DirectoryMarkerFileName, StringComparison.Ordinal);
     }
 
     public async Task<bool> TryCreateDirectoryAsync(string path)

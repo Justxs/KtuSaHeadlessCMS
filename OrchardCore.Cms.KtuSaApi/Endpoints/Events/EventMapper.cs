@@ -1,4 +1,5 @@
 using OrchardCore.Cms.KtuSaApi.Extensions;
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media;
@@ -9,19 +10,19 @@ public static class EventMapper
 {
     extension(ContentItem item)
     {
-        public EventPreviewResponse ToPreviewResponse(bool isLithuanian, IMediaFileStore mediaFileStore)
+        public EventPreviewResponse ToPreviewResponse(Language language, IMediaFileStore mediaFileStore)
         {
             var part = item.As<EventPart>();
             return new EventPreviewResponse
             {
                 Id = item.ContentItemId,
-                Title = isLithuanian ? part.TitleLt : part.TitleEn,
+                Title = language.Resolve(part.TitleLt, part.TitleEn),
                 StartDate = part.StartDate,
                 CoverImageUrl = part.CoverImage.ToPublicUrl(mediaFileStore)
             };
         }
 
-        public EventContentResponse ToContentResponse(bool isLithuanian,
+        public EventContentResponse ToContentResponse(Language language,
             List<string> organisers,
             IMediaFileStore mediaFileStore)
         {
@@ -29,10 +30,9 @@ public static class EventMapper
             return new EventContentResponse
             {
                 Id = item.ContentItemId,
-                Title = isLithuanian ? part.TitleLt : part.TitleEn,
-                HtmlBody = isLithuanian ? part.BodyFieldLt.HtmlBody : part.BodyFieldEn.HtmlBody,
-                FientaTicketUrl = ParseFientaUrl(isLithuanian ? part.FientaTicketLinkLt : part.FientaTicketLinkEn,
-                    isLithuanian),
+                Title = language.Resolve(part.TitleLt, part.TitleEn),
+                Blocks = item.ToContentBlocks(language, mediaFileStore),
+                FientaTicketUrl = ParseFientaUrl(language.Resolve(part.FientaTicketLinkLt, part.FientaTicketLinkEn)),
                 StartDate = part.StartDate,
                 EndDate = part.EndDate,
                 Address = part.Address,
@@ -43,7 +43,7 @@ public static class EventMapper
         }
     }
 
-    private static string? ParseFientaUrl(string? raw, bool isLithuanian)
+    private static string? ParseFientaUrl(string? raw)
     {
         if (string.IsNullOrWhiteSpace(raw)) return null;
 
@@ -51,8 +51,7 @@ public static class EventMapper
         return parts.Length switch
         {
             0 => null,
-            1 => parts[0],
-            _ => isLithuanian ? parts[0] : parts[^1]
+            _ => parts[0]
         };
     }
 }

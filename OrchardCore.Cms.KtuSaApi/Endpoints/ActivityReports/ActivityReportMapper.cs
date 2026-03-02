@@ -1,4 +1,5 @@
 using OrchardCore.Cms.KtuSaApi.Extensions;
+using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media;
@@ -9,13 +10,13 @@ public static class ActivityReportMapper
 {
     extension(ContentItem item)
     {
-        public ActivityReportResponse ToResponse(bool isLithuanian, IMediaFileStore mediaFileStore)
+        public ActivityReportResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
             var part = item.As<ActivityReportPart>();
             return new ActivityReportResponse
             {
                 Id = item.ContentItemId,
-                PdfUrl = (isLithuanian ? part.ReportFileLt : part.ReportFileEn).ToPublicUrl(mediaFileStore),
+                PdfUrl = language.Resolve(part.ReportFileLt, part.ReportFileEn).ToPublicUrl(mediaFileStore),
                 From = part.From,
                 To = part.To
             };
