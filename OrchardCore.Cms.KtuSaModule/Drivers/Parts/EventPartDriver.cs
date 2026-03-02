@@ -18,7 +18,10 @@ public class EventPartDriver(
 {
     public override async Task<IDisplayResult> DisplayAsync(EventPart part, BuildPartDisplayContext context)
     {
-        var organisersField = await contentManager.GetAsync(part.OrganisersField.ContentItemIds);
+        var contentItemIds = part.OrganisersField?.ContentItemIds;
+        var organisersField = contentItemIds is { Length: > 0 }
+            ? await contentManager.GetAsync(contentItemIds)
+            : null;
 
         return Initialize<EventBadgeViewModel>(
                 GetDisplayShapeType(context), model =>
