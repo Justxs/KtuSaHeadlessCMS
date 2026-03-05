@@ -13,7 +13,6 @@ public class GetEventByIdEndpoint(IRepository repository, IMediaFileStore mediaF
     {
         Get("api/events/{id}");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Events")
             .WithSummary("Get an event by ID")

@@ -13,17 +13,16 @@ public static class SaUnitMapper
         public SaUnitResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
             var saUnitPart = item.As<SaUnitPart>();
-            var contactPart = item.As<ContactPart>();
             return new SaUnitResponse
             {
                 CoverUrl = saUnitPart.UnitPhoto.ToPublicUrl(mediaFileStore),
-                Description = language.Resolve(saUnitPart.DescriptionLt, saUnitPart.DescriptionEn),
+                Blocks = item.ToContentBlocks(language, mediaFileStore),
                 LinkedInUrl = saUnitPart.LinkedInUrl,
                 FacebookUrl = saUnitPart.FacebookUrl,
                 InstagramUrl = saUnitPart.InstagramUrl,
                 Address = saUnitPart.Address,
-                Email = contactPart.Email,
-                PhoneNumber = contactPart.PhoneNumber
+                Email = saUnitPart.Email,
+                PhoneNumber = saUnitPart.PhoneNumber
             };
         }
     }

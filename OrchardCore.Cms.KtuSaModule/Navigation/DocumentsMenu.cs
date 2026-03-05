@@ -30,20 +30,6 @@ public class DocumentsMenu(IStringLocalizer<DocumentsMenu> stringLocalizer) : IN
                 .Permission(DocumentsPermissions.ManageDocuments)
                 .AddClass("icon-class-fa-circle-plus")
                 .AddClass("icon-class-fas"))
-            .Add(T["All Documents"], eventContentType => eventContentType
-                .Action("List", "Admin", new
-                {
-                    area = "OrchardCore.Contents",
-                    contentTypeId = Document
-                })
-                .Permission(DocumentsPermissions.ManageDocuments)
-                .AddClass("icon-class-fa-list")
-                .AddClass("icon-class-fas"))
-            .Add(T["Add new document"], createAction => createAction
-                .Url($"/Admin/Contents/ContentTypes/{Document}/Create")
-                .Permission(DocumentsPermissions.ManageDocuments)
-                .AddClass("icon-class-fa-circle-plus")
-                .AddClass("icon-class-fas"))
         );
         return ValueTask.CompletedTask;
     }

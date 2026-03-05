@@ -20,7 +20,7 @@ public class StaticPageMigrations(
     ISession session)
     : DataMigration
 {
-    private const int CurrentVersion = 13;
+    private const int CurrentVersion = 14;
 
     public async Task<int> CreateAsync()
     {
@@ -170,6 +170,13 @@ public class StaticPageMigrations(
 
     public async Task<int> UpdateFrom12Async()
     {
+        await AlterTypeDefinitionForCurrentSchemaAsync();
+        return 13;
+    }
+
+    public async Task<int> UpdateFrom13Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
         await AlterTypeDefinitionForCurrentSchemaAsync();
         return CurrentVersion;
     }

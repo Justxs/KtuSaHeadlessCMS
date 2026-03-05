@@ -1,0 +1,31 @@
+@model StaticPagePartViewModel
+
+<fieldset class="form-group" asp-validation-class-for="TitleLt" style="margin-bottom: 20px;">
+    <label asp-for="TitleLt">
+        Title LT
+    </label>
+
+    <input asp-for="TitleLt"
+           class="form-control"
+           value="@Model.TitleLt"
+           required/>
+
+    <span class="hint">
+        Title in Lithuanian language
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="TitleEn" style="margin-bottom: 20px;">
+    <label asp-for="TitleEn">
+        Title EN
+    </label>
+
+    <input asp-for="TitleEn"
+           class="form-control"
+           value="@Model.TitleEn"
+           required/>
+
+    <span class="hint">
+        Title in English language
+    </span>
+</fieldset>

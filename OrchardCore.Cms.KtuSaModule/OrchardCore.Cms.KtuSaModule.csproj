@@ -32,8 +32,4 @@
     <ProjectReference Include="..\OrchardCore.KtuSaTheme\OrchardCore.KtuSaTheme.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>

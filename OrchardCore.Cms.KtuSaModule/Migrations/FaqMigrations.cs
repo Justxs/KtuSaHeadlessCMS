@@ -4,6 +4,7 @@ using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.ContentManagement.Records;
 using OrchardCore.Data.Migration;
+using OrchardCore.Flows.Models;
 using OrchardCore.Lists.Models;
 using YesSql;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -77,5 +78,32 @@ public class FaqMigrations(
         }
 
         return 2;
+    }
+
+    public async Task<int> UpdateFrom2Async()
+    {
+        await contentDefinitionManager.AlterTypeDefinitionAsync(Faq, type => type
+            .Draftable()
+            .Creatable(false)
+            .Listable(false)
+            .WithPart(nameof(FaqPart), part => part.WithPosition("1"))
+            .WithPart("AnswerLt", nameof(FlowPart), part => part
+                .WithDisplayName("Answer (Lithuanian)")
+                .WithPosition("2")
+                .WithSettings(new FlowPartSettings
+                {
+                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                }))
+            .WithPart("AnswerEn", nameof(FlowPart), part => part
+                .WithDisplayName("Answer (English)")
+                .WithPosition("3")
+                .WithSettings(new FlowPartSettings
+                {
+                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                }))
+            .WithDescription("Frequently asked question item")
+        );
+
+        return 3;
     }
 }

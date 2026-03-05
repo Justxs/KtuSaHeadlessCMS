@@ -13,7 +13,6 @@ public class GetMainContactsEndpoint(IRepository repository)
     {
         Get("api/sa-units/{saUnit}/main-contact");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Main Contacts")
             .WithSummary("Get main contact for an SA unit")

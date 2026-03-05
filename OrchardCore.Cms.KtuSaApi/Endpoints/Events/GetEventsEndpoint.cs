@@ -14,7 +14,6 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
     {
         Get("api/events");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Events")
             .WithSummary("Get events")
@@ -38,11 +37,6 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
                 query = query.Where(item =>
                     item.As<EventPart>().OrganisersField.ContentItemIds.Contains(saUnit.ContentItemId));
             }
-        }
-
-        if (!req.FetchPassed)
-        {
-            query = query.Where(item => item.As<EventPart>().StartDate >= DateTime.UtcNow);
         }
 
         var response = query

@@ -7,21 +7,18 @@ public class SaUnitPartViewModel
     [Required(ErrorMessage = "The unit name is required.")]
     public string UnitName { get; set; } = null!;
 
-    [Required(ErrorMessage = "The LT description is required.")]
-    public string DescriptionLt { get; set; } = null!;
-
-    [Required(ErrorMessage = "The EN description is required.")]
-    public string DescriptionEn { get; set; } = null!;
-
     [Required(ErrorMessage = "The address is required.")]
     public string Address { get; set; } = null!;
 
-    [Required(ErrorMessage = "The LinkedIn Url is required.")]
-    public string LinkedInUrl { get; set; } = null!;
+    public string? LinkedInUrl { get; set; }
 
-    [Required(ErrorMessage = "The Facebook Url is required.")]
-    public string FacebookUrl { get; set; } = null!;
+    public string? FacebookUrl { get; set; }
 
-    [Required(ErrorMessage = "The Instagram Url is required.")]
-    public string InstagramUrl { get; set; } = null!;
+    public string? InstagramUrl { get; set; }
+
+    [Required(ErrorMessage = "The phone number is required.")]
+    public string PhoneNumber { get; set; } = null!;
+
+    [Required(ErrorMessage = "The email is required.")]
+    public string Email { get; set; } = null!;
 }

@@ -15,7 +15,6 @@ public class GetStaticPageEndpoint(IRepository repository, IMediaFileStore media
     {
         Get("api/static-pages/{pageName}");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Static Pages")
             .WithSummary("Get a static page by name")

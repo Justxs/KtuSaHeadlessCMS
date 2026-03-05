@@ -14,12 +14,12 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
                 GetDisplayShapeType(context), model =>
                 {
                     model.UnitName = part.UnitName;
-                    model.DescriptionLt = part.DescriptionLt;
-                    model.DescriptionEn = part.DescriptionEn;
                     model.Address = part.Address;
                     model.FacebookUrl = part.FacebookUrl;
                     model.LinkedInUrl = part.LinkedInUrl;
                     model.InstagramUrl = part.InstagramUrl;
+                    model.PhoneNumber = part.PhoneNumber;
+                    model.Email = part.Email;
                 })
             .Location("Detail", "Content:10");
     }
@@ -30,12 +30,12 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
             GetEditorShapeType(context), model =>
             {
                 model.UnitName = part.UnitName;
-                model.DescriptionLt = part.DescriptionLt;
-                model.DescriptionEn = part.DescriptionEn;
                 model.Address = part.Address;
                 model.FacebookUrl = part.FacebookUrl;
                 model.LinkedInUrl = part.LinkedInUrl;
                 model.InstagramUrl = part.InstagramUrl;
+                model.PhoneNumber = part.PhoneNumber;
+                model.Email = part.Email;
             });
     }
 
@@ -46,12 +46,12 @@ public class SaUnitPartDriver : ContentPartDisplayDriver<SaUnitPart>
         if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         part.UnitName = model.UnitName;
-        part.DescriptionLt = model.DescriptionLt;
-        part.DescriptionEn = model.DescriptionEn;
         part.Address = model.Address;
         part.FacebookUrl = model.FacebookUrl;
         part.LinkedInUrl = model.LinkedInUrl;
         part.InstagramUrl = model.InstagramUrl;
+        part.PhoneNumber = model.PhoneNumber;
+        part.Email = model.Email;
 
         return Edit(part, context);
     }

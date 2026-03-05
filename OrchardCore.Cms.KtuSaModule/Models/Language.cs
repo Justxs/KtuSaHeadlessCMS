@@ -9,5 +9,7 @@ public static class LanguageExtensions
         public T Resolve<T>(T lt, T en) => language == Language.LT ? lt : en;
 
         public string FlowPartName => language == Language.LT ? "ContentLt" : "ContentEn";
+
+        public string FaqAnswerFlowPartName => language == Language.LT ? "AnswerLt" : "AnswerEn";
     }
 }

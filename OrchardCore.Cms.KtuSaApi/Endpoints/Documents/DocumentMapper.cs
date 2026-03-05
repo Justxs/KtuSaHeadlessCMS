@@ -2,6 +2,7 @@ using OrchardCore.Cms.KtuSaApi.Extensions;
 using OrchardCore.Cms.KtuSaModule.Models;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
+using OrchardCore.Lists.Models;
 using OrchardCore.Media;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Documents;
@@ -19,7 +20,7 @@ public static class DocumentMapper
             {
                 Category = language.Resolve(category.TitleLt, category.TitleEn),
                 Documents = [.. documents
-                    .Where(d => d.As<DocumentPart>().CategoryField.ContentItemIds.Contains(item.ContentItemId))
+                    .Where(d => d.As<ContainedPart>()?.ListContentItemId == item.ContentItemId)
                     .Select(d => d.ToResponse(language, mediaFileStore))]
             };
         }

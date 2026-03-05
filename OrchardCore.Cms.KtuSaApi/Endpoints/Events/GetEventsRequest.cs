@@ -11,10 +11,6 @@ public class GetEventsRequest
     public Language Language { get; set; } = Language.EN;
 
     [QueryParam]
-    [Description("When true, includes events whose start date is in the past")]
-    public bool FetchPassed { get; set; }
-
-    [QueryParam]
     [Description("Optional SA unit filter. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK")]
     public SaUnit? SaUnit { get; set; }
 }

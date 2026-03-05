@@ -32,8 +32,6 @@ public class FaqPartDriver : ContentPartDisplayDriver<FaqPart>
 
         part.QuestionLt = viewModel.QuestionLt;
         part.QuestionEn = viewModel.QuestionEn;
-        part.AnswerLt = viewModel.AnswerLt;
-        part.AnswerEn = viewModel.AnswerEn;
 
         return await EditAsync(part, context);
     }
@@ -42,7 +40,5 @@ public class FaqPartDriver : ContentPartDisplayDriver<FaqPart>
     {
         viewModel.QuestionLt = part.QuestionLt;
         viewModel.QuestionEn = part.QuestionEn;
-        viewModel.AnswerLt = part.AnswerLt;
-        viewModel.AnswerEn = part.AnswerEn;
     }
 }

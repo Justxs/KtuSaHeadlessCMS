@@ -1,3 +1,5 @@
+using OrchardCore.Cms.KtuSaApi.Endpoints.Shared;
+
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.SaUnits;
 
 public class SaUnitResponse
@@ -5,8 +7,8 @@ public class SaUnitResponse
     [Description("File ID of the SA unit cover photo")]
     public required string CoverUrl { get; set; }
 
-    [Description("SA unit description in the requested language")]
-    public required string Description { get; set; }
+    [Description("Structured content blocks of the body in the requested language")]
+    public List<ContentBlockResponse>? Blocks { get; set; }
 
     [Description("Contact email address")] public required string Email { get; set; }
 
@@ -15,11 +17,11 @@ public class SaUnitResponse
     [Description("Physical address")] public required string Address { get; set; }
 
     [Description("URL of the SA unit's LinkedIn page")]
-    public required string LinkedInUrl { get; set; }
+    public string? LinkedInUrl { get; set; }
 
     [Description("URL of the SA unit's Facebook page")]
-    public required string FacebookUrl { get; set; }
+    public string? FacebookUrl { get; set; }
 
     [Description("URL of the SA unit's Instagram page")]
-    public required string InstagramUrl { get; set; }
+    public string? InstagramUrl { get; set; }
 }

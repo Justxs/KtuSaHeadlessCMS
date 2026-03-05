@@ -12,7 +12,6 @@ public class GetFaqsEndpoint(IRepository repository)
     {
         Get("api/faqs");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Faqs")
             .WithSummary("Get FAQ items")

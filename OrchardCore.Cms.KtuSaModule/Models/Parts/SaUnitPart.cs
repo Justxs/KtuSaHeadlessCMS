@@ -9,15 +9,15 @@ public class SaUnitPart : ContentPart
 
     public string UnitName { get; set; } = null!;
 
-    public string DescriptionLt { get; set; } = null!;
-
-    public string DescriptionEn { get; set; } = null!;
-
     public string Address { get; set; } = null!;
 
-    public string LinkedInUrl { get; set; } = null!;
+    public string? LinkedInUrl { get; set; }
 
-    public string FacebookUrl { get; set; } = null!;
+    public string? FacebookUrl { get; set; }
 
-    public string InstagramUrl { get; set; } = null!;
+    public string? InstagramUrl { get; set; }
+
+    public string PhoneNumber { get; set; } = null!;
+
+    public string Email { get; set; } = null!;
 }

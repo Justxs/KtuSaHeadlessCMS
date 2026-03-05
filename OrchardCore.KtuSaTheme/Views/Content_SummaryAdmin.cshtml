@@ -1,4 +1,6 @@
 @using OrchardCore.Contents
+@using System.Text.Json.Nodes
+@using System.Text.Json.Dynamic
 @inject IAuthorizationService AuthorizationService
 @{
     ContentItem contentItem = Model.ContentItem;
@@ -12,6 +14,27 @@
     catch (Exception)
     {
         isMultiline = false;
+    }
+
+    string? thumbnailPath = null;
+    if (((JsonDynamicObject)contentItem.Content)?.Node is JsonObject json)
+    {
+        foreach (var partEntry in json)
+        {
+            if (partEntry.Value is not JsonObject partObj) continue;
+
+            foreach (var fieldEntry in partObj)
+            {
+                if (fieldEntry.Value is JsonObject fieldObj
+                    && fieldObj["Paths"] is JsonArray { Count: > 0 } paths)
+                {
+                    thumbnailPath = paths[0]?.GetValue<string>();
+                    break;
+                }
+            }
+
+            if (thumbnailPath is not null) break;
+        }
     }
 }
 
@@ -131,7 +154,15 @@
     </div>
 </div>
 
-@if (Model.Content != null)
+@if (thumbnailPath is not null)
+{
+    <div class="row mt-1">
+        <div class="col">
+            <img src="@Url.Content("~/media/" + thumbnailPath)" alt="" style="max-height: 100px; max-width: 200px; object-fit: contain;" />
+        </div>
+    </div>
+}
+else if (Model.Content != null)
 {
     <div class="row">
         <div class="col primary">

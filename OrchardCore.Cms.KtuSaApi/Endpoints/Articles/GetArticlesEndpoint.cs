@@ -12,7 +12,6 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
     {
         Get("api/articles");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Articles")
             .WithSummary("Get all articles")

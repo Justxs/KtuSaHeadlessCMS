@@ -11,7 +11,6 @@ public class GetArticleByIdEndpoint(IRepository repository, IMediaFileStore medi
     {
         Get("api/articles/{id}");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Articles")
             .WithSummary("Get an article by ID")

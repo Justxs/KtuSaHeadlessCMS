@@ -9,10 +9,4 @@ public class FaqPartViewModel
 
     [Required(ErrorMessage = "The English question is required.")]
     public string QuestionEn { get; set; } = null!;
-
-    [Required(ErrorMessage = "The Lithuanian answer is required.")]
-    public string AnswerLt { get; set; } = null!;
-
-    [Required(ErrorMessage = "The English answer is required.")]
-    public string AnswerEn { get; set; } = null!;
 }

@@ -75,14 +75,6 @@ public class EventPartDriver(
 
         if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return await EditAsync(part, context);
 
-        if (model.StartDate <= DateTime.Today)
-        {
-            context.Updater.ModelState.AddModelError(Prefix + ".StartDate",
-                "The event start date must be later than today's date.");
-
-            return await EditAsync(part, context);
-        }
-
         if (model.EndDate < model.StartDate)
         {
             context.Updater.ModelState.AddModelError(Prefix + ".EndDate",

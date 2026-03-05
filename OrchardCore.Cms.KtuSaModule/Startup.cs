@@ -32,7 +32,9 @@ public class Startup : StartupBase
         services.AddContentPart<ArticlePart>();
         services.AddContentPart<UserProfilePart>();
         services.AddContentPart<HeroSectionPart>();
-        services.AddContentPart<StaticPagePart>();
+        services
+            .AddContentPart<StaticPagePart>()
+            .UseDisplayDriver<StaticPagePartDriver>();
 
         // Widget content parts
         services.AddContentPart<ParagraphWidgetPart>();
@@ -90,7 +92,6 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, ArticleMigrations>();
         services.AddScoped<IDataMigration, FaqMigrations>();
         services.AddScoped<IDataMigration, ContactMigrations>();
-        services.AddScoped<IDataMigration, HeroSectionMigrations>();
         services.AddScoped<IDataMigration, SaUnitMigrations>();
         services.AddScoped<IDataMigration, UserMigrations>();
         services.AddScoped<IDataMigration, PositionMigrations>();

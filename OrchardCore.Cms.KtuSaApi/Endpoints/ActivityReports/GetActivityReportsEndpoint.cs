@@ -14,7 +14,6 @@ public class GetActivityReportsEndpoint(IRepository repository, IMediaFileStore 
     {
         Get("api/sa-units/{saUnit}/activity-reports");
         AllowAnonymous();
-        ResponseCache(300);
         Description(b => b
             .WithTags("Activity Reports")
             .WithSummary("Get activity reports for an SA unit")

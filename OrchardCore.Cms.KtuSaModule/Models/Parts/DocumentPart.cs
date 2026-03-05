@@ -1,4 +1,3 @@
-using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
 using OrchardCore.Media.Fields;
 
@@ -13,6 +12,4 @@ public class DocumentPart : ContentPart
     public MediaField FileLt { get; set; } = new();
 
     public MediaField FileEn { get; set; } = new();
-
-    public ContentPickerField CategoryField { get; set; } = null!;
 }
