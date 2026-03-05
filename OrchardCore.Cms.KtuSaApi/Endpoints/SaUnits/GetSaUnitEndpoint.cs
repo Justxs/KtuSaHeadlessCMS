@@ -15,9 +15,10 @@ public class GetSaUnitEndpoint(IRepository repository, IMediaFileStore mediaFile
             .WithTags("SA Units")
             .WithSummary("Get SA unit details")
             .WithDescription(
-                "Returns details for a specific student association unit, including social media links, description and contact information. " +
-                "Pass language=lt or language=en.")
+                "Returns SA unit details for the specified unit code, including cover image, structured body content, " +
+                "contact data, and social links. Use query parameter language=en (default) or language=lt.")
             .Produces<SaUnitResponse>(200)
+            .ProducesProblem(400)
             .ProducesProblem(404));
     }
 

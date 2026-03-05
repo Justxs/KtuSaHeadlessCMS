@@ -6,10 +6,10 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.StaticPages;
 public class GetStaticPageRequest
 {
     [QueryParam]
-    [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
+    [Description("Response language. Allowed values: 'en' (default) and 'lt'.")]
     public Language Language { get; set; } = Language.EN;
 
     [BindFrom("pageName")]
-    [Description("Partial or full display text of the static page to retrieve")]
+    [Description("Case-insensitive full or partial title match used to locate the static page.")]
     public string PageName { get; set; } = null!;
 }

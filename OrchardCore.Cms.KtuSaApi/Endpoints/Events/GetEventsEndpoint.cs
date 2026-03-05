@@ -16,12 +16,13 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
         AllowAnonymous();
         Description(b => b
             .WithTags("Events")
-            .WithSummary("Get events")
+            .WithSummary("List event previews")
             .WithDescription(
-                "Returns a list of event previews ordered by start date descending. " +
-                "Pass language=lt or language=en. Pass fetchPassed=true to include past events. " +
-                "Optionally filter by saUnit (CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK).")
-            .Produces<List<EventPreviewResponse>>(200));
+                "Returns published event previews ordered by start date descending. " +
+                "Use query parameter language=en (default) or language=lt. " +
+                "Optionally filter results by saUnit.")
+            .Produces<List<EventPreviewResponse>>(200)
+            .ProducesProblem(400));
     }
 
     public override async Task HandleAsync(GetEventsRequest req, CancellationToken ct)

@@ -4,23 +4,24 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
 public class ArticleContentResponse
 {
-    [Description("Content item ID")] public required string Id { get; set; }
+    [Description("Unique content item ID.")]
+    public required string Id { get; set; }
 
-    [Description("Article title in the requested language")]
+    [Description("Article title in the requested language.")]
     public required string Title { get; set; }
 
-    [Description("Structured content blocks of the article body in the requested language")]
+    [Description("Structured content blocks of the article body in the requested language.")]
     public required List<ContentBlockResponse> Blocks { get; set; }
 
-    [Description("Estimated reading time (e.g. '3 min read')")]
+    [Description("Estimated reading time generated from article text (for example: '1 min.' or '3 min.').")]
     public string? ReadingTime { get; set; }
 
-    [Description("Date and time the article was created (UTC)")]
+    [Description("Article creation timestamp in UTC.")]
     public DateTime CreatedDate { get; set; }
 
-    [Description("Public URL of the article thumbnail image")]
+    [Description("Public URL of the article thumbnail image. Can be empty when no image is configured.")]
     public required string ThumbnailImageUrl { get; set; }
 
-    [Description("Section headings extracted from h1-h6 tags for a table of contents")]
+    [Description("Section headings extracted from paragraph HTML (h1-h6 tags), suitable for a table of contents.")]
     public List<string>? ContentList { get; set; }
 }

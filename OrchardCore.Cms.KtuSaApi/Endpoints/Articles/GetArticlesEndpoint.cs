@@ -14,11 +14,12 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
         AllowAnonymous();
         Description(b => b
             .WithTags("Articles")
-            .WithSummary("Get all articles")
+            .WithSummary("List article previews")
             .WithDescription(
-                "Returns a list of article previews ordered by creation date descending. " +
-                "Pass language=lt or language=en. Query parameter 'limit' optionally caps the number of results.")
-            .Produces<List<ArticlePreviewResponse>>(200));
+                "Returns published article previews ordered by creation date descending. " +
+                "Use query parameter language=en (default) or language=lt. Optional query parameter limit caps the number of returned items.")
+            .Produces<List<ArticlePreviewResponse>>(200)
+            .ProducesProblem(400));
     }
 
     public override async Task HandleAsync(GetArticlesRequest req, CancellationToken ct)

@@ -33,7 +33,7 @@ public sealed class GoogleCloudMediaStartup(
             {
                 throw new InvalidOperationException(
                     $"Google Cloud media storage is required but not configured: {reason} " +
-                    $"Configure section '{GoogleCloudMediaStorageOptions.SectionName}' (or legacy '{GoogleCloudMediaStorageOptions.LegacySectionName}').");
+                    $"Configure section '{GoogleCloudMediaStorageOptions.SectionName}'.");
             }
 
             logger.LogInformation(

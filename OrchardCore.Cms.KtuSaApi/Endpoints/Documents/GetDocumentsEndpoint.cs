@@ -17,10 +17,11 @@ public class GetDocumentsEndpoint(IRepository repository, IMediaFileStore mediaF
             .WithTags("Documents")
             .WithSummary("Get documents grouped by category")
             .WithDescription(
-                "Returns all documents grouped by their category. " +
-                "Each entry contains a category name and a list of documents with titles and PDF file URLs. " +
-                "Pass language=lt or language=en.")
-            .Produces<List<DocumentCategoryResponse>>(200));
+                "Returns published documents grouped by category. " +
+                "Each group contains a localized category title and localized documents with PDF URLs. " +
+                "Use query parameter language=en (default) or language=lt.")
+            .Produces<List<DocumentCategoryResponse>>(200)
+            .ProducesProblem(400));
     }
 
     public override async Task HandleAsync(GetDocumentsRequest req, CancellationToken ct)

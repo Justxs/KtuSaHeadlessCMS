@@ -17,8 +17,10 @@ public class GetEventByIdEndpoint(IRepository repository, IMediaFileStore mediaF
             .WithTags("Events")
             .WithSummary("Get an event by ID")
             .WithDescription(
-                "Returns the full content of an event including HTML body, dates, address, Fienta ticket URL and organising SA units. Pass language=lt or language=en.")
+                "Returns a published event by content item ID, including structured content blocks, dates, address, " +
+                "ticket link, and organizer SA units. Use query parameter language=en (default) or language=lt.")
             .Produces<EventContentResponse>(200)
+            .ProducesProblem(400)
             .ProducesProblem(404));
     }
 

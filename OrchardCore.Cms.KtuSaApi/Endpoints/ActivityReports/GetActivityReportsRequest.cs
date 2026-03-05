@@ -7,11 +7,11 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.ActivityReports;
 public class GetActivityReportsRequest
 {
     [QueryParam]
-    [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
+    [Description("Response language. Allowed values: 'en' (default) and 'lt'.")]
     public Language Language { get; set; } = Language.EN;
 
     [BindFrom("saUnit")]
     [Description(
-        "SA unit identifier. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK")]
+        "Student association unit code. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")]
     public SaUnit SaUnit { get; set; }
 }

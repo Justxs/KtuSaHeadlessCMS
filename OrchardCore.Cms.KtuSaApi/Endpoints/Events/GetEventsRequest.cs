@@ -7,10 +7,11 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 public class GetEventsRequest
 {
     [QueryParam]
-    [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
+    [Description("Response language. Allowed values: 'en' (default) and 'lt'.")]
     public Language Language { get; set; } = Language.EN;
 
     [QueryParam]
-    [Description("Optional SA unit filter. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK")]
+    [Description(
+        "Optional student association unit filter. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")]
     public SaUnit? SaUnit { get; set; }
 }

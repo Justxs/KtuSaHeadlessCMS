@@ -15,9 +15,10 @@ public class GetArticleByIdEndpoint(IRepository repository, IMediaFileStore medi
             .WithTags("Articles")
             .WithSummary("Get an article by ID")
             .WithDescription(
-                "Returns the full content of an article including HTML body, reading time estimate and a structured content list. " +
-                "Pass language=lt or language=en.")
+                "Returns a published article by content item ID, including structured content blocks, reading time, and heading list. " +
+                "Use query parameter language=en (default) or language=lt.")
             .Produces<ArticleContentResponse>(200)
+            .ProducesProblem(400)
             .ProducesProblem(404));
     }
 

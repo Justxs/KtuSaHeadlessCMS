@@ -7,6 +7,6 @@ public class GetMainContactsRequest
 {
     [BindFrom("saUnit")]
     [Description(
-        "SA unit identifier. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK")]
+        "Student association unit code. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.")]
     public SaUnit SaUnit { get; set; }
 }

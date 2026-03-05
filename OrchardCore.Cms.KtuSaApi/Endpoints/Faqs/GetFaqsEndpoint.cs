@@ -16,9 +16,11 @@ public class GetFaqsEndpoint(IRepository repository)
             .WithTags("Faqs")
             .WithSummary("Get FAQ items")
             .WithDescription(
-                "Returns a list of frequently asked questions in the specified language. " +
-                "Pass language=lt or language=en. Query parameter 'limit' optionally returns a random subset.")
-            .Produces<List<FaqResponse>>(200));
+                "Returns published frequently asked questions. " +
+                "Use query parameter language=en (default) or language=lt. " +
+                "Optional query parameter limit returns a random subset up to the specified count.")
+            .Produces<List<FaqResponse>>(200)
+            .ProducesProblem(400));
     }
 
     public override async Task HandleAsync(GetFaqsRequest req, CancellationToken ct)

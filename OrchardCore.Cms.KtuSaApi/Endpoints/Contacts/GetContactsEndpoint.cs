@@ -16,12 +16,12 @@ public class GetContactsEndpoint(IRepository repository, IMediaFileStore mediaFi
         AllowAnonymous();
         Description(b => b
             .WithTags("Contacts")
-            .WithSummary("Get contacts for an SA unit")
+            .WithSummary("List contacts for an SA unit")
             .WithDescription(
-                "Returns member contacts of the specified SA unit ordered by index. " +
-                "Includes name, email, photo, position and responsibilities. " +
-                "Pass language=lt or language=en.")
-            .Produces<List<ContactResponse>>(200));
+                "Returns published member contacts for the specified SA unit ordered by index (ascending). " +
+                "Use query parameter language=en (default) or language=lt. If the SA unit does not exist, an empty array is returned.")
+            .Produces<List<ContactResponse>>(200)
+            .ProducesProblem(400));
     }
 
     public override async Task HandleAsync(GetContactsRequest req, CancellationToken ct)

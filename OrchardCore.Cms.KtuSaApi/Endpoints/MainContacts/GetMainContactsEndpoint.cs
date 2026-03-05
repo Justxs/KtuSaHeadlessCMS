@@ -17,8 +17,9 @@ public class GetMainContactsEndpoint(IRepository repository)
             .WithTags("Main Contacts")
             .WithSummary("Get main contact for an SA unit")
             .WithDescription(
-                "Returns the primary address and contact details for a specific student association unit.")
+                "Returns primary contact details (email, phone, address) for the specified SA unit.")
             .Produces<MainContactResponse>(200)
+            .ProducesProblem(400)
             .ProducesProblem(404));
     }
 

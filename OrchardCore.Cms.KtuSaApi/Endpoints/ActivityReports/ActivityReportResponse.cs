@@ -2,14 +2,15 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.ActivityReports;
 
 public class ActivityReportResponse
 {
-    [Description("Content item ID")] public required string Id { get; set; }
+    [Description("Unique content item ID.")]
+    public required string Id { get; set; }
 
-    [Description("File ID of the activity report PDF in the requested language")]
+    [Description("Public URL of the activity report PDF in the requested language.")]
     public required string PdfUrl { get; set; }
 
-    [Description("Start date of the report period")]
+    [Description("Report period start date.")]
     public required DateTime From { get; set; }
 
-    [Description("End date of the report period")]
+    [Description("Report period end date.")]
     public required DateTime To { get; set; }
 }

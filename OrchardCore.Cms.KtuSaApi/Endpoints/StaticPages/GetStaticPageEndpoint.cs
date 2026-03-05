@@ -19,9 +19,10 @@ public class GetStaticPageEndpoint(IRepository repository, IMediaFileStore media
             .WithTags("Static Pages")
             .WithSummary("Get a static page by name")
             .WithDescription(
-                "Returns the title, description, image and HTML body of a static page whose title contains the given pageName (case-insensitive). " +
-                "Pass language=lt or language=en.")
+                "Returns the first published static page whose localized title contains the provided pageName (case-insensitive match). " +
+                "Use query parameter language=en (default) or language=lt.")
             .Produces<StaticPageResponse>(200)
+            .ProducesProblem(400)
             .ProducesProblem(404));
     }
 

@@ -16,11 +16,12 @@ public class GetActivityReportsEndpoint(IRepository repository, IMediaFileStore 
         AllowAnonymous();
         Description(b => b
             .WithTags("Activity Reports")
-            .WithSummary("Get activity reports for an SA unit")
+            .WithSummary("List activity reports for an SA unit")
             .WithDescription(
-                "Returns activity reports for the specified SA unit ordered by report period start date descending. " +
-                "Pass language=lt or language=en.")
-            .Produces<List<ActivityReportResponse>>(200));
+                "Returns published activity reports for the specified SA unit, ordered by report period start date descending. " +
+                "Use query parameter language=en (default) or language=lt. If the SA unit does not exist, an empty array is returned.")
+            .Produces<List<ActivityReportResponse>>(200)
+            .ProducesProblem(400));
     }
 
     public override async Task HandleAsync(GetActivityReportsRequest req, CancellationToken ct)

@@ -15,8 +15,8 @@ public class GetSponsorsEndpoint(IRepository repository, IMediaFileStore mediaFi
         AllowAnonymous();
         Description(b => b
             .WithTags("Sponsors")
-            .WithSummary("Get all sponsors")
-            .WithDescription("Returns a list of all sponsors ordered by creation date descending.")
+            .WithSummary("List sponsors")
+            .WithDescription("Returns published sponsors ordered by creation date descending.")
             .Produces<List<SponsorResponse>>(200));
     }
 

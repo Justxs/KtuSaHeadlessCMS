@@ -8,9 +8,10 @@ internal sealed partial class KtuSaOpenApiTransformer : IOpenApiDocumentTransfor
 {
     private static readonly Dictionary<string, string> PathParamDescriptions = new()
     {
-        ["pageName"] = "Partial or full display text of the static page to retrieve",
-        ["saUnit"] = "SA unit identifier. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK",
-        ["id"] = "Content item ID of the resource",
+        ["pageName"] = "Case-insensitive full or partial title match used to locate a static page.",
+        ["saUnit"] =
+            "Student association unit code. Allowed values: CSA, InfoSA, Vivat_Chemija, InDi, STATIUS, FUMSA, ESA, SHM, VFSA, BRK.",
+        ["id"] = "Content item ID of the requested resource.",
     };
 
     private static readonly Dictionary<string, string> TagDescriptions = new()
@@ -43,7 +44,7 @@ internal sealed partial class KtuSaOpenApiTransformer : IOpenApiDocumentTransfor
     private static void FixInfo(OpenApiDocument document)
     {
         document.Info.Description ??=
-            "KTU Student Association API for managing content, events, contacts and more.";
+            "Read-only API for KTU Student Association website content: articles, events, contacts, documents, static pages, and sponsors.";
         document.Info.Contact ??= new OpenApiContact
         {
             Name = "KTU SA",

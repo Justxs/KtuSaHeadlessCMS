@@ -6,10 +6,10 @@ namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 public class GetArticleByIdRequest
 {
     [QueryParam]
-    [Description("Language code: 'lt' for Lithuanian or 'en' for English")]
+    [Description("Response language. Allowed values: 'en' (default) and 'lt'.")]
     public Language Language { get; set; } = Language.EN;
 
     [BindFrom("id")]
-    [Description("Content item ID of the article")]
+    [Description("Article content item ID.")]
     public string Id { get; set; } = null!;
 }

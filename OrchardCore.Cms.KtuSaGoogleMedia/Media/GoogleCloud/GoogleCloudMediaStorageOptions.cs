@@ -5,7 +5,6 @@ namespace OrchardCore.Cms.KtuSaGoogleMedia.Media.GoogleCloud;
 public sealed class GoogleCloudMediaStorageOptions
 {
     public const string SectionName = "OrchardCore_Media_GoogleCloudStorage";
-    public const string LegacySectionName = "GoogleCredentials";
 
     public string BucketName { get; set; } = string.Empty;
     public string BasePath { get; set; } = string.Empty;
