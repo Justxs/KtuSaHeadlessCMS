@@ -16,10 +16,12 @@ public sealed class GoogleCloudFileStore(
     : IFileStore, IDisposable
 {
     private const string DirectoryMarkerFileName = "OrchardCore.Media.txt";
+
     private static readonly byte[] MarkerFileContent =
         "This is a directory marker file used by Orchard Core."u8.ToArray();
 
     private readonly StorageClient _storageClient = CreateStorageClient(options);
+
     private readonly string _basePrefix = string.IsNullOrWhiteSpace(options.BasePath)
         ? string.Empty
         : NormalizePrefix(options.BasePath);
@@ -32,10 +34,7 @@ public sealed class GoogleCloudFileStore(
     public async Task<IFileStoreEntry?> GetFileInfoAsync(string path)
     {
         var normalizedPath = this.NormalizePath(path);
-        if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
-            return null;
-        }
+        if (string.IsNullOrWhiteSpace(normalizedPath)) return null;
 
         try
         {
@@ -58,19 +57,14 @@ public sealed class GoogleCloudFileStore(
 
         try
         {
-            if (string.IsNullOrEmpty(normalizedPath))
-            {
-                return new GoogleCloudDirectory(string.Empty, clock.UtcNow);
-            }
+            if (string.IsNullOrEmpty(normalizedPath)) return new GoogleCloudDirectory(string.Empty, clock.UtcNow);
 
             var prefix = GetObjectPrefix(normalizedPath);
             var listOptions = new ListObjectsOptions { PageSize = 1 };
 
-            await using var enumerator = _storageClient.ListObjectsAsync(options.BucketName, prefix, listOptions).GetAsyncEnumerator();
-            if (await enumerator.MoveNextAsync())
-            {
-                return new GoogleCloudDirectory(normalizedPath, clock.UtcNow);
-            }
+            await using var enumerator = _storageClient.ListObjectsAsync(options.BucketName, prefix, listOptions)
+                .GetAsyncEnumerator();
+            if (await enumerator.MoveNextAsync()) return new GoogleCloudDirectory(normalizedPath, clock.UtcNow);
 
             return null;
         }
@@ -99,14 +93,10 @@ public sealed class GoogleCloudFileStore(
             entries = [];
 
             if (!includeSubDirectories)
-            {
                 await ProcessNonRecursiveListingAsync(objectPrefix, requestedPrefix, directories, files);
-            }
             else
-            {
                 await ProcessRecursiveListingAsync(objectPrefix, requestedPrefix, normalizedPath, directories, files);
-            }
-            
+
             entries.AddRange(directories.Values.OrderBy(x => x.Path, StringComparer.OrdinalIgnoreCase)
                 .Select(directory => directory));
             entries.AddRange(files.Values.OrderBy(x => x.Path, StringComparer.OrdinalIgnoreCase));
@@ -116,10 +106,7 @@ public sealed class GoogleCloudFileStore(
             throw new FileStoreException($"Cannot get directory content for path '{normalizedPath}'.", ex);
         }
 
-        foreach (var entry in entries)
-        {
-            yield return entry;
-        }
+        foreach (var entry in entries) yield return entry;
     }
 
     private async Task ProcessNonRecursiveListingAsync(
@@ -133,15 +120,9 @@ public sealed class GoogleCloudFileStore(
         await foreach (var response in _storageClient.ListObjectsAsync(options.BucketName, objectPrefix, listOptions)
                            .AsRawResponses())
         {
-            if (response.Prefixes is not null)
-            {
-                ProcessPrefixes(response.Prefixes, requestedPrefix, directories);
-            }
+            if (response.Prefixes is not null) ProcessPrefixes(response.Prefixes, requestedPrefix, directories);
 
-            if (response.Items is not null)
-            {
-                ProcessItems(response.Items, requestedPrefix, files, directories);
-            }
+            if (response.Items is not null) ProcessItems(response.Items, requestedPrefix, files, directories);
         }
     }
 
@@ -155,16 +136,10 @@ public sealed class GoogleCloudFileStore(
         await foreach (var storageObject in _storageClient.ListObjectsAsync(options.BucketName, objectPrefix))
         {
             var relativePath = RemoveBasePrefix(storageObject.Name);
-            if (!IsValidPathForRequest(relativePath, requestedPrefix))
-            {
-                continue;
-            }
+            if (!IsValidPathForRequest(relativePath, requestedPrefix)) continue;
 
             var pathAfterRequest = relativePath[requestedPrefix.Length..];
-            if (string.IsNullOrWhiteSpace(pathAfterRequest))
-            {
-                continue;
-            }
+            if (string.IsNullOrWhiteSpace(pathAfterRequest)) continue;
 
             if (relativePath.EndsWith('/'))
             {
@@ -174,12 +149,10 @@ public sealed class GoogleCloudFileStore(
 
             AddAllParentDirectories(directories, normalizedPath, pathAfterRequest);
 
-            if (IsMarkerFile(pathAfterRequest))
-            {
-                continue;
-            }
+            if (IsMarkerFile(pathAfterRequest)) continue;
 
-            files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size), GetLastModifiedUtc(storageObject));
+            files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size),
+                GetLastModifiedUtc(storageObject));
         }
     }
 
@@ -191,21 +164,12 @@ public sealed class GoogleCloudFileStore(
         foreach (var prefix in prefixes)
         {
             var relativePrefix = RemoveBasePrefix(prefix).TrimEnd('/');
-            if (string.IsNullOrWhiteSpace(relativePrefix))
-            {
-                continue;
-            }
+            if (string.IsNullOrWhiteSpace(relativePrefix)) continue;
 
-            if (!relativePrefix.StartsWith(requestedPrefix, StringComparison.Ordinal))
-            {
-                continue;
-            }
+            if (!relativePrefix.StartsWith(requestedPrefix, StringComparison.Ordinal)) continue;
 
             var childPath = relativePrefix[requestedPrefix.Length..];
-            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/'))
-            {
-                continue;
-            }
+            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/')) continue;
 
             AddDirectory(directories, relativePrefix);
         }
@@ -220,10 +184,7 @@ public sealed class GoogleCloudFileStore(
         foreach (var storageObject in items)
         {
             var relativePath = RemoveBasePrefix(storageObject.Name);
-            if (!IsValidPathForRequest(relativePath, requestedPrefix))
-            {
-                continue;
-            }
+            if (!IsValidPathForRequest(relativePath, requestedPrefix)) continue;
 
             if (relativePath.EndsWith('/'))
             {
@@ -232,23 +193,18 @@ public sealed class GoogleCloudFileStore(
             }
 
             var childPath = relativePath[requestedPrefix.Length..];
-            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/'))
-            {
-                continue;
-            }
+            if (string.IsNullOrWhiteSpace(childPath) || childPath.Contains('/')) continue;
 
-            if (IsMarkerFile(childPath))
-            {
-                continue;
-            }
+            if (IsMarkerFile(childPath)) continue;
 
-            files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size), GetLastModifiedUtc(storageObject));
+            files[relativePath] = new GoogleCloudFile(relativePath, ToLength(storageObject.Size),
+                GetLastModifiedUtc(storageObject));
         }
     }
 
     private static bool IsValidPathForRequest(string relativePath, string requestedPrefix)
     {
-        return !string.IsNullOrWhiteSpace(relativePath) 
+        return !string.IsNullOrWhiteSpace(relativePath)
                && relativePath.StartsWith(requestedPrefix, StringComparison.Ordinal);
     }
 
@@ -260,22 +216,15 @@ public sealed class GoogleCloudFileStore(
     public async Task<bool> TryCreateDirectoryAsync(string path)
     {
         var normalizedPath = this.NormalizePath(path);
-        if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
-            return false;
-        }
+        if (string.IsNullOrWhiteSpace(normalizedPath)) return false;
 
         try
         {
             if (await GetFileInfoAsync(normalizedPath) is not null)
-            {
-                throw new FileStoreException($"Cannot create directory because the path '{normalizedPath}' already exists and is a file.");
-            }
+                throw new FileStoreException(
+                    $"Cannot create directory because the path '{normalizedPath}' already exists and is a file.");
 
-            if (await GetDirectoryInfoAsync(normalizedPath) is not null)
-            {
-                return false;
-            }
+            if (await GetDirectoryInfoAsync(normalizedPath) is not null) return false;
 
             var markerPath = this.Combine(normalizedPath, DirectoryMarkerFileName);
             await using var stream = new MemoryStream(MarkerFileContent);
@@ -300,10 +249,7 @@ public sealed class GoogleCloudFileStore(
     public async Task<bool> TryDeleteFileAsync(string path)
     {
         var normalizedPath = this.NormalizePath(path);
-        if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
-            return false;
-        }
+        if (string.IsNullOrWhiteSpace(normalizedPath)) return false;
 
         try
         {
@@ -324,9 +270,7 @@ public sealed class GoogleCloudFileStore(
     {
         var normalizedPath = this.NormalizePath(path);
         if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
             throw new FileStoreException("Cannot delete the root directory.");
-        }
 
         try
         {
@@ -334,18 +278,12 @@ public sealed class GoogleCloudFileStore(
             var objectNames = new List<string>();
 
             await foreach (var storageObject in _storageClient.ListObjectsAsync(options.BucketName, prefix))
-            {
                 objectNames.Add(storageObject.Name);
-            }
 
-            if (objectNames.Count == 0)
-            {
-                return false;
-            }
+            if (objectNames.Count == 0) return false;
 
             var deleted = false;
             foreach (var objectName in objectNames)
-            {
                 try
                 {
                     await _storageClient.DeleteObjectAsync(options.BucketName, objectName);
@@ -355,7 +293,6 @@ public sealed class GoogleCloudFileStore(
                 {
                     // Deleted concurrently, ignore.
                 }
-            }
 
             return deleted;
         }
@@ -381,31 +318,22 @@ public sealed class GoogleCloudFileStore(
         var destinationPath = this.NormalizePath(dstPath);
 
         if (string.IsNullOrWhiteSpace(sourcePath))
-        {
             throw new FileStoreException("Cannot copy file because the source path is empty.");
-        }
 
         if (string.IsNullOrWhiteSpace(destinationPath))
-        {
             throw new FileStoreException("Cannot copy file because the destination path is empty.");
-        }
 
         if (sourcePath == destinationPath)
-        {
             throw new ArgumentException("The values for srcPath and dstPath must not be the same.");
-        }
 
         try
         {
             if (await GetFileInfoAsync(sourcePath) is null)
-            {
                 throw new FileStoreException($"Cannot copy file '{sourcePath}' because it does not exist.");
-            }
 
             if (await GetFileInfoAsync(destinationPath) is not null)
-            {
-                throw new FileStoreException($"Cannot copy file '{sourcePath}' because a file already exists in the new path '{destinationPath}'.");
-            }
+                throw new FileStoreException(
+                    $"Cannot copy file '{sourcePath}' because a file already exists in the new path '{destinationPath}'.");
 
             await _storageClient.CopyObjectAsync(
                 options.BucketName,
@@ -427,9 +355,7 @@ public sealed class GoogleCloudFileStore(
     {
         var normalizedPath = this.NormalizePath(path);
         if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
             throw new FileStoreException("Cannot get file stream because the path is empty.");
-        }
 
         try
         {
@@ -457,16 +383,12 @@ public sealed class GoogleCloudFileStore(
     {
         var normalizedPath = this.NormalizePath(path);
         if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
             throw new FileStoreException("Cannot create file because the path is empty.");
-        }
 
         try
         {
             if (!overwrite && await GetFileInfoAsync(normalizedPath) is not null)
-            {
                 throw new FileStoreException($"Cannot create file '{normalizedPath}' because it already exists.");
-            }
 
             contentTypeProvider.TryGetContentType(normalizedPath, out var contentType);
 
@@ -497,11 +419,9 @@ public sealed class GoogleCloudFileStore(
         }
 
         if (options.HasServiceAccountFields())
-        {
             return StorageClient.Create(GoogleCredential.FromJson(options.BuildServiceAccountJson()));
-        }
 
-        return options.UseApplicationDefaultCredentials 
+        return options.UseApplicationDefaultCredentials
             ? StorageClient.Create()
             : throw new InvalidOperationException("No Google Cloud Storage credentials were configured.");
     }
@@ -521,9 +441,7 @@ public sealed class GoogleCloudFileStore(
     private string RemoveBasePrefix(string objectName)
     {
         if (string.IsNullOrEmpty(_basePrefix) || !objectName.StartsWith(_basePrefix, StringComparison.Ordinal))
-        {
             return objectName.TrimStart('/');
-        }
 
         // Keep trailing '/' so virtual directory placeholder objects are detected correctly.
         return objectName[_basePrefix.Length..].TrimStart('/');
@@ -537,10 +455,7 @@ public sealed class GoogleCloudFileStore(
 
     private static long ToLength(ulong? value)
     {
-        if (value is null)
-        {
-            return 0;
-        }
+        if (value is null) return 0;
 
         return value.Value > long.MaxValue ? long.MaxValue : (long)value.Value;
     }
@@ -553,10 +468,7 @@ public sealed class GoogleCloudFileStore(
     private void AddDirectory(IDictionary<string, GoogleCloudDirectory> directories, string path)
     {
         var normalized = this.NormalizePath(path);
-        if (string.IsNullOrEmpty(normalized) || directories.ContainsKey(normalized))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(normalized) || directories.ContainsKey(normalized)) return;
 
         directories[normalized] = new GoogleCloudDirectory(normalized, clock.UtcNow);
     }
@@ -567,10 +479,7 @@ public sealed class GoogleCloudFileStore(
         string pathAfterRequest)
     {
         var directoryPart = Path.GetDirectoryName(pathAfterRequest)?.Replace('\\', '/');
-        if (string.IsNullOrEmpty(directoryPart))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(directoryPart)) return;
 
         var current = normalizedPath;
         foreach (var segment in directoryPart.Split('/', StringSplitOptions.RemoveEmptyEntries))

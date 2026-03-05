@@ -33,7 +33,7 @@ public class GetStaticPageEndpoint(IRepository repository, IMediaFileStore media
 
         var page = staticPages.FirstOrDefault(p =>
             language.Resolve(p.As<StaticPagePart>()?.TitleLt, p.As<StaticPagePart>()?.TitleEn)!
-            .Contains(req.PageName, StringComparison.CurrentCultureIgnoreCase));
+                .Contains(req.PageName, StringComparison.CurrentCultureIgnoreCase));
 
         if (page is null)
         {

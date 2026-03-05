@@ -8,12 +8,22 @@ public class ContactPermissions : SaUnitPermissionProvider
 {
     public static readonly Permission ManageCsaContacts = new(nameof(ManageCsaContacts), "Can manage CSA contacts.");
     public static readonly Permission ManageBrkContacts = new(nameof(ManageBrkContacts), "Can manage BRK contacts.");
-    public static readonly Permission ManageInfosaContacts = new(nameof(ManageInfosaContacts), "Can manage InfoSA contacts.");
-    public static readonly Permission ManageVivatChemijaContacts = new(nameof(ManageVivatChemijaContacts), "Can manage Vivat chemija contacts.");
+
+    public static readonly Permission ManageInfosaContacts =
+        new(nameof(ManageInfosaContacts), "Can manage InfoSA contacts.");
+
+    public static readonly Permission ManageVivatChemijaContacts =
+        new(nameof(ManageVivatChemijaContacts), "Can manage Vivat chemija contacts.");
+
     public static readonly Permission ManageIndiContacts = new(nameof(ManageIndiContacts), "Can manage InDi contacts.");
     public static readonly Permission ManageEsaContacts = new(nameof(ManageEsaContacts), "Can manage ESA contacts.");
-    public static readonly Permission ManageFumsaContacts = new(nameof(ManageFumsaContacts), "Can manage FUMSA contacts.");
-    public static readonly Permission ManageStatiusContacts = new(nameof(ManageStatiusContacts), "Can manage STATIUS contacts.");
+
+    public static readonly Permission ManageFumsaContacts =
+        new(nameof(ManageFumsaContacts), "Can manage FUMSA contacts.");
+
+    public static readonly Permission ManageStatiusContacts =
+        new(nameof(ManageStatiusContacts), "Can manage STATIUS contacts.");
+
     public static readonly Permission ManageVfsaContacts = new(nameof(ManageVfsaContacts), "Can manage VFSA contacts.");
     public static readonly Permission ManageShmContacts = new(nameof(ManageShmContacts), "Can manage SHM contacts.");
     public static readonly Permission ManagePositions = new(nameof(ManagePositions), "Can manage KTU SA positions.");
@@ -29,7 +39,7 @@ public class ContactPermissions : SaUnitPermissionProvider
         [SaUnit.FUMSA] = ManageFumsaContacts,
         [SaUnit.STATIUS] = ManageStatiusContacts,
         [SaUnit.VFSA] = ManageVfsaContacts,
-        [SaUnit.SHM] = ManageShmContacts,
+        [SaUnit.SHM] = ManageShmContacts
     };
 
     protected override IReadOnlyDictionary<SaUnit, Permission> UnitPermissions => _unitPermissions;
@@ -40,8 +50,11 @@ public class ContactPermissions : SaUnitPermissionProvider
 
     protected override IEnumerable<PermissionStereotype> ExtraStereotypes =>
     [
-        new PermissionStereotype { Name = President, Permissions = [ManagePositions] }
+        new() { Name = President, Permissions = [ManagePositions] }
     ];
 
-    public static Permission GetPermission(SaUnit unit) => _unitPermissions[unit];
+    public static Permission GetPermission(SaUnit unit)
+    {
+        return _unitPermissions[unit];
+    }
 }

@@ -13,11 +13,9 @@ public class SaUnitResponse
     [Description("Contact email address.")]
     public required string Email { get; set; }
 
-    [Description("Contact phone number.")]
-    public required string PhoneNumber { get; set; }
+    [Description("Contact phone number.")] public required string PhoneNumber { get; set; }
 
-    [Description("Physical address.")]
-    public required string Address { get; set; }
+    [Description("Physical address.")] public required string Address { get; set; }
 
     [Description("LinkedIn profile/page URL.")]
     public string? LinkedInUrl { get; set; }

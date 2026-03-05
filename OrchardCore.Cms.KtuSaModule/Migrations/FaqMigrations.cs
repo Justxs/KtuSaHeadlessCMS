@@ -92,14 +92,16 @@ public class FaqMigrations(
                 .WithPosition("2")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithPart("AnswerEn", nameof(FlowPart), part => part
                 .WithDisplayName("Answer (English)")
                 .WithPosition("3")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithDescription("Frequently asked question item")
         );

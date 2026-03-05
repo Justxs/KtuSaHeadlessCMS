@@ -18,18 +18,21 @@ public static class RolesConstants
     public const string VfsaEditor = "VFSA Editor";
     public const string ShmEditor = "SHM Editor";
 
-    public static string GetEditorRole(SaUnit unit) => unit switch
+    public static string GetEditorRole(SaUnit unit)
     {
-        SaUnit.CSA => CsaEditor,
-        SaUnit.BRK => BrkEditor,
-        SaUnit.InfoSA => InfosaEditor,
-        SaUnit.Vivat_Chemija => VivatChemijaEditor,
-        SaUnit.InDi => IndiEditor,
-        SaUnit.ESA => EsaEditor,
-        SaUnit.FUMSA => FumsaEditor,
-        SaUnit.STATIUS => StatiusEditor,
-        SaUnit.VFSA => VfsaEditor,
-        SaUnit.SHM => ShmEditor,
-        _ => throw new ArgumentException("Invalid SaUnit", nameof(unit))
-    };
+        return unit switch
+        {
+            SaUnit.CSA => CsaEditor,
+            SaUnit.BRK => BrkEditor,
+            SaUnit.InfoSA => InfosaEditor,
+            SaUnit.Vivat_Chemija => VivatChemijaEditor,
+            SaUnit.InDi => IndiEditor,
+            SaUnit.ESA => EsaEditor,
+            SaUnit.FUMSA => FumsaEditor,
+            SaUnit.STATIUS => StatiusEditor,
+            SaUnit.VFSA => VfsaEditor,
+            SaUnit.SHM => ShmEditor,
+            _ => throw new ArgumentException("Invalid SaUnit", nameof(unit))
+        };
+    }
 }

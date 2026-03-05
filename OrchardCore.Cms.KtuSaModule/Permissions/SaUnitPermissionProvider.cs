@@ -14,24 +14,21 @@ public abstract class SaUnitPermissionProvider : IPermissionProvider
 
     protected virtual IEnumerable<PermissionStereotype> ExtraStereotypes => [];
 
-    public Task<IEnumerable<Permission>> GetPermissionsAsync() =>
-        Task.FromResult(UnitPermissions.Values
+    public Task<IEnumerable<Permission>> GetPermissionsAsync()
+    {
+        return Task.FromResult(UnitPermissions.Values
             .Concat(AdditionalPermissions)
             .AsEnumerable());
+    }
 
     public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
     {
         var allUnitPermissions = UnitPermissions.Values.ToArray();
 
         foreach (var role in FullAccessRoles)
-        {
             yield return new PermissionStereotype { Name = role, Permissions = allUnitPermissions };
-        }
 
-        foreach (var stereotype in ExtraStereotypes)
-        {
-            yield return stereotype;
-        }
+        foreach (var stereotype in ExtraStereotypes) yield return stereotype;
 
         var skipRoles = FullAccessRoles
             .Concat(ExtraStereotypes.Select(s => s.Name))
@@ -41,9 +38,7 @@ public abstract class SaUnitPermissionProvider : IPermissionProvider
         {
             var editorRole = GetEditorRole(unit);
             if (!skipRoles.Contains(editorRole))
-            {
                 yield return new PermissionStereotype { Name = editorRole, Permissions = [permission] };
-            }
         }
     }
 }

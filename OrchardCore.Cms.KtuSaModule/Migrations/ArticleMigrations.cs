@@ -149,14 +149,16 @@ public class ArticleMigrations(
                 .WithPosition("3")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithPart("ContentEn", nameof(FlowPart), part => part
                 .WithDisplayName("Content (English)")
                 .WithPosition("4")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithDescription("Articles content type"));
     }

@@ -34,10 +34,8 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
         {
             var saUnit = await repository.GetSaUnitByNameAsync(req.SaUnit.Value);
             if (saUnit is not null)
-            {
                 query = query.Where(item =>
                     item.As<EventPart>().OrganisersField.ContentItemIds.Contains(saUnit.ContentItemId));
-            }
         }
 
         var response = query

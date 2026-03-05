@@ -31,10 +31,7 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
             .Select(item => item.ToPreviewResponse(language, mediaFileStore))
             .OrderByDescending(item => item.CreatedDate);
 
-        if (req.Limit is not null)
-        {
-            response = response.Take(req.Limit.Value);
-        }
+        if (req.Limit is not null) response = response.Take(req.Limit.Value);
 
         await Send.OkAsync([.. response], ct);
     }

@@ -4,5 +4,8 @@ namespace OrchardCore.Cms.KtuSaModule.Handlers;
 
 public class PositionPartHandler : DisplayTextPartHandler<PositionPart>
 {
-    protected override string GetDisplayText(PositionPart part) => $"{part.NameLt} / {part.NameEn}";
+    protected override string GetDisplayText(PositionPart part)
+    {
+        return $"{part.NameLt} / {part.NameEn}";
+    }
 }

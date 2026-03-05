@@ -129,14 +129,16 @@ public class EventMigrations(
                 .WithPosition("3")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithPart("ContentEn", nameof(FlowPart), part => part
                 .WithDisplayName("Event Body (English)")
                 .WithPosition("4")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithDescription("Event content type"));
     }

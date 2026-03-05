@@ -17,18 +17,12 @@ public sealed class GoogleCloudMediaFileProvider(
     public IFileInfo GetFileInfo(string subpath)
     {
         var normalizedPath = mediaFileStore.NormalizePath(subpath);
-        if (string.IsNullOrWhiteSpace(normalizedPath))
-        {
-            return new NotFoundFileInfo(subpath);
-        }
+        if (string.IsNullOrWhiteSpace(normalizedPath)) return new NotFoundFileInfo(subpath);
 
         try
         {
             var fileStoreEntry = mediaFileStore.GetFileInfoAsync(normalizedPath).GetAwaiter().GetResult();
-            if (fileStoreEntry is null || fileStoreEntry.IsDirectory)
-            {
-                return new NotFoundFileInfo(normalizedPath);
-            }
+            if (fileStoreEntry is null || fileStoreEntry.IsDirectory) return new NotFoundFileInfo(normalizedPath);
 
             return new GoogleCloudMediaFileInfo(mediaFileStore, normalizedPath, fileStoreEntry);
         }

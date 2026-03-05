@@ -55,10 +55,7 @@ public class StaticPageMigrations(
         foreach (var hero in heroSections)
         {
             var heroPart = hero.As<HeroSectionPart>();
-            if (heroPart is null)
-            {
-                continue;
-            }
+            if (heroPart is null) continue;
 
             var heroImagePath = heroPart.ImageUploadField?.Paths?.FirstOrDefault();
 
@@ -229,14 +226,16 @@ public class StaticPageMigrations(
                 .WithPosition("3")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithPart("ContentEn", nameof(FlowPart), part => part
                 .WithDisplayName("Body (English)")
                 .WithPosition("4")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithDescription("Static page content type"));
     }
@@ -245,10 +244,7 @@ public class StaticPageMigrations(
     {
         var mediaField = new MediaField();
 
-        if (!string.IsNullOrWhiteSpace(path))
-        {
-            mediaField.Paths = [path];
-        }
+        if (!string.IsNullOrWhiteSpace(path)) mediaField.Paths = [path];
 
         return mediaField;
     }

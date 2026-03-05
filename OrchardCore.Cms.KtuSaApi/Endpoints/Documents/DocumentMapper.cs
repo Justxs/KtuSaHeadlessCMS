@@ -19,9 +19,12 @@ public static class DocumentMapper
             return new DocumentCategoryResponse
             {
                 Category = language.Resolve(category.TitleLt, category.TitleEn),
-                Documents = [.. documents
-                    .Where(d => d.As<ContainedPart>()?.ListContentItemId == item.ContentItemId)
-                    .Select(d => d.ToResponse(language, mediaFileStore))]
+                Documents =
+                [
+                    .. documents
+                        .Where(d => d.As<ContainedPart>()?.ListContentItemId == item.ContentItemId)
+                        .Select(d => d.ToResponse(language, mediaFileStore))
+                ]
             };
         }
 

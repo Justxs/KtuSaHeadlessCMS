@@ -176,10 +176,7 @@ public class ContactMigrations(
             var contactPart = contentItem.As<ContactPart>();
             var memberPart = contentItem.As<MemberPart>();
 
-            if (contactPart == null || memberPart == null)
-            {
-                continue;
-            }
+            if (contactPart == null || memberPart == null) continue;
 
             memberPart.Email = contactPart.Email;
 

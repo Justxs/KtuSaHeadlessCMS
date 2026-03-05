@@ -8,8 +8,7 @@ public class SponsorResponse
     [Description("Display name of the sponsor.")]
     public required string Name { get; set; }
 
-    [Description("Sponsor website URL.")]
-    public required string WebsiteUrl { get; set; }
+    [Description("Sponsor website URL.")] public required string WebsiteUrl { get; set; }
 
     [Description("Public URL of the sponsor logo image.")]
     public required string LogoUrl { get; set; }

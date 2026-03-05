@@ -10,8 +10,7 @@ public class EventContentResponse
     [Description("Event title in the requested language.")]
     public required string Title { get; set; }
 
-    [Description("Facebook event URL.")]
-    public required string FacebookUrl { get; set; }
+    [Description("Facebook event URL.")] public required string FacebookUrl { get; set; }
 
     [Description("Fienta ticket URL; null when no ticket link is configured.")]
     public string? FientaTicketUrl { get; set; }

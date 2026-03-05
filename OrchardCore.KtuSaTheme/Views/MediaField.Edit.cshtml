@@ -8,38 +8,47 @@
     var partFieldDef = (ContentPartFieldDefinition)Model.PartFieldDefinition;
     var mediaSettings = partFieldDef.Settings["MediaFieldSettings"]?.AsObject();
 
-    bool isRequired = mediaSettings?["Required"]?.GetValue<bool>() ?? false;
-    string hint = mediaSettings?["Hint"]?.GetValue<string>() ?? "";
-    bool isMultiple = mediaSettings?["Multiple"]?.GetValue<bool>() ?? false;
-    bool allowMediaText = mediaSettings?["AllowMediaText"]?.GetValue<bool>() ?? false;
-    bool allowAnchors = mediaSettings?["AllowAnchors"]?.GetValue<bool>() ?? false;
+    var isRequired = mediaSettings?["Required"]?.GetValue<bool>() ?? false;
+    var hint = mediaSettings?["Hint"]?.GetValue<string>() ?? "";
+    var isMultiple = mediaSettings?["Multiple"]?.GetValue<bool>() ?? false;
+    var allowMediaText = mediaSettings?["AllowMediaText"]?.GetValue<bool>() ?? false;
+    var allowAnchors = mediaSettings?["AllowAnchors"]?.GetValue<bool>() ?? false;
 
-    string prefix = ViewData.TemplateInfo.HtmlFieldPrefix ?? "";
-    string SanitizeId(string name) => name.Replace(".", "_").Replace("[", "_").Replace("]", "_");
-    string containerId = SanitizeId(prefix);
-    string pathsId = SanitizeId(string.IsNullOrEmpty(prefix) ? "Paths" : prefix + ".Paths");
-    string pathsName = string.IsNullOrEmpty(prefix) ? "Paths" : prefix + ".Paths";
-    string wrapperId = pathsId + "_FieldWrapper";
+    var prefix = ViewData.TemplateInfo.HtmlFieldPrefix ?? "";
 
-    string[] allowedExtensions = (string[])Model.AllowedExtensions;
+    string SanitizeId(string name)
+    {
+        return name.Replace(".", "_").Replace("[", "_").Replace("]", "_");
+    }
+
+    var containerId = SanitizeId(prefix);
+    var pathsId = SanitizeId(string.IsNullOrEmpty(prefix) ? "Paths" : prefix + ".Paths");
+    var pathsName = string.IsNullOrEmpty(prefix) ? "Paths" : prefix + ".Paths";
+    var wrapperId = pathsId + "_FieldWrapper";
+
+    var allowedExtensions = (string[])Model.AllowedExtensions;
 }
 <style asp-name="media" at="Head"></style>
 
 <div class="@Orchard.GetFieldWrapperClasses(partFieldDef)" id="@wrapperId">
-    <label for="@pathsId" class="@Orchard.GetLabelClasses(inputRequired: isRequired)">@partFieldDef.DisplayName()</label>
+    <label for="@pathsId" class="@Orchard.GetLabelClasses(isRequired)">@partFieldDef.DisplayName()</label>
     <div class="@Orchard.GetEndClasses()" id="@containerId" data-for="@pathsId">
         @if (!string.IsNullOrWhiteSpace(hint))
         {
             <div class="hint mt-lg-2">@hint</div>
         }
 
-        <input type="hidden" name="@pathsName" id="@pathsId" class="paths" :value="paths" data-init="@Model.Paths" />
+        <input type="hidden" name="@pathsName" id="@pathsId" class="paths" :value="paths" data-init="@Model.Paths"/>
 
         <div class="media-field-toolbar mb-2 d-flex align-items-center gap-2" v-cloak>
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-secondary btn-sm" :disabled="mediaItems.length < 1" v-on:click="smallThumbs = !smallThumbs">
-                    <span v-show="!smallThumbs" title="@T["Small Thumbs"]"><i class="fa-solid fa-compress-alt" aria-hidden="true"></i></span>
-                    <span v-show="smallThumbs" title="@T["Large Thumbs"]"><i class="fa-solid fa-expand-alt" aria-hidden="true"></i></span>
+                    <span v-show="!smallThumbs" title="@T["Small Thumbs"]">
+                        <i class="fa-solid fa-compress-alt" aria-hidden="true"></i>
+                    </span>
+                    <span v-show="smallThumbs" title="@T["Large Thumbs"]">
+                        <i class="fa-solid fa-expand-alt" aria-hidden="true"></i>
+                    </span>
                 </button>
                 <a href="javascript:;" v-show="canAddMedia" v-on:click="showModal" class="btn btn-primary btn-sm">
                     <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>@T["Browse"]
@@ -61,8 +70,8 @@
 
         <media-field-thumbs-container :media-items="mediaItems" :thumb-size="thumbSize" :selected-media="selectedMedia" :id-prefix="idPrefix" :allow-anchors="allowAnchors"></media-field-thumbs-container>
 
-        <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditMediaTextModal.cshtml" />
-        <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditAnchorModal.cshtml" />
+        <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditMediaTextModal.cshtml"/>
+        <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditAnchorModal.cshtml"/>
 
         <span class="field-validation-valid" data-valmsg-for="@pathsName" data-valmsg-replace="true"></span>
 
@@ -90,7 +99,7 @@
             </div>
         </div>
     </div>
-    <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditLocalization.cshtml" />
+    <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditLocalization.cshtml"/>
 </div>
 
 <script asp-name="media" at="Foot"></script>

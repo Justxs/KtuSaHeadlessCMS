@@ -24,10 +24,7 @@ public class SaUnitMigrations(
         await AlterPartDefinitionAsync();
         await AlterTypeDefinitionAsync();
 
-        foreach (var saUnit in Enum.GetValues<SaUnit>())
-        {
-            await CreateSaUnitsAsync(saUnit);
-        }
+        foreach (var saUnit in Enum.GetValues<SaUnit>()) await CreateSaUnitsAsync(saUnit);
 
         return CurrentVersion;
     }
@@ -105,14 +102,16 @@ public class SaUnitMigrations(
                 .WithPosition("2")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithPart("ContentEn", nameof(FlowPart), part => part
                 .WithDisplayName("Body (English)")
                 .WithPosition("3")
                 .WithSettings(new FlowPartSettings
                 {
-                    ContainedContentTypes = [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
+                    ContainedContentTypes =
+                        [ParagraphWidget, ImageWidget, VideoWidget, PdfDocumentWidget, ImageCarouselWidget]
                 }))
             .WithDescription("Sa unit content type"));
     }

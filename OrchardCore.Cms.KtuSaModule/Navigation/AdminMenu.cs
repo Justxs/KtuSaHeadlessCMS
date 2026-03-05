@@ -20,14 +20,12 @@ public class AdminMenu(
         var faqPage = faqPages.FirstOrDefault();
 
         if (faqPage is not null)
-        {
             builder.Add(T["FAQ"], "2", faq => faq
                 .Url($"/Admin/Contents/ContentItems/{faqPage.ContentItemId}/Display")
                 .Permission(FaqPermissions.ManageFaqs)
                 .AddClass("icon-class-fa-circle-question")
                 .AddClass("icon-class-fas")
             );
-        }
 
         builder
             .Add(T["Contacts"], "1", content => content

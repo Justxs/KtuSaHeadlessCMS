@@ -62,7 +62,6 @@ public class FientaAdminController(
             eventPart.EndDate = endDate;
 
         if (!string.IsNullOrEmpty(eventLt.ImageUrl))
-        {
             try
             {
                 var httpClient = httpClientFactory.CreateClient();
@@ -82,7 +81,6 @@ public class FientaAdminController(
             {
                 // Image download failed, continue without image
             }
-        }
 
         contentItem.Apply(eventPart);
 

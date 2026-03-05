@@ -30,11 +30,9 @@ public sealed class GoogleCloudMediaStartup(
         if (!storageOptions.IsConfigured(out var reason))
         {
             if (storageOptions.RequireGoogleCloudStorage)
-            {
                 throw new InvalidOperationException(
                     $"Google Cloud media storage is required but not configured: {reason} " +
                     $"Configure section '{GoogleCloudMediaStorageOptions.SectionName}'.");
-            }
 
             logger.LogInformation(
                 "Google Cloud media storage is not active. {Reason} Configure section '{Section}'",
@@ -74,18 +72,15 @@ public sealed class GoogleCloudMediaStartup(
             var logger = serviceProvider.GetRequiredService<ILogger<DefaultMediaFileStore>>();
             var cdnBaseUrl = ResolveCdnBaseUrl(mediaOptions.CdnBaseUrl, googleOptions);
 
-            var requestBasePath = "/" + fileStore.Combine(shellSettings.RequestUrlPrefix, mediaOptions.AssetsRequestPath);
+            var requestBasePath =
+                "/" + fileStore.Combine(shellSettings.RequestUrlPrefix, mediaOptions.AssetsRequestPath);
             if (ShouldUseRootRelativePublicPaths(cdnBaseUrl, googleOptions))
-            {
                 requestBasePath = "/" + fileStore.Combine(shellSettings.RequestUrlPrefix, string.Empty);
-            }
 
             var httpContext = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
-            var originalPathBase = httpContext?.Features.Get<ShellContextFeature>()?.OriginalPathBase ?? PathString.Empty;
-            if (originalPathBase.HasValue)
-            {
-                requestBasePath = fileStore.Combine(originalPathBase.Value, requestBasePath);
-            }
+            var originalPathBase =
+                httpContext?.Features.Get<ShellContextFeature>()?.OriginalPathBase ?? PathString.Empty;
+            if (originalPathBase.HasValue) requestBasePath = fileStore.Combine(originalPathBase.Value, requestBasePath);
 
             return new DefaultMediaFileStore(
                 fileStore,
@@ -107,10 +102,7 @@ public sealed class GoogleCloudMediaStartup(
     {
         var options = new GoogleCloudMediaStorageOptions();
 
-        if (TryBindFromConfiguration(shellConfiguration, options))
-        {
-            return options;
-        }
+        if (TryBindFromConfiguration(shellConfiguration, options)) return options;
 
         TryBindFromConfiguration(hostConfiguration, options);
 
@@ -128,13 +120,10 @@ public sealed class GoogleCloudMediaStartup(
 
     private static string ResolveCdnBaseUrl(string currentCdnBaseUrl, GoogleCloudMediaStorageOptions options)
     {
-        if (!string.IsNullOrWhiteSpace(options.PublicBaseUrl))
-        {
-            return options.PublicBaseUrl.TrimEnd('/');
-        }
+        if (!string.IsNullOrWhiteSpace(options.PublicBaseUrl)) return options.PublicBaseUrl.TrimEnd('/');
 
-        return !string.IsNullOrWhiteSpace(currentCdnBaseUrl) 
-            ? currentCdnBaseUrl 
+        return !string.IsNullOrWhiteSpace(currentCdnBaseUrl)
+            ? currentCdnBaseUrl
             : $"https://storage.googleapis.com/{options.BucketName}";
     }
 
@@ -142,16 +131,12 @@ public sealed class GoogleCloudMediaStartup(
     {
         if (string.IsNullOrWhiteSpace(cdnBaseUrl) ||
             !Uri.TryCreate(cdnBaseUrl, UriKind.Absolute, out var uri))
-        {
             return false;
-        }
 
         if (!uri.Host.Equals("storage.googleapis.com", StringComparison.OrdinalIgnoreCase))
-        {
             return uri.Host.Equals(
                 $"{options.BucketName}.storage.googleapis.com",
                 StringComparison.OrdinalIgnoreCase);
-        }
 
         var pathSegments = uri.AbsolutePath
             .Trim('/')
@@ -159,6 +144,5 @@ public sealed class GoogleCloudMediaStartup(
 
         return pathSegments.Length == 1 &&
                pathSegments[0].Equals(options.BucketName, StringComparison.OrdinalIgnoreCase);
-
     }
 }

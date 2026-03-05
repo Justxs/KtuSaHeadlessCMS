@@ -1,11 +1,12 @@
 using FastEndpoints;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Faqs;
 
-public class GetFaqsEndpoint(IRepository repository)
+public class GetFaqsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
     : Endpoint<GetFaqsRequest, List<FaqResponse>>
 {
     public override void Configure()
@@ -30,7 +31,7 @@ public class GetFaqsEndpoint(IRepository repository)
 
         if (req.Limit is not null) query = query.OrderBy(_ => Guid.NewGuid()).Take(req.Limit.Value);
 
-        var response = query.Select(item => item.ToFaqResponse(language))
+        var response = query.Select(item => item.ToFaqResponse(language, mediaFileStore))
             .OrderByDescending(item => item.ModifiedDate)
             .ToList();
 

@@ -83,7 +83,8 @@ public class DocumentMigrations(
             .WithDescription("Document category content type"));
 
         var categories = await session
-            .Query<ContentItem, ContentItemIndex>(i => i.ContentType == ContentTypeConstants.DocumentCategory && i.Published)
+            .Query<ContentItem, ContentItemIndex>(i =>
+                i.ContentType == ContentTypeConstants.DocumentCategory && i.Published)
             .ListAsync();
 
         var documents = await session

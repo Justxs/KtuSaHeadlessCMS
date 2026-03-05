@@ -4,5 +4,8 @@ namespace OrchardCore.Cms.KtuSaModule.Handlers;
 
 public class EventPartHandler : DisplayTextPartHandler<EventPart>
 {
-    protected override string GetDisplayText(EventPart part) => $"{part.TitleLt} / {part.TitleEn}";
+    protected override string GetDisplayText(EventPart part)
+    {
+        return $"{part.TitleLt} / {part.TitleEn}";
+    }
 }

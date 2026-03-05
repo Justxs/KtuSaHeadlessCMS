@@ -1,3 +1,5 @@
+using OrchardCore.Cms.KtuSaApi.Endpoints.Shared;
+
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Faqs;
 
 public class FaqResponse
@@ -8,8 +10,8 @@ public class FaqResponse
     [Description("FAQ question text in the requested language.")]
     public required string Question { get; set; }
 
-    [Description("FAQ answer HTML in the requested language.")]
-    public required string Answer { get; set; }
+    [Description("Structured content blocks of the FAQ answer in the requested language.")]
+    public required List<ContentBlockResponse> Answer { get; set; }
 
     [Description("Last modification timestamp in UTC.")]
     public DateTime ModifiedDate { get; set; }

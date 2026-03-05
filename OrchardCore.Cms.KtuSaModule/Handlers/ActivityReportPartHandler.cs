@@ -6,11 +6,15 @@ namespace OrchardCore.Cms.KtuSaModule.Handlers;
 
 public class ActivityReportPartHandler(IContentManager contentManager) : ContentPartHandler<ActivityReportPart>
 {
-    public override Task UpdatedAsync(UpdateContentContext context, ActivityReportPart instance) =>
-        SetDisplayTextAsync(context.ContentItem, instance);
+    public override Task UpdatedAsync(UpdateContentContext context, ActivityReportPart instance)
+    {
+        return SetDisplayTextAsync(context.ContentItem, instance);
+    }
 
-    public override Task CreatedAsync(CreateContentContext context, ActivityReportPart instance) =>
-        SetDisplayTextAsync(context.ContentItem, instance);
+    public override Task CreatedAsync(CreateContentContext context, ActivityReportPart instance)
+    {
+        return SetDisplayTextAsync(context.ContentItem, instance);
+    }
 
     private async Task SetDisplayTextAsync(ContentItem contentItem, ActivityReportPart instance)
     {

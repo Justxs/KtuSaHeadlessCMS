@@ -15,14 +15,22 @@ public static class FlowPartExtensions
     {
         public List<ContentBlockResponse> ToContentBlocks(Language language, IMediaFileStore mediaFileStore)
         {
-            var flow = item.Get<FlowPart>(language.FlowPartName);
+            return item.ToContentBlocks(language.FlowPartName, mediaFileStore);
+        }
+
+        public List<ContentBlockResponse> ToContentBlocks(string flowPartName, IMediaFileStore mediaFileStore)
+        {
+            var flow = item.Get<FlowPart>(flowPartName);
 
             if (flow?.Widgets is null or { Count: 0 })
                 return [];
 
-            return [.. flow.Widgets
-                .Select(widget => widget.ToContentBlock(mediaFileStore))
-                .Where(block => block is not null)];
+            return
+            [
+                .. flow.Widgets
+                    .Select(widget => widget.ToContentBlock(mediaFileStore))
+                    .Where(block => block is not null)!
+            ];
         }
 
         public string GetCombinedHtml(Language language)
@@ -46,43 +54,46 @@ public static class FlowPartExtensions
             if (string.IsNullOrEmpty(combinedHtml))
                 return [];
 
-            return [.. HtmlHeadingTagRegex()
-                .Matches(combinedHtml)
-                .Select(m => HtmlTagRemoveRegex().Replace(m.Groups[1].Value, string.Empty).Trim())
-                .Where(text => !string.IsNullOrEmpty(text))];
+            return
+            [
+                .. HtmlHeadingTagRegex()
+                    .Matches(combinedHtml)
+                    .Select(m => HtmlTagRemoveRegex().Replace(m.Groups[1].Value, string.Empty).Trim())
+                    .Where(text => !string.IsNullOrEmpty(text))
+            ];
         }
-    }
 
-    private static ContentBlockResponse? ToContentBlock(this ContentItem widget, IMediaFileStore mediaFileStore)
-    {
-        return widget.ContentType switch
+        private ContentBlockResponse? ToContentBlock(IMediaFileStore mediaFileStore)
         {
-            ParagraphWidget => new ContentBlockResponse
+            return item.ContentType switch
             {
-                Type = "paragraph",
-                Html = widget.As<ParagraphWidgetPart>()?.Body?.Html
-            },
-            ImageWidget => new ContentBlockResponse
-            {
-                Type = "image",
-                ImageUrl = widget.As<ImageWidgetPart>()?.Image?.ToPublicUrl(mediaFileStore)
-            },
-            VideoWidget => new ContentBlockResponse
-            {
-                Type = "video",
-                VideoUrl = widget.As<VideoWidgetPart>()?.Url?.Text
-            },
-            PdfDocumentWidget => new ContentBlockResponse
-            {
-                Type = "pdf",
-                PdfUrl = widget.As<PdfDocumentWidgetPart>()?.Document?.ToPublicUrl(mediaFileStore)
-            },
-            ImageCarouselWidget => new ContentBlockResponse
-            {
-                Type = "carousel",
-                ImageUrls = widget.As<ImageCarouselWidgetPart>()?.Images?.ToPublicUrls(mediaFileStore)
-            },
-            _ => null
-        };
+                ParagraphWidget => new ContentBlockResponse
+                {
+                    Type = "paragraph",
+                    Html = item.As<ParagraphWidgetPart>()?.Body?.Html
+                },
+                ImageWidget => new ContentBlockResponse
+                {
+                    Type = "image",
+                    ImageUrl = item.As<ImageWidgetPart>()?.Image?.ToPublicUrl(mediaFileStore)
+                },
+                VideoWidget => new ContentBlockResponse
+                {
+                    Type = "video",
+                    VideoUrl = item.As<VideoWidgetPart>()?.Url.Text
+                },
+                PdfDocumentWidget => new ContentBlockResponse
+                {
+                    Type = "pdf",
+                    PdfUrl = item.As<PdfDocumentWidgetPart>()?.Document?.ToPublicUrl(mediaFileStore)
+                },
+                ImageCarouselWidget => new ContentBlockResponse
+                {
+                    Type = "carousel",
+                    ImageUrls = item.As<ImageCarouselWidgetPart>()?.Images?.ToPublicUrls(mediaFileStore)
+                },
+                _ => null
+            };
+        }
     }
 }
