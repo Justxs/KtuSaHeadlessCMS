@@ -11,27 +11,12 @@ public class SponsorsMenu(IStringLocalizer<SponsorsMenu> stringLocalizer) : INav
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
+        if (!name.IsAdminMenu()) return ValueTask.CompletedTask;
 
         builder.Add(T["Sponsors"], "1", content => content
-            .AddClass("icon-class-fa-sack-dollar")
-            .AddClass("icon-class-fas")
-            .Add(T["All sponsors"], duk => duk
-                .Action("List", "Admin", new
-                {
-                    area = "OrchardCore.Contents",
-                    contentTypeId = Sponsor
-                })
-                .Permission(SponsorPermissions.ManageSponsors)
-                .AddClass("icon-class-fa-list")
-                .AddClass("icon-class-fas")
-            )
-            .Add(T["Add new sponsor"], createAction => createAction
-                .Url($"/Admin/Contents/ContentTypes/{Sponsor}/Create")
-                .Permission(SponsorPermissions.ManageSponsors)
-                .AddClass("icon-class-fa-circle-plus")
-                .AddClass("icon-class-fas")
-            )
+            .WithIcon("icon-class-fa-sack-dollar")
+            .AddContentList(T["All sponsors"], Sponsor, SponsorPermissions.ManageSponsors)
+            .AddCreateContentType(T["Add new sponsor"], Sponsor, SponsorPermissions.ManageSponsors)
         );
 
         return ValueTask.CompletedTask;

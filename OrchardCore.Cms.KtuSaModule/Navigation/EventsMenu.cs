@@ -11,25 +11,16 @@ public class EventsMenu(IStringLocalizer<EventsMenu> stringLocalizer) : INavigat
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
+        if (!name.IsAdminMenu()) return ValueTask.CompletedTask;
 
         builder.Add(T["Events"], content => content
-            .AddClass("icon-class-fa-calendar-days")
-            .AddClass("icon-class-fas")
-            .Add(T["All events"], eventContentType => eventContentType
-                .Action("List", "Admin", new
-                {
-                    area = "OrchardCore.Contents",
-                    contentTypeId = Event
-                })
-                .Permission(EventPermissions.ManageEvents)
-                .AddClass("icon-class-fa-list")
-                .AddClass("icon-class-fas"))
-            .Add(T["Create an event"], createAction => createAction
-                .Url($"/Admin/Contents/ContentTypes/{Event}/Create")
-                .Permission(EventPermissions.ManageEvents)
-                .AddClass("icon-class-fa-calendar-plus")
-                .AddClass("icon-class-fas"))
+            .WithIcon("icon-class-fa-calendar-days")
+            .AddContentList(T["All events"], Event, EventPermissions.ManageEvents)
+            .AddCreateContentType(
+                T["Create an event"],
+                Event,
+                EventPermissions.ManageEvents,
+                "icon-class-fa-calendar-plus")
         );
 
         return ValueTask.CompletedTask;

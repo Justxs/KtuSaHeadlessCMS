@@ -11,22 +11,13 @@ public class StaticInfoMenu(IStringLocalizer<StaticInfoMenu> stringLocalizer) : 
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
+        if (!name.IsAdminMenu()) return ValueTask.CompletedTask;
 
-        builder.Add(T["Static info"], "2", content => content
-            .AddClass("icon-class-fa-circle-info")
-            .AddClass("icon-class-fas")
-            .Add(T["Static pages"], staticPages => staticPages
-                .Action("List", "Admin", new
-                {
-                    area = "OrchardCore.Contents",
-                    contentTypeId = StaticPage
-                })
-                .Permission(HeroSectionPermissions.ManageHeroSections)
-                .AddClass("icon-class-fa-list")
-                .AddClass("icon-class-fas")
-            )
-        );
+        builder.AddContentList(
+            T["Static pages"],
+            "2",
+            StaticPage,
+            HeroSectionPermissions.ManageHeroSections);
 
         return ValueTask.CompletedTask;
     }

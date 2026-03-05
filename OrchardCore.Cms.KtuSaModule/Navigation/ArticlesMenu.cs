@@ -11,26 +11,14 @@ public class ArticlesMenu(IStringLocalizer<ArticlesMenu> stringLocalizer) : INav
 
     public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase)) return ValueTask.CompletedTask;
+        if (!name.IsAdminMenu()) return ValueTask.CompletedTask;
 
         builder.Add(T["Articles"], content => content
-            .AddClass("icon-class-fa-newspaper")
-            .AddClass("icon-class-fas")
-            .Add(T["All articles"], eventContentType => eventContentType
-                .Action("List", "Admin", new
-                {
-                    area = "OrchardCore.Contents",
-                    contentTypeId = Article
-                })
-                .Permission(ArticlePermissions.ManageArticles)
-                .AddClass("icon-class-fa-list")
-                .AddClass("icon-class-fas"))
-            .Add(T["Create an article"], createAction => createAction
-                .Url($"/Admin/Contents/ContentTypes/{Article}/Create")
-                .Permission(ArticlePermissions.ManageArticles)
-                .AddClass("icon-class-fa-circle-plus")
-                .AddClass("icon-class-fas"))
+            .WithIcon("icon-class-fa-newspaper")
+            .AddContentList(T["All articles"], Article, ArticlePermissions.ManageArticles)
+            .AddCreateContentType(T["Create an article"], Article, ArticlePermissions.ManageArticles)
         );
+
         return ValueTask.CompletedTask;
     }
 }
