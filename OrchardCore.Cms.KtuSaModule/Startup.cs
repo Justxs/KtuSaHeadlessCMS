@@ -1,19 +1,17 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using OrchardCore.Cms.KtuSaModule.Drivers.Fields;
 using OrchardCore.Cms.KtuSaModule.Drivers.Parts;
 using OrchardCore.Cms.KtuSaModule.Handlers;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Migrations;
-using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Models.Parts.Widgets;
 using OrchardCore.Cms.KtuSaModule.Navigation;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
+using OrchardCore.ContentManagement.Handlers;
 using OrchardCore.Data.Migration;
 using OrchardCore.Modules;
 using OrchardCore.Navigation;
@@ -26,91 +24,27 @@ public class Startup : StartupBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IGoogleCloudService, GoogleCloudService>();
-        services.AddHttpClient<IFientaService, FientaService>();
+        // Shared services
         services.AddScoped<IRepository, Repository>();
-
-        AddContentFields(services);
-        AddContentParts(services);
-        AddMigrations(services);
-        AddPermissions(services);
-        AddNavigationProviders(services);
-
         services.AddTransient<IConfigureOptions<ResourceManagementOptions>, ResourceManagementOptionsConfiguration>();
-    }
 
-    public override void Configure(IApplicationBuilder builder, IEndpointRouteBuilder routes, IServiceProvider serviceProvider)
-    {
-    }
-
-    private static void AddNavigationProviders(IServiceCollection services)
-    {
-        services.AddScoped<INavigationProvider, Navigation.AdminMenu>();
-        services.AddScoped<INavigationProvider, SponsorsMenu>();
-        services.AddScoped<INavigationProvider, ArticlesMenu>();
-        services.AddScoped<INavigationProvider, EventsMenu>();
-        services.AddScoped<INavigationProvider, SaUnitsInfoMenu>();
-        services.AddScoped<INavigationProvider, StaticInfoMenu>();
-        services.AddScoped<INavigationProvider, DocumentsMenu>();
-
-    }
-
-    private static void AddMigrations(IServiceCollection services)
-    {
-        services.AddScoped<IDataMigration, ArticleMigrations>();
-        services.AddScoped<IDataMigration, DukMigrations>();
-        services.AddScoped<IDataMigration, SponsorMigrations>();
-        services.AddScoped<IDataMigration, ContactMigrations>();
-        services.AddScoped<IDataMigration, HeroSectionMigrations>();
-        services.AddScoped<IDataMigration, EventMigrations>();
-        services.AddScoped<IDataMigration, SaUnitMigrations>();
-        services.AddScoped<IDataMigration, UserMigrations>();
-        services.AddScoped<IDataMigration, PositionMigrations>();
-        services.AddScoped<IDataMigration, DocumentMigrations>();
-        services.AddScoped<IDataMigration, ActivityReportMigrations>();
-        services.AddScoped<IDataMigration, StaticPageMigrations>();
-
-    }
-
-    private static void AddContentFields(IServiceCollection services)
-    {
-        services
-            .AddContentField<ImageUploadField>()
-            .UseDisplayDriver<ImageUploadFieldDriver>()
-            .AddHandler<ImageUploadFieldHandler>();
-
-        services
-            .AddContentField<PdfUploadField>()
-            .UseDisplayDriver<PdfUploadFieldDriver>()
-            .AddHandler<PdfUploadFieldHandler>();
-
-        services
-            .AddContentField<QuillField>()
-            .UseDisplayDriver<QuillFieldDriver>();
-    }
-
-    private static void AddPermissions(IServiceCollection services)
-    {
-        services.AddScoped<IPermissionProvider, DukPermissions>();
-        services.AddScoped<IPermissionProvider, ArticlePermissions>();
-        services.AddScoped<IPermissionProvider, EventPermissions>();
-        services.AddScoped<IPermissionProvider, SponsorPermissions>();
-        services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
-        services.AddScoped<IPermissionProvider, ContactPermissions>();
-        services.AddScoped<IPermissionProvider, SaUnitPermissions>();
-        services.AddScoped<IPermissionProvider, DocumentsPermissions>();
-
-    }
-
-    private static void AddContentParts(IServiceCollection services)
-    {
+        // Core content parts (shared across features)
         services.AddContentPart<ArticlePart>();
         services.AddContentPart<UserProfilePart>();
-
+        services.AddContentPart<HeroSectionPart>();
         services
-            .AddContentPart<DocumentPart>()
-            .UseDisplayDriver<DocumentPartDriver>()
-            .AddHandler<DocumentPartHandler>();
+            .AddContentPart<StaticPagePart>()
+            .UseDisplayDriver<StaticPagePartDriver>();
+
+        // Widget content parts
+        services.AddContentPart<ParagraphWidgetPart>();
+        services.AddContentPart<ImageWidgetPart>();
+        services.AddContentPart<VideoWidgetPart>();
+        services.AddContentPart<PdfDocumentWidgetPart>();
+        services.AddContentPart<ImageCarouselWidgetPart>();
+
+        // Content handlers
+        services.AddScoped<IContentHandler, ContentFlowInitializationHandler>();
 
         services
             .AddContentPart<CategoryPart>()
@@ -125,11 +59,6 @@ public class Startup : StartupBase
         services
             .AddContentPart<SaUnitPart>()
             .UseDisplayDriver<SaUnitPartDriver>();
-
-        services
-            .AddContentPart<EventPart>()
-            .UseDisplayDriver<EventPartDriver>()
-            .AddHandler<EventPartHandler>();
 
         services
             .AddContentPart<ContactPart>()
@@ -150,22 +79,70 @@ public class Startup : StartupBase
             .AddHandler<PositionPartHandler>();
 
         services
-            .AddContentPart<DukPart>()
-            .UseDisplayDriver<DukPartDriver>()
-            .AddHandler<DukPartHandler>();
-
-        services
-            .AddContentPart<SponsorPart>()
-            .UseDisplayDriver<SponsorPartDriver>()
-            .AddHandler<SponsorPartHandler>();
+            .AddContentPart<FaqPart>()
+            .UseDisplayDriver<FaqPartDriver>()
+            .AddHandler<FaqPartHandler>();
 
         services
             .AddContentPart<ActivityReportPart>()
             .UseDisplayDriver<ActivityReportPartDriver>()
             .AddHandler<ActivityReportPartHandler>();
 
-        services.AddContentPart<HeroSectionPart>();
-        services.AddContentPart<StaticPagePart>();
+        // Core migrations
+        services.AddScoped<IDataMigration, ArticleMigrations>();
+        services.AddScoped<IDataMigration, FaqMigrations>();
+        services.AddScoped<IDataMigration, ContactMigrations>();
+        services.AddScoped<IDataMigration, SaUnitMigrations>();
+        services.AddScoped<IDataMigration, UserMigrations>();
+        services.AddScoped<IDataMigration, PositionMigrations>();
+        services.AddScoped<IDataMigration, ActivityReportMigrations>();
+        services.AddScoped<IDataMigration, StaticPageMigrations>();
+        services.AddScoped<IDataMigration, WidgetMigrations>();
 
+        // Core permissions
+        services.AddScoped<IPermissionProvider, FaqPermissions>();
+        services.AddScoped<IPermissionProvider, ArticlePermissions>();
+        services.AddScoped<IPermissionProvider, HeroSectionPermissions>();
+        services.AddScoped<IPermissionProvider, ContactPermissions>();
+        services.AddScoped<IPermissionProvider, SaUnitPermissions>();
+        services.AddScoped<IPermissionProvider, ActivityReportPermissions>();
+
+        // Core navigation
+        services.AddScoped<INavigationProvider, Navigation.AdminMenu>();
+        services.AddScoped<INavigationProvider, SaUnitsInfoMenu>();
+        services.AddScoped<INavigationProvider, StaticInfoMenu>();
+        services.AddScoped<INavigationProvider, ArticlesMenu>();
+
+        // Events
+        services.AddHttpClient<IFientaService, FientaService>();
+
+        services
+            .AddContentPart<EventPart>()
+            .UseDisplayDriver<EventPartDriver>()
+            .AddHandler<EventPartHandler>();
+
+        services.AddScoped<IDataMigration, EventMigrations>();
+        services.AddScoped<IPermissionProvider, EventPermissions>();
+        services.AddScoped<INavigationProvider, EventsMenu>();
+
+        // Sponsors
+        services
+            .AddContentPart<SponsorPart>()
+            .UseDisplayDriver<SponsorPartDriver>()
+            .AddHandler<SponsorPartHandler>();
+
+        services.AddScoped<IDataMigration, SponsorMigrations>();
+        services.AddScoped<IPermissionProvider, SponsorPermissions>();
+        services.AddScoped<INavigationProvider, SponsorsMenu>();
+
+        // Documents
+        services
+            .AddContentPart<DocumentPart>()
+            .UseDisplayDriver<DocumentPartDriver>()
+            .AddHandler<DocumentPartHandler>();
+
+        services.AddScoped<IDataMigration, DocumentMigrations>();
+        services.AddScoped<IPermissionProvider, DocumentsPermissions>();
+        services.AddScoped<INavigationProvider, DocumentsMenu>();
     }
 }

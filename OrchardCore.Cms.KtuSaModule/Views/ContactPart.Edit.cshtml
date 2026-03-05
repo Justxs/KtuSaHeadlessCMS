@@ -1,4 +1,4 @@
-﻿@model ContactPartViewModel
+@model ContactPartViewModel
 <!-- TODO add localization -->
 
 <fieldset class="form-group" asp-validation-class-for="PhoneNumber" style="margin-bottom: 20px;">
@@ -13,7 +13,7 @@
            placeholder="+37012345678"
            type="tel"
            title="Phone number must be in +370xxxxxxxx format!"
-           required />
+           required/>
 </fieldset>
 
 <fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
@@ -25,5 +25,5 @@
            class="form-control"
            value="@Model.Email"
            type="email"
-           required />
+           required/>
 </fieldset>

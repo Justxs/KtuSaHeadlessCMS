@@ -14,16 +14,14 @@ public class MemberPartDriver(IContentManager contentManager) : ContentPartDispl
         var saUnitField = await contentManager.GetAsync(part.SaUnit.ContentItemIds);
 
         return Initialize<MemberPartViewModel>(
-            GetDisplayShapeType(context), model =>
-            {
-                if (saUnitField == null)
+                GetDisplayShapeType(context), model =>
                 {
-                    model.SaUnit = saUnitField.Select(organiser => organiser.DisplayText).FirstOrDefault();
-                }
+                    if (saUnitField != null)
+                        model.SaUnit = saUnitField.Select(organiser => organiser.DisplayText).FirstOrDefault();
 
-                model.Email = part.Email;
-                model.Index = part.Index;
-            })
+                    model.Email = part.Email;
+                    model.Index = part.Index;
+                })
             .Location("SummaryAdmin", "Tags:11");
     }
 
@@ -42,10 +40,7 @@ public class MemberPartDriver(IContentManager contentManager) : ContentPartDispl
     {
         var model = new MemberPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return Edit(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         part.Name = model.Name;
         part.Email = model.Email;

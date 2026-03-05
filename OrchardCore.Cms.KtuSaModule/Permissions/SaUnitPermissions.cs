@@ -4,12 +4,15 @@ using static OrchardCore.Cms.KtuSaModule.Constants.RolesConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Permissions;
 
-public class SaUnitPermissions : IPermissionProvider
+public class SaUnitPermissions : SaUnitPermissionProvider
 {
     public static readonly Permission ManageCsaInfo = new(nameof(ManageCsaInfo), "Can manage CSA info.");
     public static readonly Permission ManageBrkInfo = new(nameof(ManageBrkInfo), "Can manage BRK info.");
     public static readonly Permission ManageInfosaInfo = new(nameof(ManageInfosaInfo), "Can manage InfoSA info.");
-    public static readonly Permission ManageVivatChemijaInfo = new(nameof(ManageVivatChemijaInfo), "Can manage Vivat chemija info.");
+
+    public static readonly Permission ManageVivatChemijaInfo =
+        new(nameof(ManageVivatChemijaInfo), "Can manage Vivat chemija info.");
+
     public static readonly Permission ManageIndiInfo = new(nameof(ManageIndiInfo), "Can manage InDi info.");
     public static readonly Permission ManageEsaInfo = new(nameof(ManageEsaInfo), "Can manage ESA info.");
     public static readonly Permission ManageFumsaInfo = new(nameof(ManageFumsaInfo), "Can manage FUMSA info.");
@@ -17,119 +20,29 @@ public class SaUnitPermissions : IPermissionProvider
     public static readonly Permission ManageVfsaInfo = new(nameof(ManageVfsaInfo), "Can manage VFSA info.");
     public static readonly Permission ManageShmInfo = new(nameof(ManageShmInfo), "Can manage SHM info.");
 
-    public Task<IEnumerable<Permission>> GetPermissionsAsync()
+    private static readonly Dictionary<SaUnit, Permission> _unitPermissions = new()
     {
-        return Task.FromResult(new[]
-        {
-            ManageCsaInfo,
-            ManageBrkInfo,
-            ManageInfosaInfo,
-            ManageVivatChemijaInfo,
-            ManageIndiInfo,
-            ManageEsaInfo,
-            ManageFumsaInfo,
-            ManageStatiusInfo,
-            ManageVfsaInfo,
-            ManageShmInfo,
-        }
-        .AsEnumerable());
-    }
+        [SaUnit.CSA] = ManageCsaInfo,
+        [SaUnit.BRK] = ManageBrkInfo,
+        [SaUnit.InfoSA] = ManageInfosaInfo,
+        [SaUnit.Vivat_Chemija] = ManageVivatChemijaInfo,
+        [SaUnit.InDi] = ManageIndiInfo,
+        [SaUnit.ESA] = ManageEsaInfo,
+        [SaUnit.FUMSA] = ManageFumsaInfo,
+        [SaUnit.STATIUS] = ManageStatiusInfo,
+        [SaUnit.VFSA] = ManageVfsaInfo,
+        [SaUnit.SHM] = ManageShmInfo
+    };
 
-    public static Permission GetPermission(SaUnit saUnit)
+    protected override IReadOnlyDictionary<SaUnit, Permission> UnitPermissions => _unitPermissions;
+
+    protected override IEnumerable<PermissionStereotype> ExtraStereotypes =>
+    [
+        new() { Name = President, Permissions = [ManageCsaInfo] }
+    ];
+
+    public static Permission GetPermission(SaUnit unit)
     {
-        var permission = saUnit switch
-        {
-            SaUnit.CSA => ManageCsaInfo,
-            SaUnit.InfoSA => ManageInfosaInfo,
-            SaUnit.Vivat_Chemija => ManageVivatChemijaInfo,
-            SaUnit.InDi => ManageIndiInfo,
-            SaUnit.STATIUS => ManageStatiusInfo,
-            SaUnit.FUMSA => ManageFumsaInfo,
-            SaUnit.ESA => ManageEsaInfo,
-            SaUnit.SHM => ManageShmInfo,
-            SaUnit.VFSA => ManageVfsaInfo,
-            SaUnit.BRK => ManageBrkInfo,
-            _ => throw new ArgumentException("Invalid SaUnit", nameof(saUnit)),
-        };
-
-        return permission;
-    }
-
-    public IEnumerable<PermissionStereotype> GetDefaultStereotypes()
-    {
-        return new[]
-        {
-            new PermissionStereotype
-            {
-                Name = Administrator,
-                Permissions = new[] { 
-                    ManageCsaInfo,
-                    ManageBrkInfo,
-                    ManageInfosaInfo,
-                    ManageVivatChemijaInfo,
-                    ManageIndiInfo,
-                    ManageEsaInfo,
-                    ManageFumsaInfo,
-                    ManageStatiusInfo,
-                    ManageVfsaInfo,
-                    ManageShmInfo,
-                },
-            },
-            new PermissionStereotype
-            {
-                Name = President,
-                Permissions = new[] { ManageCsaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = CsaEditor,
-                Permissions = new[] { ManageCsaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = BrkEditor,
-                Permissions = new[] { ManageBrkInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = InfosaEditor,
-                Permissions = new[] { ManageInfosaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = VivatChemijaEditor,
-                Permissions = new[] { ManageVivatChemijaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = IndiEditor,
-                Permissions = new[] { ManageIndiInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = EsaEditor,
-                Permissions = new[] { ManageEsaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = FumsaEditor,
-                Permissions = new[] { ManageFumsaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = StatiusEditor,
-                Permissions = new[] { ManageStatiusInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = VfsaEditor,
-                Permissions = new[] { ManageVfsaInfo },
-            },
-            new PermissionStereotype
-            {
-                Name = ShmEditor,
-                Permissions = new[] { ManageShmInfo },
-            },
-        };
+        return _unitPermissions[unit];
     }
 }

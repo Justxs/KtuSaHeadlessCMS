@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
-using OrchardCore.Cms.KtuSaModule.Models.Enums;
+﻿using Microsoft.Extensions.Localization;
+using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -8,68 +7,42 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
 public class AdminMenu(
-    IStringLocalizer<AdminMenu> stringLocalizer, 
-    IHttpContextAccessor httpContextAccessor) : INavigationProvider
+    IStringLocalizer<AdminMenu> stringLocalizer,
+    IRepository repository) : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
-    public Task BuildNavigationAsync(string name, NavigationBuilder builder)
+    public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return Task.CompletedTask;
-        }
+        if (!name.IsAdminMenu()) return;
 
-        var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return Task.CompletedTask;
-        }
+        var faqPages = await repository.GetAllAsync(FaqPage);
+        var faqPage = faqPages.FirstOrDefault();
 
-        builder
-            .Add(T["FAQ"], "2", dukContentType => dukContentType
-                .AddClass("icon-class-fa-circle-question")
-                .AddClass("icon-class-fas")
-                .Add(T["All FAQs"], duk => duk
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentTypeId = Duk,
-                    })
-                    .Permission(DukPermissions.ManageDuks)
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas")
-                )
-                .Add(T["Create new FAQ"], createAction => createAction
-                    .Url($"/Admin/Contents/ContentTypes/{Duk}/Create")
-                    .Permission(DukPermissions.ManageDuks)
-                    .AddClass("icon-class-fa-circle-plus")
-                    .AddClass("icon-class-fas")
-                )
-            )
-            .Add(T["Contacts"], "1", content => content
-                .AddClass("icon-class-fa-address-book")
-                .AddClass("icon-class-fas")
-                .Add(T["All contacts"], contactsType => contactsType
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentTypeId = Contact,
-                    })
-                    .Permission(ContactPermissions.ManageCsaContacts)
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas"))
-                .Add(T["All positions"], positionsType => positionsType
-                    .Action("List", "Admin", new
-                    {
-                        area = "OrchardCore.Contents",
-                        contentTypeId = Position,
-                    })
-                    .Permission(ContactPermissions.ManagePositions)
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas"))
+        if (faqPage is not null)
+            builder.Add(T["FAQ"], "2", faq => faq
+                .Url($"/Admin/Contents/ContentItems/{faqPage.ContentItemId}/Display")
+                .Permission(FaqPermissions.ManageFaqs)
+                .WithIcon("icon-class-fa-circle-question")
             );
 
-        return Task.CompletedTask;
+        builder
+            .Add(T["Contacts"], "1", content => content
+                .WithIcon("icon-class-fa-address-book")
+                .AddContentList(T["All contacts"], Contact, ContactPermissions.ManageCsaContacts)
+                .AddContentList(T["Main contacts"], MainContact, ContactPermissions.ManageCsaContacts)
+                .AddContentList(T["All positions"], Position, ContactPermissions.ManagePositions)
+            )
+            .Add(T["Activity Reports"], "3", activityReports => activityReports
+                .WithIcon("icon-class-fa-clipboard-list")
+                .AddContentList(
+                    T["All activity reports"],
+                    ActivityReport,
+                    ActivityReportPermissions.ManageActivityReports)
+                .AddCreateContentType(
+                    T["Create activity report"],
+                    ActivityReport,
+                    ActivityReportPermissions.ManageActivityReports)
+            );
     }
 }

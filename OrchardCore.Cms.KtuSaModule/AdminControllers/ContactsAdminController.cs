@@ -13,8 +13,8 @@ namespace OrchardCore.Cms.KtuSaModule.AdminControllers;
 
 [Admin]
 public class ContactsAdminController(
-    IRepository repository, 
-    IContentItemDisplayManager contentItemDisplayManager, 
+    IRepository repository,
+    IContentItemDisplayManager contentItemDisplayManager,
     IUpdateModelAccessor updateModelAccessor) : Controller
 {
     [HttpGet]
@@ -22,15 +22,18 @@ public class ContactsAdminController(
     public async Task<IActionResult> ListContacts(SaUnit saUnit)
     {
         var contacts = await repository.GetAllAsync(Contact);
-        var saUnits = await repository.GetSaUnitByName(saUnit);
+        var saUnitItem = await repository.GetSaUnitByNameAsync(saUnit);
 
-        contacts = contacts.Where(c => c.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnits.ContentItemId));
+        if (saUnitItem is null) return NotFound();
+
+        contacts = contacts.Where(c => c.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId));
 
         var shapes = new List<IShape>();
 
         foreach (var item in contacts)
         {
-            var shape = await contentItemDisplayManager.BuildDisplayAsync(item, updateModelAccessor.ModelUpdater, "SummaryAdmin");
+            var shape = await contentItemDisplayManager.BuildDisplayAsync(item, updateModelAccessor.ModelUpdater,
+                "SummaryAdmin");
             shapes.Add(shape);
         }
 

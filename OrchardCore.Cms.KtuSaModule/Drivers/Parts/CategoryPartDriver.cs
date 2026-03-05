@@ -22,10 +22,7 @@ public class CategoryPartDriver : ContentPartDisplayDriver<CategoryPart>
     {
         var model = new CategoryPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return Edit(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         part.TitleLt = model.TitleLt;
         part.TitleEn = model.TitleEn;

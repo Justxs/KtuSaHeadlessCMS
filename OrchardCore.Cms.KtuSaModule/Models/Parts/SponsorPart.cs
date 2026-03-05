@@ -1,5 +1,5 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
@@ -9,5 +9,5 @@ public class SponsorPart : ContentPart
 
     public string WebsiteUrl { get; set; } = null!;
 
-    public ImageUploadField ImageUploadField { get; set; } = null!;
+    public MediaField Logo { get; set; } = new();
 }

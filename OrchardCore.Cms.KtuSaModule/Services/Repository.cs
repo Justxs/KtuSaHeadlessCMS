@@ -8,22 +8,33 @@ using OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 namespace OrchardCore.Cms.KtuSaModule.Services;
 
-public class Repository(ISession session) : IRepository
+public class Repository(ISession session, IContentManager contentManager) : IRepository
 {
     public async Task<IEnumerable<ContentItem>> GetAllAsync(string contentTypeName)
     {
-        var contentItems = await session
+        return await session
             .Query<ContentItem, ContentItemIndex>(index => index.ContentType == contentTypeName && index.Published)
             .OrderByDescending(index => index.CreatedUtc)
             .ListAsync();
-
-        return contentItems;
     }
 
-    public async Task<ContentItem> GetSaUnitByName(SaUnit saUnit)
+    public async Task<ContentItem?> GetByIdAsync(string contentItemId)
     {
-        var saUnits = await GetAllAsync(ContentTypeConstants.SaUnit);
+        return await contentManager.GetAsync(contentItemId);
+    }
 
-        return saUnits.First(unit => unit.As<SaUnitPart>().UnitName == saUnit.ToString());
+    public async Task<IEnumerable<ContentItem>> GetByIdsAsync(IEnumerable<string> contentItemIds)
+    {
+        return await contentManager.GetAsync(contentItemIds);
+    }
+
+    public async Task<ContentItem?> GetSaUnitByNameAsync(SaUnit saUnit)
+    {
+        var saUnits = await session
+            .Query<ContentItem, ContentItemIndex>(index =>
+                index.ContentType == ContentTypeConstants.SaUnit && index.Published)
+            .ListAsync();
+
+        return saUnits.FirstOrDefault(unit => unit.As<SaUnitPart>().UnitName == saUnit.ToString());
     }
 }

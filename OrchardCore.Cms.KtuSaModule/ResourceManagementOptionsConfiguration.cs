@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using OrchardCore.Cms.KtuSaModule.Constants;
 using OrchardCore.ResourceManagement;
 
 namespace OrchardCore.Cms.KtuSaModule;
@@ -7,29 +8,28 @@ public class ResourceManagementOptionsConfiguration : IConfigureOptions<Resource
 {
     private static readonly ResourceManifest Manifest = new();
 
+    private const string FlatpickrCdnBase = "https://cdn.jsdelivr.net/npm/flatpickr";
+    private const string ModuleBase = "~/OrchardCore.Cms.KtuSaModule";
+
     static ResourceManagementOptionsConfiguration()
     {
-        Manifest.DefineStyle("QuillCss")
-            .SetUrl("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.snow.css")
-            .SetCdn("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.snow.css");
+        // Flatpickr (CDN)
+        Manifest.DefineStyle(ResourceNames.FlatpickrCss)
+            .SetUrl($"{FlatpickrCdnBase}/dist/flatpickr.min.css")
+            .SetCdn($"{FlatpickrCdnBase}/dist/flatpickr.min.css");
 
-        Manifest.DefineScript("QuillJs")
-            .SetUrl("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.js")
-            .SetCdn("https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.js")
-            .SetDependencies("jQuery");
+        Manifest.DefineScript(ResourceNames.FlatpickrJs)
+            .SetUrl(FlatpickrCdnBase)
+            .SetCdn(FlatpickrCdnBase);
 
-        Manifest.DefineStyle("FlatpickrCss")
-            .SetUrl("https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
-            .SetCdn("https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css");
-
-        Manifest.DefineScript("FlatpickrJs")
-            .SetUrl("https://cdn.jsdelivr.net/npm/flatpickr")
-            .SetCdn("https://cdn.jsdelivr.net/npm/flatpickr");
+        // Flatpickr field (local)
+        Manifest.DefineScript(ResourceNames.FlatpickrFieldJs)
+            .SetUrl($"{ModuleBase}/js/flatpickr-field.js")
+            .SetDependencies(ResourceNames.FlatpickrJs);
     }
 
     public void Configure(ResourceManagementOptions options)
     {
         options.ResourceManifests.Add(Manifest);
     }
-
 }

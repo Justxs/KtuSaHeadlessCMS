@@ -37,10 +37,7 @@ public class PositionPartDriver : ContentPartDisplayDriver<PositionPart>
     {
         var model = new PositionPartViewModel();
 
-        if (!await context.Updater.TryUpdateModelAsync(model, Prefix))
-        {
-            return Edit(part, context);
-        }
+        if (!await context.Updater.TryUpdateModelAsync(model, Prefix)) return Edit(part, context);
 
         part.NameLt = model.NameLt;
         part.DescriptionLt = model.DescriptionLt;

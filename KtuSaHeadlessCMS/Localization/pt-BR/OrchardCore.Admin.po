@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Language-Team: Portuguese, Brazilian\n"
 "Language: pt_BR\n"
-"PO-Revision-Date: 2023-12-22 16:06\n"
+"PO-Revision-Date: 2024-09-09 16:58\n"
 
 #. .Add(S["Configuration"], configuration => configuration
 #: OrchardCore.Admin\AdminMenu.cs:26
@@ -33,13 +33,13 @@ msgid "Admin"
 msgstr "Administração"
 
 #. services.AddSiteSettingsPropertyDeploymentStep<AdminSettings, DeploymentStartup>(S => S["Admin settings"], S => S["Exports the admin settings."]);
-#: OrchardCore.Admin\Startup.cs:93
+#: OrchardCore.Admin\Startup.cs:97
 msgctxt "OrchardCore.Admin.DeploymentStartup"
 msgid "Admin settings"
 msgstr "Configurações da Administração"
 
 #. services.AddSiteSettingsPropertyDeploymentStep<AdminSettings, DeploymentStartup>(S => S["Admin settings"], S => S["Exports the admin settings."]);
-#: OrchardCore.Admin\Startup.cs:93
+#: OrchardCore.Admin\Startup.cs:97
 msgctxt "OrchardCore.Admin.DeploymentStartup"
 msgid "Exports the admin settings."
 msgstr "Exporta as configurações da administração."

@@ -1,7 +1,6 @@
-﻿using Fluid.Parser;
 using System.ComponentModel.DataAnnotations;
 
-namespace OrchardCore.Cms.KtuSaModule.ViewModels;
+namespace OrchardCore.Cms.KtuSaModule.ViewModels.Parts;
 
 public class AddressPartViewModel
 {

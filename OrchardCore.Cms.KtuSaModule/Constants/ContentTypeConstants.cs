@@ -3,11 +3,11 @@
 public static class ContentTypeConstants
 {
     public const string Article = "Article";
-    public const string Duk = "Duk";
+    public const string Faq = "Faq";
+    public const string FaqPage = "FaqPage";
     public const string Sponsor = "Sponsor";
     public const string MainContact = "MainContact";
     public const string Contact = "Contact";
-    public const string HeroSection = "HeroSection";
     public const string Event = "Event";
     public const string SaUnit = "SaUnit";
     public const string UserProfile = "UserProfile";
@@ -16,5 +16,10 @@ public static class ContentTypeConstants
     public const string Document = "Document";
     public const string StaticPage = "StaticPage";
     public const string ActivityReport = "ActivityReport";
-
+    public const string HeadingWidget = "HeadingWidget";
+    public const string ParagraphWidget = "ParagraphWidget";
+    public const string ImageWidget = "ImageWidget";
+    public const string VideoWidget = "VideoWidget";
+    public const string PdfDocumentWidget = "PdfDocumentWidget";
+    public const string ImageCarouselWidget = "ImageCarouselWidget";
 }

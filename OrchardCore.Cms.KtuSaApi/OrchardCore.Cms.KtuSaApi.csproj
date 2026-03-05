@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FastEndpoints" Version="8.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+		<PackageReference Include="Scalar.AspNetCore" Version="2.12.48" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="2.2.1" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="2.2.1" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="2.2.1" />
+		<PackageReference Include="OrchardCore.Media.Abstractions" Version="2.2.1" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="2.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OrchardCore.Cms.KtuSaModule\OrchardCore.Cms.KtuSaModule.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\" />
+	</ItemGroup>
+
+</Project>

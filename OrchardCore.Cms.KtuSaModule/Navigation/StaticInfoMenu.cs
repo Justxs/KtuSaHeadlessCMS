@@ -1,45 +1,24 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.Navigation;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
-public class StaticInfoMenu( 
-    IStringLocalizer<AdminMenu> stringLocalizer,
-    IHttpContextAccessor httpContextAccessor) : INavigationProvider
+public class StaticInfoMenu(IStringLocalizer<StaticInfoMenu> stringLocalizer) : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
-    public Task BuildNavigationAsync(string name, NavigationBuilder builder)
+    public ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return Task.CompletedTask;
-        }
+        if (!name.IsAdminMenu()) return ValueTask.CompletedTask;
 
-        var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return Task.CompletedTask;
-        }
+        builder.AddContentList(
+            T["Static pages"],
+            "2",
+            StaticPage,
+            HeroSectionPermissions.ManageHeroSections);
 
-        builder.Add(T["Static info"], "2", content => content
-            .AddClass("icon-class-fa-circle-info")
-            .AddClass("icon-class-fas")
-            .Add(T["Hero Section"], duk => duk
-                .Action("List", "Admin", new
-                {
-                    area = "OrchardCore.Contents",
-                    contentTypeId = HeroSection,
-                })
-                .Permission(HeroSectionPermissions.ManageHeroSections)
-                .AddClass("icon-class-fa-list")
-                .AddClass("icon-class-fas")
-            )
-        );
-
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

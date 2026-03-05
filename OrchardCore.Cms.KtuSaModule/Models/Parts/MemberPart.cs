@@ -1,6 +1,6 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
@@ -14,8 +14,7 @@ public class MemberPart : ContentPart
 
     public ContentPickerField SaUnit { get; set; } = null!;
 
-    public ImageUploadField ImageUploadField { get; set; } = null!;
+    public MediaField MemberPhoto { get; set; } = new();
 
     public ContentPickerField Position { get; set; } = null!;
-
 }

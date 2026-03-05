@@ -21,7 +21,7 @@ public class UserMigrations(IContentDefinitionManager contentDefinitionManager) 
                     {
                         Multiple = false,
                         Required = true,
-                        DisplayedContentTypes = [SaUnit],
+                        DisplayedContentTypes = [SaUnit]
                     }))
                 .WithDescription("User SA unit")
         );

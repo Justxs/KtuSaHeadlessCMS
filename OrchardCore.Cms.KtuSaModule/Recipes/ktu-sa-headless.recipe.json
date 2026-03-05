@@ -57,6 +57,7 @@
         "OrchardCore.Users.CustomUserSettings",
         "OrchardCore.Cors",
 
+        "KtuSaGoogleMedia",
         "KtuSaModule",
         "TheAdmin"
       ]

@@ -1,4 +1,6 @@
-﻿namespace OrchardCore.Cms.KtuSaModule.Constants;
+﻿using OrchardCore.Cms.KtuSaModule.Models.Enums;
+
+namespace OrchardCore.Cms.KtuSaModule.Constants;
 
 public static class RolesConstants
 {
@@ -15,4 +17,22 @@ public static class RolesConstants
     public const string StatiusEditor = "Statius Editor";
     public const string VfsaEditor = "VFSA Editor";
     public const string ShmEditor = "SHM Editor";
+
+    public static string GetEditorRole(SaUnit unit)
+    {
+        return unit switch
+        {
+            SaUnit.CSA => CsaEditor,
+            SaUnit.BRK => BrkEditor,
+            SaUnit.InfoSA => InfosaEditor,
+            SaUnit.Vivat_Chemija => VivatChemijaEditor,
+            SaUnit.InDi => IndiEditor,
+            SaUnit.ESA => EsaEditor,
+            SaUnit.FUMSA => FumsaEditor,
+            SaUnit.STATIUS => StatiusEditor,
+            SaUnit.VFSA => VfsaEditor,
+            SaUnit.SHM => ShmEditor,
+            _ => throw new ArgumentException("Invalid SaUnit", nameof(unit))
+        };
+    }
 }

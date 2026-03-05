@@ -1,12 +1,13 @@
 ﻿@model EventPartViewModel
 @using System.Text.Json
+@using OrchardCore.Admin
 
 <script id="eventDataScript" type="application/json">
     @{
         var combinedEventData = new
         {
             FientaEventListLt = Model.FientaEventListLt,
-            FientaEventListEn = Model.FientaEventListEn,
+            FientaEventListEn = Model.FientaEventListEn
         };
     }
     @Html.Raw(JsonSerializer.Serialize(combinedEventData))
@@ -20,7 +21,7 @@
     <input asp-for="TitleLt"
            class="form-control"
            value="@Model.TitleLt"
-           required />
+           required/>
 
     <span class="hint">
         Title in Lithuanian language
@@ -35,7 +36,7 @@
     <input asp-for="TitleEn"
            class="form-control"
            value="@Model.TitleEn"
-           required />
+           required/>
 
     <span class="hint">
         Title in English language
@@ -52,7 +53,7 @@
            class="form-control"
            value="@Model.FbEventLink"
            type="url"
-           required />
+           required/>
 
     <span class="hint">
         Insert event facebook url. Example: https://www.facebook.com/events/3526931650915426
@@ -81,7 +82,7 @@
             id="importDataButton"
             class="btn btn-primary"
             style="display:none;"
-        >
+            data-import-url="@Url.Action("ImportEvent", "FientaAdmin", new { area = "OrchardCore.Cms.KtuSaModule" })">
             Import data from Fienta
         </button>
     </div>
@@ -96,12 +97,11 @@
     </label>
 
     <input asp-for="Address"
-        class="form-control"
-        value="@Model.Address"
-    />
+           class="form-control"
+           value="@Model.Address"/>
 
     <span class="hint">
-       Insert location of the event.
+        Insert location of the event.
     </span>
 </fieldset>
 
@@ -113,13 +113,12 @@
                 <span asp-validation-for="StartDate"></span>
             </label>
 
-            <input 
+            <input
                 asp-for="StartDate"
                 type="text"
                 class="form-control datetimepicker"
                 value="@Model.StartDate.ToString("yyyy-MM-dd HH:mm")"
-                required
-            />
+                required/>
         </div>
     </fieldset>
 
@@ -130,13 +129,12 @@
                 <span asp-validation-for="EndDate"></span>
             </label>
 
-            <input 
+            <input
                 asp-for="EndDate"
                 type="text"
                 class="form-control datetimepicker"
                 value="@Model.EndDate.ToString("yyyy-MM-dd hh:mm")"
-                required
-            />
+                required/>
         </div>
     </fieldset>
 </div>
@@ -157,48 +155,58 @@
         toggleButtonBasedOnDropdown();
 
         dropdown.addEventListener('change', toggleButtonBasedOnDropdown);
-
-        flatpickr(".datetimepicker", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            time_24hr: true,
-            minDate: "today"
-        });
     });
 
-    document.getElementById('importDataButton').addEventListener('click', function () {
+    document.getElementById('importDataButton').addEventListener('click', async function () {
         var selectedEventUrl = document.getElementById('EventPart_FientaTicketLinkLt').value;
 
         var urls = selectedEventUrl.split('|||');
         var urlLt = urls[0];
-        var urlEn = urls.length > 1 ? urls[1] : '';
 
         var eventDataJson = document.getElementById('eventDataScript').textContent;
         var combinedEvents = JSON.parse(eventDataJson);
 
-        var eventsLt = combinedEvents.FientaEventListLt;
-        var eventsEn = combinedEvents.FientaEventListEn;
-
         var selectedEventLt = combinedEvents.FientaEventListLt.find(event => event.url === urlLt);
-        var selectedEventEn = combinedEvents.FientaEventListEn.find(event => event.url === urlEn);
 
-        if (selectedEventLt) {
-            document.getElementById('EventPart_TitleLt').value = selectedEventLt.title || '';
-            document.getElementById('EventPart_StartDate').value = selectedEventLt.starts_at || '';
-            document.getElementById('EventPart_EndDate').value = selectedEventLt.ends_at || '';
-            document.getElementById('EventPart_Address').value = selectedEventLt.address || '';
-
-            document.getElementById('HtmlContent-EventtextLT').value = selectedEventLt.description || '';
-
-            document.querySelector('#EventtextLT .ql-editor').innerHTML = selectedEventLt.description;
+        if (!selectedEventLt) {
+            alert('Could not find the selected Fienta event.');
+            return;
         }
 
-        if (selectedEventEn) {
-            document.getElementById('EventPart_TitleEn').value = selectedEventEn.title || '';
-            document.getElementById('HtmlContent-EventtextEN').value = selectedEventLt.description || '';
-            document.getElementById('EventPart_FientaTicketLinkEn').value = urlEn || '';
+        var pathParts = window.location.pathname.split('/');
+        var contentItemsIndex = pathParts.indexOf('ContentItems');
+        var contentItemId = contentItemsIndex >= 0 ? pathParts[contentItemsIndex + 1] : '';
 
-            document.querySelector('#EventtextEN .ql-editor').innerHTML = selectedEventEn.description;
+        if (!confirm('This will import image and text from Fienta and save as draft. Continue?')) {
+            return;
+        }
+
+        var importUrl = document.getElementById('importDataButton').dataset.importUrl;
+        var token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+        var formData = new FormData();
+        formData.append('contentItemId', contentItemId);
+        formData.append('fientaEventId', selectedEventLt.id);
+        formData.append('__RequestVerificationToken', token);
+
+        try {
+            var response = await fetch(importUrl, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                var data = await response.json();
+                window.location.href = '/Admin/Contents/ContentItems/' + data.contentItemId + '/Edit';
+            } else {
+                var errorText = await response.text();
+                alert('Failed to import (' + response.status + '): ' + errorText);
+            }
+        } catch (error) {
+            alert('Error importing data from Fienta: ' + error.message);
         }
     });
 </script>

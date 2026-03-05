@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -12,12 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OrchardCore.Admin" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.Contents" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.Theme.Targets" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.ContentManagement" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.DisplayManagement" Version="1.8.3" />
-    <PackageReference Include="OrchardCore.ResourceManagement" Version="1.8.3" />
+    <PackageReference Include="OrchardCore.Admin" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Contents" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.Theme.Targets" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.ContentManagement" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.DisplayManagement" Version="2.2.1" />
+    <PackageReference Include="OrchardCore.ResourceManagement" Version="2.2.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +33,10 @@
     <EmbeddedResource Update="wwwroot\media\LogoH.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

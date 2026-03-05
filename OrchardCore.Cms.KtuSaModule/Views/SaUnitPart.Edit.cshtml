@@ -5,43 +5,10 @@
         Sa unit Name
     </label>
 
-    <input 
+    <input
         asp-for="UnitName"
         class="form-control"
-        value="@Model.UnitName"
-    />
-</fieldset>
-
-<fieldset class="form-group" asp-validation-class-for="DescriptionLt" style="margin-bottom: 20px;">
-    <label asp-for="DescriptionLt">
-        Description LT
-    </label>
-
-    <textarea asp-for="DescriptionLt"
-           class="form-control"
-           required >
-        @Model.DescriptionLt
-    </textarea>
-
-    <span class="hint">
-        Description about FSA in lithuanian
-    </span>
-</fieldset>
-
-<fieldset class="form-group" asp-validation-class-for="DescriptionEn" style="margin-bottom: 20px;">
-    <label asp-for="DescriptionEn">
-        Description EN
-    </label>
-
-    <textarea asp-for="DescriptionEn"
-           class="form-control"
-           required >
-        @Model.DescriptionEn
-    </textarea>
-
-    <span class="hint">
-        Description about FSA in english
-    </span>
+        value="@Model.UnitName"/>
 </fieldset>
 
 <fieldset class="form-group" asp-validation-class-for="Address" style="margin-bottom: 20px;">
@@ -52,7 +19,7 @@
     <input asp-for="Address"
            class="form-control"
            value="@Model.Address"
-           required />
+           required/>
 
     <span class="hint">
         Write here what does this position
@@ -67,8 +34,7 @@
     <input asp-for="LinkedInUrl"
            class="form-control"
            value="@Model.LinkedInUrl"
-           type="url"
-           required />
+           type="url"/>
 
     <span class="hint">
         Example: https://www.linkedin.com/company/ktu-fsa-infosa/
@@ -83,8 +49,7 @@
     <input asp-for="FacebookUrl"
            class="form-control"
            value="@Model.FacebookUrl"
-           type="url"
-           required />
+           type="url"/>
 
     <span class="hint">
         Example: https://www.facebook.com/InfoSA
@@ -99,10 +64,36 @@
     <input asp-for="InstagramUrl"
            class="form-control"
            value="@Model.InstagramUrl"
-           type="url"
-           required />
+           type="url"/>
 
     <span class="hint">
         Example: https://www.instagram.com/ktu_infosa/
     </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="PhoneNumber" style="margin-bottom: 20px;">
+    <label asp-for="PhoneNumber">
+        Phone Number
+    </label>
+
+    <input asp-for="PhoneNumber"
+           class="form-control"
+           value="@Model.PhoneNumber"
+           pattern="\+370[0-9]{8}"
+           placeholder="+37012345678"
+           type="tel"
+           title="Phone number must be in +370xxxxxxxx format!"
+           required/>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="Email" style="margin-bottom: 20px;">
+    <label asp-for="Email">
+        Email address
+    </label>
+
+    <input asp-for="Email"
+           class="form-control"
+           value="@Model.Email"
+           type="email"
+           required/>
 </fieldset>

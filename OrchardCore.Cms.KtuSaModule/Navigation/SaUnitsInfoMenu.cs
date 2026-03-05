@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Navigation;
 using OrchardCore.Cms.KtuSaModule.Permissions;
@@ -11,59 +10,43 @@ using SaUnit = OrchardCore.Cms.KtuSaModule.Models.Enums.SaUnit;
 namespace OrchardCore.Cms.KtuSaModule.Navigation;
 
 public class SaUnitsInfoMenu(
-    IStringLocalizer<AdminMenu> stringLocalizer,
-    IHttpContextAccessor httpContextAccessor,
+    IStringLocalizer<SaUnitsInfoMenu> stringLocalizer,
     IRepository repository)
     : INavigationProvider
 {
     private readonly IStringLocalizer T = stringLocalizer;
 
-    public async Task BuildNavigationAsync(string name, NavigationBuilder builder)
+    public async ValueTask BuildNavigationAsync(string name, NavigationBuilder builder)
     {
-        if (!string.Equals(name, "admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        var user = httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            return;
-        }
+        if (!name.IsAdminMenu()) return;
 
         var saUnits = await repository.GetAllAsync(ContentTypeConstants.SaUnit);
 
         builder.Add(T["General Info"], "1", content =>
         {
-            content.AddClass("icon-class-fa-circle-info")
-                .AddClass("icon-class-fas");
+            content.WithIcon("icon-class-fa-circle-info");
 
             foreach (var saUnit in saUnits)
             {
                 var unitName = saUnit.As<SaUnitPart>().UnitName;
+                var parsedSaUnit = Enum.Parse<SaUnit>(unitName, true);
+                var unitDisplayName = unitName.Replace("_", " ");
 
-                content.Add(T[$"All {unitName.Replace("_", " ")} contacts"], type => type
+                content.Add(T[$"All {unitDisplayName} contacts"], type => type
                     .Url($"/Contacts/List/{unitName}")
-                    .Permission(ContactPermissions
-                        .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))
-                    .AddClass("icon-class-fa-list")
-                    .AddClass("icon-class-fas"));
-                
-                if (unitName is nameof(SaUnit.CSA) or nameof(SaUnit.BRK))
-                {
-                    continue;
-                }
+                    .Permission(ContactPermissions.GetPermission(parsedSaUnit))
+                    .WithIcon("icon-class-fa-list"));
 
-                content.Add(T["Edit " + unitName.Replace("_", " ") + " info"], "1", item => item
+                if (parsedSaUnit is SaUnit.CSA or SaUnit.BRK) continue;
+
+                content.Add(T[$"Edit {unitDisplayName} info"], "1", item => item
                     .Action("Edit", "Admin", new
                     {
-                        area = "OrchardCore.Contents", 
-                        contentItemId = saUnit.ContentItemId,
+                        area = "OrchardCore.Contents",
+                        contentItemId = saUnit.ContentItemId
                     })
-                    .Permission(SaUnitPermissions
-                        .GetPermission((SaUnit)Enum.Parse(typeof(SaUnit), unitName, true)))
-                    .AddClass("icon-class-fa-pen-to-square")
-                    .AddClass("icon-class-fas"));
+                    .Permission(SaUnitPermissions.GetPermission(parsedSaUnit))
+                    .WithIcon("icon-class-fa-pen-to-square"));
             }
         });
     }

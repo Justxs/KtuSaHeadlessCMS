@@ -1,14 +1,14 @@
-﻿using OrchardCore.Cms.KtuSaModule.Models.Fields;
 using OrchardCore.ContentFields.Fields;
 using OrchardCore.ContentManagement;
+using OrchardCore.Media.Fields;
 
 namespace OrchardCore.Cms.KtuSaModule.Models.Parts;
 
 public class ActivityReportPart : ContentPart
 {
-    public PdfUploadField ReportLt { get; set; } = null!;
+    public MediaField ReportFileLt { get; set; } = new();
 
-    public PdfUploadField ReportEn { get; set; } = null!;
+    public MediaField ReportFileEn { get; set; } = new();
 
     public DateTime From { get; set; }
 

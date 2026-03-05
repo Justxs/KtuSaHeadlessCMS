@@ -1,7 +1,7 @@
 ﻿using OrchardCore.Cms.KtuSaModule.Interfaces;
 using System.Text.Json;
-using OrchardCore.Cms.KtuSaModule.Dtos.ExternalApiResponse;
 using OrchardCore.Cms.KtuSaModule.Settings;
+using OrchardCore.Cms.KtuSaModule.Dtos;
 
 namespace OrchardCore.Cms.KtuSaModule.Services;
 
@@ -13,7 +13,7 @@ public class FientaService(HttpClient httpClient, FientaSettings settings) : IFi
 
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
-        PropertyNameCaseInsensitive = true,
+        PropertyNameCaseInsensitive = true
     };
 
     public async Task<List<FientaEvent>> FetchKtuSaEventsAsync(string locale)
@@ -21,15 +21,11 @@ public class FientaService(HttpClient httpClient, FientaSettings settings) : IFi
         var requestUrl = $"{_baseUrl}?organizer={_organiserId}&locale={locale}";
 
         var response = await httpClient.GetAsync(requestUrl);
-        if (!response.IsSuccessStatusCode)
-        {
-            return [];
-        }
+        if (!response.IsSuccessStatusCode) return [];
 
         var json = await response.Content.ReadAsStringAsync();
         var apiResponse = JsonSerializer.Deserialize<FientaApiResponse>(json, JsonSerializerOptions);
 
         return apiResponse?.Events ?? [];
-
     }
 }

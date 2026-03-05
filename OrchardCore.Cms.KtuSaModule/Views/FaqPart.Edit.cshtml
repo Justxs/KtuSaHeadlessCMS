@@ -1,0 +1,33 @@
+@model FaqPartViewModel
+<!-- TODO add localization -->
+
+<fieldset class="form-group" asp-validation-class-for="QuestionLt" style="margin-bottom: 20px;">
+    <label asp-for="QuestionLt">
+        Question LT
+    </label>
+
+    <input asp-for="QuestionLt"
+           name="FaqPart.QuestionLt"
+           class="form-control"
+           value="@Model.QuestionLt"
+           required/>
+
+    <span class="hint">
+        Frequently asked question in Lithuanian language
+    </span>
+</fieldset>
+
+<fieldset class="form-group" asp-validation-class-for="QuestionEn" style="margin-bottom: 20px;">
+    <label asp-for="QuestionEn">
+        Question EN
+    </label>
+
+    <input asp-for="QuestionEn"
+           class="form-control"
+           value="@Model.QuestionEn"
+           required/>
+
+    <span class="hint">
+        Frequently asked question in English language
+    </span>
+</fieldset>
