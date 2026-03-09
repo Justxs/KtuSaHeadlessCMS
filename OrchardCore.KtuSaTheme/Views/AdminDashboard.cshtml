@@ -1,4 +1,177 @@
-﻿<div class="alert alert-primary">
-    <h4>Welcome to KTU SA CMS!</h4>
-    <p class="mb-0">KTU SA Site content management system.</p>
+﻿@using Microsoft.AspNetCore.Authorization
+@using OrchardCore.Security.Permissions
+
+@inject IAuthorizationService AuthorizationService
+
+@{
+    // SA unit names mapped to their contact permission names.
+    var unitContactPermissions = new (string UnitName, string PermissionName)[]
+    {
+        ("CSA", "ManageCsaContacts"),
+        ("BRK", "ManageBrkContacts"),
+        ("InfoSA", "ManageInfosaContacts"),
+        ("Vivat_Chemija", "ManageVivatChemijaContacts"),
+        ("InDi", "ManageIndiContacts"),
+        ("ESA", "ManageEsaContacts"),
+        ("FUMSA", "ManageFumsaContacts"),
+        ("STATIUS", "ManageStatiusContacts"),
+        ("VFSA", "ManageVfsaContacts"),
+        ("SHM", "ManageShmContacts"),
+    };
+
+    // Resolve which SA units the current user can manage contacts for.
+    var grantedContactUnits = new List<string>();
+    foreach (var (unitName, permissionName) in unitContactPermissions)
+    {
+        if (await AuthorizationService.AuthorizeAsync(User, new Permission(permissionName)))
+        {
+            grantedContactUnits.Add(unitName);
+        }
+    }
+
+    // Single unit → go straight to /Contacts/List/{unit}; multiple → generic list.
+    var contactsUrl = grantedContactUnits.Count == 1
+        ? $"/Contacts/List/{grantedContactUnits[0]}"
+        : Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "Contact" });
+
+    var dashboardItems = new (string Title, string Icon, string Color, string Url, Permission[] Permissions, string Description)[]
+    {
+        ("Articles", "fa-newspaper", "#4e8cff",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "Article" })!,
+            [new("ManageArticles")],
+            "News & blog posts"),
+
+        ("Events", "fa-calendar-days", "#a855f7",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "Event" })!,
+            [
+                new("ManageEvents"),
+                new("ManageCsaEvents"), new("ManageBrkEvents"), new("ManageInfosaEvents"),
+                new("ManageVivatChemijaEvents"), new("ManageIndiEvents"), new("ManageEsaEvents"),
+                new("ManageFumsaEvents"), new("ManageStatiusEvents"), new("ManageVfsaEvents"),
+                new("ManageShmEvents"),
+            ],
+            "Upcoming & past events"),
+
+        ("Contacts", "fa-address-book", "#34d399",
+            contactsUrl!,
+            unitContactPermissions.Select(u => new Permission(u.PermissionName)).ToArray(),
+            "People & positions"),
+
+        ("Sponsors", "fa-sack-dollar", "#fb923c",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "Sponsor" })!,
+            [new("ManageSponsors")],
+            "Partners & sponsors"),
+
+        ("Documents", "fa-file-lines", "#2dd4bf",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "DocumentCategory" })!,
+            [new("ManageDocuments")],
+            "Document categories"),
+
+        ("Activity Reports", "fa-clipboard-list", "#38bdf8",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "ActivityReport" })!,
+            [new("ManageActivityReports")],
+            "Reports & summaries"),
+
+        ("FAQ", "fa-circle-question", "#facc15",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "FaqPage" })!,
+            [new("ManageFaqs")],
+            "Frequently asked questions"),
+
+        ("Static Pages", "fa-file-alt", "#94a3b8",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "StaticPage" })!,
+            [new("ManageHeroSections")],
+            "Static page content"),
+
+        ("General Info", "fa-circle-info", "#c084fc",
+            Url.Action("List", "Admin", new { area = "OrchardCore.Contents", contentTypeId = "SaUnit" })!,
+            [
+                new("ManageCsaInfo"), new("ManageBrkInfo"), new("ManageInfosaInfo"),
+                new("ManageVivatChemijaInfo"), new("ManageIndiInfo"), new("ManageEsaInfo"),
+                new("ManageFumsaInfo"), new("ManageStatiusInfo"), new("ManageVfsaInfo"),
+                new("ManageShmInfo"),
+            ],
+            "SA unit information"),
+    };
+
+    async Task<bool> HasAnyPermissionAsync(Permission[] permissions)
+    {
+        foreach (var permission in permissions)
+        {
+            if (await AuthorizationService.AuthorizeAsync(User, permission))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+<div class="text-center mb-5 mt-3">
+    <h3 class="fw-bold mb-1">Welcome to KTU SA CMS</h3>
+    <p class="opacity-75 mb-0">Select a section to get started</p>
 </div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
+    @foreach (var item in dashboardItems)
+    {
+        if (await HasAnyPermissionAsync(item.Permissions))
+        {
+            <div class="col">
+                <a href="@item.Url" class="text-decoration-none d-block h-100">
+                    <div class="dashboard-card h-100 text-center">
+                        <div class="dashboard-card-icon mx-auto" style="--card-color: @item.Color;">
+                            <i class="fas @item.Icon"></i>
+                        </div>
+                        <div class="dashboard-card-title">@item.Title</div>
+                        <div class="dashboard-card-desc">@item.Description</div>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .dashboard-card {
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: .75rem;
+        padding: 1.75rem 1.25rem;
+        background: rgba(255, 255, 255, .03);
+        transition: transform .2s ease, border-color .2s ease, background .2s ease;
+        cursor: pointer;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255, 255, 255, .18);
+        background: rgba(255, 255, 255, .06);
+    }
+
+    .dashboard-card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: .75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: var(--card-color);
+        background: color-mix(in srgb, var(--card-color) 15%, transparent);
+        margin-bottom: .875rem;
+    }
+
+    .dashboard-card:hover .dashboard-card-icon {
+        background: color-mix(in srgb, var(--card-color) 25%, transparent);
+    }
+
+    .dashboard-card-title {
+        font-weight: 600;
+        font-size: .95rem;
+        margin-bottom: .25rem;
+    }
+
+    .dashboard-card-desc {
+        font-size: .8rem;
+        opacity: .55;
+    }
+</style>

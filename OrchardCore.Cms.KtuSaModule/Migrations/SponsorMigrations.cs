@@ -11,7 +11,7 @@ namespace OrchardCore.Cms.KtuSaModule.Migrations;
 public class SponsorMigrations(
     IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
-    private const int CurrentVersion = 6;
+    private const int CurrentVersion = 7;
 
     public async Task<int> CreateAsync()
     {
@@ -51,6 +51,12 @@ public class SponsorMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom6Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
     private async Task ApplySchemaAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(SponsorPart), part =>
@@ -60,6 +66,7 @@ public class SponsorMigrations(
                     .WithDisplayName("Upload company Logo")
                     .WithSettings(new MediaFieldSettings
                     {
+                        Required = true,
                         Multiple = false,
                         AllowMediaText = false,
                         AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp", ".svg"]

@@ -18,7 +18,7 @@ public class DocumentMigrations(
     IContentManager contentManager,
     ISession session) : DataMigration
 {
-    private const int CurrentVersion = 7;
+    private const int CurrentVersion = 8;
 
     public async Task<int> CreateAsync()
     {
@@ -119,6 +119,12 @@ public class DocumentMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom7Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
     private async Task ApplySchemaAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(CategoryPart), part =>
@@ -132,6 +138,7 @@ public class DocumentMigrations(
                     .WithDisplayName("Upload Lt version document")
                     .WithSettings(new MediaFieldSettings
                     {
+                        Required = true,
                         Multiple = false,
                         AllowMediaText = false,
                         AllowedExtensions = [".pdf"]
@@ -141,6 +148,7 @@ public class DocumentMigrations(
                     .WithDisplayName("Upload En version document")
                     .WithSettings(new MediaFieldSettings
                     {
+                        Required = true,
                         Multiple = false,
                         AllowMediaText = false,
                         AllowedExtensions = [".pdf"]

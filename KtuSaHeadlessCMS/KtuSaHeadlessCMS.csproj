@@ -25,6 +25,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Lombiq.LoginAsAnybody" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="10.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.3.0" />
 		<PackageReference Include="OrchardCore.Google" Version="2.2.1" />

@@ -14,7 +14,7 @@ namespace OrchardCore.Cms.KtuSaModule.Migrations;
 public class EventMigrations(
     IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
-    private const int CurrentVersion = 12;
+    private const int CurrentVersion = 13;
 
     public async Task<int> CreateAsync()
     {
@@ -90,6 +90,12 @@ public class EventMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom12Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
     private async Task ApplySchemaAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(EventPart), part => part
@@ -101,6 +107,7 @@ public class EventMigrations(
                 .WithDisplayName("Upload cover image")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]

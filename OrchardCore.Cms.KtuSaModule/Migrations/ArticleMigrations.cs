@@ -12,7 +12,7 @@ namespace OrchardCore.Cms.KtuSaModule.Migrations;
 public class ArticleMigrations(
     IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
-    private const int CurrentVersion = 14;
+    private const int CurrentVersion = 15;
     private const string LegacyCardImageFieldName = "ImageUploadField";
 
     public async Task<int> CreateAsync()
@@ -100,6 +100,12 @@ public class ArticleMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom14Async()
+    {
+        await AlterArticlePartDefinitionAsync();
+        return CurrentVersion;
+    }
+
     private async Task UpdateSchemaToCurrentAsync()
     {
         await AlterCardPartDefinitionAsync();
@@ -127,6 +133,7 @@ public class ArticleMigrations(
                 .WithPosition("0")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]

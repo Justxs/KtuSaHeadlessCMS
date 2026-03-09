@@ -20,7 +20,7 @@ public class ContactMigrations(
     IContentManager contentManager,
     ISession session) : DataMigration
 {
-    private const int CurrentVersion = 8;
+    private const int CurrentVersion = 9;
 
     public async Task<int> CreateAsync()
     {
@@ -84,6 +84,12 @@ public class ContactMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom8Async()
+    {
+        await UpdateSchemaToCurrentAsync();
+        return CurrentVersion;
+    }
+
     private async Task UpdateSchemaToCurrentAsync()
     {
         await AlterContactPartDefinitionAsync();
@@ -101,6 +107,7 @@ public class ContactMigrations(
                 .WithDisplayName("Upload Contact photo")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]
@@ -117,6 +124,7 @@ public class ContactMigrations(
                 .WithDisplayName("Upload Member photo")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]

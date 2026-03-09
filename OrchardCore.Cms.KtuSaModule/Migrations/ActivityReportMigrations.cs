@@ -13,7 +13,7 @@ namespace OrchardCore.Cms.KtuSaModule.Migrations;
 public class ActivityReportMigrations(
     IContentDefinitionManager contentDefinitionManager) : DataMigration
 {
-    private const int CurrentVersion = 6;
+    private const int CurrentVersion = 7;
 
     public async Task<int> CreateAsync()
     {
@@ -53,6 +53,12 @@ public class ActivityReportMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom6Async()
+    {
+        await ApplySchemaAsync();
+        return CurrentVersion;
+    }
+
     private async Task ApplySchemaAsync()
     {
         await contentDefinitionManager.AlterPartDefinitionAsync(nameof(ActivityReportPart), part => part
@@ -62,6 +68,7 @@ public class ActivityReportMigrations(
                 .WithDisplayName("Upload Lt version report")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".pdf"]
@@ -71,6 +78,7 @@ public class ActivityReportMigrations(
                 .WithDisplayName("Upload En version report")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".pdf"]

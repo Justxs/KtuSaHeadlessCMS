@@ -20,7 +20,7 @@ public class StaticPageMigrations(
     ISession session)
     : DataMigration
 {
-    private const int CurrentVersion = 14;
+    private const int CurrentVersion = 15;
 
     public async Task<int> CreateAsync()
     {
@@ -178,6 +178,12 @@ public class StaticPageMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom14Async()
+    {
+        await AlterPartDefinitionForCurrentSchemaAsync();
+        return CurrentVersion;
+    }
+
     private Task AlterPartDefinitionForCurrentSchemaAsync()
     {
         return contentDefinitionManager.AlterPartDefinitionAsync(nameof(StaticPagePart), part =>
@@ -207,6 +213,7 @@ public class StaticPageMigrations(
                     .WithPosition("2")
                     .WithSettings(new MediaFieldSettings
                     {
+                        Required = true,
                         Multiple = false,
                         AllowMediaText = false,
                         AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]

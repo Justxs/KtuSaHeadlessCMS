@@ -17,7 +17,7 @@ public class SaUnitMigrations(
     IContentManager contentManager)
     : DataMigration
 {
-    private const int CurrentVersion = 7;
+    private const int CurrentVersion = 8;
 
     public async Task<int> CreateAsync()
     {
@@ -73,6 +73,12 @@ public class SaUnitMigrations(
         return CurrentVersion;
     }
 
+    public async Task<int> UpdateFrom7Async()
+    {
+        await AlterPartDefinitionAsync();
+        return CurrentVersion;
+    }
+
     private Task AlterPartDefinitionAsync()
     {
         return contentDefinitionManager.AlterPartDefinitionAsync(nameof(SaUnitPart), part => part
@@ -82,6 +88,7 @@ public class SaUnitMigrations(
                 .WithDisplayName("Upload FSA photo")
                 .WithSettings(new MediaFieldSettings
                 {
+                    Required = true,
                     Multiple = false,
                     AllowMediaText = false,
                     AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"]
