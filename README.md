@@ -102,8 +102,9 @@ Useful commands:
 API documentation is served via Scalar from the API module (`OrchardCore.Cms.KtuSaApi`).  
 Use Scalar/OpenAPI in the running application for endpoint-level docs.
 
-## Notes
+## Screenshots
 
-- This repo includes a large localization set under `KtuSaHeadlessCMS/Localization`.
-- The setup recipe enables core Orchard features, custom KTU SA modules, roles, and admin theme configuration.
-- If build fails with file lock errors, stop running app instances / IIS Express / Visual Studio debug sessions and rebuild.
+<img width="1914" height="659" alt="image" src="https://github.com/user-attachments/assets/7b9086eb-621a-400f-8ce6-2b6d1c5e9e37" />
+<img width="1724" height="945" alt="image" src="https://github.com/user-attachments/assets/461c5af1-45d6-4d8c-8b69-fa02210d3c9b" />
+
+
