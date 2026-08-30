@@ -1,5 +1,6 @@
 @model dynamic
 @using System.Text.Json.Nodes
+@using OrchardCore.ContentFields
 @using OrchardCore.ContentManagement.Metadata.Models
 @using OrchardCore.ContentManagement.Metadata.Settings
 @using OrchardCore.Mvc.Utilities
@@ -30,9 +31,9 @@
 }
 <style asp-name="media" at="Head"></style>
 
-<div class="@Orchard.GetFieldWrapperClasses(partFieldDef)" id="@wrapperId">
-    <label for="@pathsId" class="@Orchard.GetLabelClasses(isRequired)">@partFieldDef.DisplayName()</label>
-    <div class="@Orchard.GetEndClasses()" id="@containerId" data-for="@pathsId">
+<div class="@($"ocat-wrapper field-wrapper field-wrapper-{partFieldDef.PartDefinition.Name.HtmlClassify()}-{partFieldDef.Name.HtmlClassify()}" + (partFieldDef.IsNamedPart() ? $" field-wrapper-{partFieldDef.ContentTypePartDefinition.Name.HtmlClassify()}-{partFieldDef.Name.HtmlClassify()}" : string.Empty))" id="@wrapperId">
+    <label for="@pathsId" class="ocat-label @(isRequired ? "ocat-label-required" : string.Empty)">@partFieldDef.DisplayName()</label>
+    <div class="ocat-end" id="@containerId" data-for="@pathsId">
         @if (!string.IsNullOrWhiteSpace(hint))
         {
             <div class="hint mt-lg-2">@hint</div>
@@ -56,7 +57,7 @@
                 <a href="javascript:;" v-show="allowMediaText" v-on:click="showMediaTextModal" class="btn btn-outline-secondary btn-sm" v-bind:class="{ disabled : !selectedMedia }">
                     <i class="far fa-comment" aria-hidden="true"></i>
                 </a>
-                <a href="javascript:;" v-show="allowAnchors" v-on:click="showAnchorModal" class="btn btn-outline-secondary btn-sm" v-bind:class="{ disabled : !selectedMedia }">
+                <a href="javascript:;" v-show="allowAnchors" v-on:click="showAnchorModal" class="btn btn-outline-secondary btn-sm" v-bind:class="{ disabled : !selectedMedia || !selectedMedia.mime?.startsWith('image') }">
                     <i class="fa-solid fa-crosshairs" aria-hidden="true"></i>
                 </a>
                 <a href="javascript:;" v-on:click="removeSelected" class="btn btn-outline-danger btn-sm" v-bind:class="{ disabled : !selectedMedia }">
@@ -68,7 +69,7 @@
             </label>
         </div>
 
-        <media-field-thumbs-container :media-items="mediaItems" :thumb-size="thumbSize" :selected-media="selectedMedia" :id-prefix="idPrefix" :allow-anchors="allowAnchors"></media-field-thumbs-container>
+        <media-field-thumbs-container v-model="mediaItems" :thumb-size="thumbSize" :selected-media="selectedMedia" :id-prefix="idPrefix" :allow-multiple="@(isMultiple ? "true" : "false")"></media-field-thumbs-container>
 
         <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditMediaTextModal.cshtml"/>
         <partial name="/Areas/OrchardCore.Media/Views/Shared/MediaFieldEditAnchorModal.cshtml"/>

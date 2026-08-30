@@ -26,9 +26,9 @@ This repository is a multi-project Orchard Core solution:
 ## Tech Stack
 
 - .NET `10.0`
-- Orchard Core `2.2.1`
-- FastEndpoints `8.0.1`
-- Scalar.AspNetCore `2.12.48`
+- Orchard Core `3.0.1`
+- FastEndpoints `8.3.0`
+- Scalar.AspNetCore `2.17.2`
 - Google Cloud Storage SDK (`Google.Cloud.Storage.V1`)
 - NLog (`OrchardCore.Logging.NLog`)
 

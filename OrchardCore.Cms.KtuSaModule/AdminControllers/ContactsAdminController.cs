@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Admin;
+using Microsoft.AspNetCore.Authorization;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Enums;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
+using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Display;
 using OrchardCore.DisplayManagement;
@@ -15,18 +17,24 @@ namespace OrchardCore.Cms.KtuSaModule.AdminControllers;
 public class ContactsAdminController(
     IRepository repository,
     IContentItemDisplayManager contentItemDisplayManager,
-    IUpdateModelAccessor updateModelAccessor) : Controller
+    IUpdateModelAccessor updateModelAccessor,
+    IAuthorizationService authorizationService) : Controller
 {
     [HttpGet]
     [Route("Contacts/List/{saUnit}")]
     public async Task<IActionResult> ListContacts(SaUnit saUnit)
     {
+        if (!Enum.IsDefined(saUnit)) return NotFound();
+
+        if (!await authorizationService.AuthorizeAsync(User, ContactPermissions.GetPermission(saUnit)))
+            return Forbid();
+
         var contacts = await repository.GetAllAsync(Contact);
         var saUnitItem = await repository.GetSaUnitByNameAsync(saUnit);
 
         if (saUnitItem is null) return NotFound();
 
-        contacts = contacts.Where(c => c.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId));
+        contacts = contacts.Where(c => c.GetOrCreate<MemberPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId));
 
         var shapes = new List<IShape>();
 

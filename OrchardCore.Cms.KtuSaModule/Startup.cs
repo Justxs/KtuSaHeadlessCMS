@@ -98,6 +98,7 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, ActivityReportMigrations>();
         services.AddScoped<IDataMigration, StaticPageMigrations>();
         services.AddScoped<IDataMigration, WidgetMigrations>();
+        services.AddScoped<IDataMigration, RolePermissionsMigrations>();
 
         // Core permissions
         services.AddScoped<IPermissionProvider, FaqPermissions>();

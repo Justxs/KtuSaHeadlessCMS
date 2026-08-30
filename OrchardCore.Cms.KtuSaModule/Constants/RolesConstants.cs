@@ -14,7 +14,7 @@ public static class RolesConstants
     public const string IndiEditor = "InDi Editor";
     public const string EsaEditor = "ESA Editor";
     public const string FumsaEditor = "FUMSA Editor";
-    public const string StatiusEditor = "Statius Editor";
+    public const string StatiusEditor = "STATIUS Editor";
     public const string VfsaEditor = "VFSA Editor";
     public const string ShmEditor = "SHM Editor";
 

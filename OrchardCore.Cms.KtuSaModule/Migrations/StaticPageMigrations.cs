@@ -54,7 +54,7 @@ public class StaticPageMigrations(
 
         foreach (var hero in heroSections)
         {
-            var heroPart = hero.As<HeroSectionPart>();
+            var heroPart = hero.GetOrCreate<HeroSectionPart>();
             if (heroPart is null) continue;
 
             var heroImagePath = heroPart.ImageUploadField?.Paths?.FirstOrDefault();
@@ -63,7 +63,7 @@ public class StaticPageMigrations(
 
             if (staticPagesByTitle.TryGetValue(displayText, out var existingPage))
             {
-                var pagePart = existingPage.As<StaticPagePart>();
+                var pagePart = existingPage.GetOrCreate<StaticPagePart>();
                 pagePart.DescriptionLt = heroPart.DescriptionLt;
                 pagePart.DescriptionEn = heroPart.DescriptionEn;
                 pagePart.HeroImage = CreateMediaField(heroImagePath);
@@ -76,7 +76,7 @@ public class StaticPageMigrations(
                 var newPage = await contentManager.NewAsync(StaticPage);
                 newPage.DisplayText = displayText;
 
-                var pagePart = newPage.As<StaticPagePart>();
+                var pagePart = newPage.GetOrCreate<StaticPagePart>();
                 pagePart.TitleLt = heroPart.TitleLt;
                 pagePart.TitleEn = heroPart.TitleEn;
                 pagePart.DescriptionLt = heroPart.DescriptionLt;
@@ -261,7 +261,7 @@ public class StaticPageMigrations(
         var contactPageHero = await contentManager.NewAsync(StaticPage);
         contactPageHero.DisplayText = $"{titleLt} / {titleEn}";
 
-        var staticPagePart = contactPageHero.As<StaticPagePart>();
+        var staticPagePart = contactPageHero.GetOrCreate<StaticPagePart>();
 
         staticPagePart.TitleLt = titleLt;
         staticPagePart.TitleEn = titleEn;

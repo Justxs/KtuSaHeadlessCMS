@@ -35,6 +35,6 @@ public class Repository(ISession session, IContentManager contentManager) : IRep
                 index.ContentType == ContentTypeConstants.SaUnit && index.Published)
             .ListAsync();
 
-        return saUnits.FirstOrDefault(unit => unit.As<SaUnitPart>().UnitName == saUnit.ToString());
+        return saUnits.FirstOrDefault(unit => unit.GetOrCreate<SaUnitPart>().UnitName == saUnit.ToString());
     }
 }

@@ -29,7 +29,7 @@ public static class FlowPartExtensions
             [
                 .. flow.Widgets
                     .Select(widget => widget.ToContentBlock(mediaFileStore))
-                    .Where(block => block is not null)!
+                    .OfType<ContentBlockResponse>()
             ];
         }
 
@@ -43,7 +43,7 @@ public static class FlowPartExtensions
             return string.Join("",
                 flow.Widgets
                     .Where(w => w.ContentType == ParagraphWidget)
-                    .Select(w => w.As<ParagraphWidgetPart>()?.Body?.Html)
+                    .Select(w => w.GetOrCreate<ParagraphWidgetPart>().Body?.Html)
                     .Where(html => !string.IsNullOrEmpty(html)));
         }
 
@@ -70,27 +70,27 @@ public static class FlowPartExtensions
                 ParagraphWidget => new ContentBlockResponse
                 {
                     Type = "paragraph",
-                    Html = item.As<ParagraphWidgetPart>()?.Body?.Html
+                    Html = item.GetOrCreate<ParagraphWidgetPart>().Body?.Html
                 },
                 ImageWidget => new ContentBlockResponse
                 {
                     Type = "image",
-                    ImageUrl = item.As<ImageWidgetPart>()?.Image?.ToPublicUrl(mediaFileStore)
+                    ImageUrl = item.GetOrCreate<ImageWidgetPart>().Image?.ToPublicUrl(mediaFileStore)
                 },
                 VideoWidget => new ContentBlockResponse
                 {
                     Type = "video",
-                    VideoUrl = item.As<VideoWidgetPart>()?.Url.Text
+                    VideoUrl = item.GetOrCreate<VideoWidgetPart>().Url.Text
                 },
                 PdfDocumentWidget => new ContentBlockResponse
                 {
                     Type = "pdf",
-                    PdfUrl = item.As<PdfDocumentWidgetPart>()?.Document?.ToPublicUrl(mediaFileStore)
+                    PdfUrl = item.GetOrCreate<PdfDocumentWidgetPart>().Document?.ToPublicUrl(mediaFileStore)
                 },
                 ImageCarouselWidget => new ContentBlockResponse
                 {
                     Type = "carousel",
-                    ImageUrls = item.As<ImageCarouselWidgetPart>()?.Images?.ToPublicUrls(mediaFileStore)
+                    ImageUrls = item.GetOrCreate<ImageCarouselWidgetPart>().Images?.ToPublicUrls(mediaFileStore)
                 },
                 _ => null
             };

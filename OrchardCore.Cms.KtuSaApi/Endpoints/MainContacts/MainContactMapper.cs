@@ -9,8 +9,8 @@ public static class MainContactMapper
     {
         public MainContactResponse ToResponse()
         {
-            var addressPart = item.As<AddressPart>();
-            var contactPart = item.As<ContactPart>();
+        var addressPart = item.GetOrCreate<AddressPart>();
+        var contactPart = item.GetOrCreate<ContactPart>();
             return new MainContactResponse
             {
                 Address = addressPart.Address,

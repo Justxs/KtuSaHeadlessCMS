@@ -9,9 +9,7 @@
   "categories": [ "default" ],
   "tags": [ "setup", "headless", "content management", "ktu sa" ],
 
-  "variables": {
-    // "now": "[js: new Date().toISOString()]"
-  },
+  "variables": {},
 
   "steps": [
     {
@@ -74,7 +72,7 @@
           "Name": "President",
           "Description": "President",
           "Permissions": [
-            "AssignRoles",
+            "ManageRoles",
             "View Users",
             "EditUsers",
             "ListUsers",
@@ -95,7 +93,8 @@
             "PublishContent",
             "EditContent",
             "ViewContent",
-            "CloneContent"
+            "CloneContent",
+            "ListContent"
           ]
         },
         {

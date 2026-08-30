@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using OrchardCore.Admin;
+using Microsoft.AspNetCore.Authorization;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.Cms.KtuSaModule.Models.Parts.Widgets;
+using OrchardCore.Cms.KtuSaModule.Permissions;
 using OrchardCore.ContentManagement;
+using OrchardCore.Contents;
 using OrchardCore.Flows.Models;
 using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -15,7 +18,8 @@ public class FientaAdminController(
     IFientaService fientaService,
     IContentManager contentManager,
     IMediaFileStore mediaFileStore,
-    IHttpClientFactory httpClientFactory) : Controller
+    IHttpClientFactory httpClientFactory,
+    IAuthorizationService authorizationService) : Controller
 {
     [HttpPost]
     [Admin("Fienta/Import")]
@@ -24,6 +28,9 @@ public class FientaAdminController(
     {
         if (fientaEventId <= 0)
             return BadRequest();
+
+        if (!await authorizationService.AuthorizeAsync(User, EventPermissions.ManageEvents))
+            return Forbid();
 
         var isNew = string.IsNullOrEmpty(contentItemId);
 
@@ -34,9 +41,15 @@ public class FientaAdminController(
         }
         else
         {
-            contentItem = await contentManager.GetAsync(contentItemId, VersionOptions.DraftRequired);
-            if (contentItem == null)
+            var currentContentItem = await contentManager.GetAsync(contentItemId, VersionOptions.Latest);
+            if (currentContentItem == null)
                 return NotFound();
+
+            if (!currentContentItem.ContentType.Equals(Event, StringComparison.Ordinal) ||
+                !await authorizationService.AuthorizeAsync(User, CommonPermissions.EditContent, currentContentItem))
+                return Forbid();
+
+            contentItem = await contentManager.GetAsync(contentItemId, VersionOptions.DraftRequired);
         }
 
         var eventsLt = await fientaService.FetchKtuSaEventsAsync("lt");
@@ -48,7 +61,7 @@ public class FientaAdminController(
         if (eventLt == null)
             return BadRequest("Fienta event not found");
 
-        var eventPart = contentItem.As<EventPart>();
+        var eventPart = contentItem.GetOrCreate<EventPart>();
 
         eventPart.TitleLt = eventLt.Title;
         eventPart.TitleEn = eventEn?.Title ?? eventLt.Title;
@@ -102,8 +115,7 @@ public class FientaAdminController(
         if (flowPart?.Widgets is not { Count: > 0 }) return;
 
         var widget = flowPart.Widgets[0];
-        var part = widget.As<ParagraphWidgetPart>();
-        if (part == null) return;
+        var part = widget.GetOrCreate<ParagraphWidgetPart>();
 
         part.Body.Html = description;
         widget.Apply(part);

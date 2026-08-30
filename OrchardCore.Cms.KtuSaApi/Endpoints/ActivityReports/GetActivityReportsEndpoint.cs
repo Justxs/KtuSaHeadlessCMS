@@ -38,8 +38,8 @@ public class GetActivityReportsEndpoint(IRepository repository, IMediaFileStore 
         var language = req.Language;
 
         var response = activityReports
-            .Where(item => item.As<ActivityReportPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId))
-            .OrderByDescending(item => item.As<ActivityReportPart>().From)
+                .Where(item => item.GetOrCreate<ActivityReportPart>().SaUnit.ContentItemIds.Contains(saUnitItem.ContentItemId))
+                .OrderByDescending(item => item.GetOrCreate<ActivityReportPart>().From)
             .Select(item => item.ToResponse(language, mediaFileStore))
             .ToList();
 

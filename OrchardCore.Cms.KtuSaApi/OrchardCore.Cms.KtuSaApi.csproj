@@ -12,14 +12,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FastEndpoints" Version="8.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
-		<PackageReference Include="Scalar.AspNetCore" Version="2.12.48" />
-		<PackageReference Include="OrchardCore.Module.Targets" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.ContentManagement" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.Media.Abstractions" Version="2.2.1" />
-		<PackageReference Include="OrchardCore.DisplayManagement" Version="2.2.1" />
+		<PackageReference Include="FastEndpoints" Version="8.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+		<PackageReference Include="Scalar.AspNetCore" Version="2.17.2" />
+		<PackageReference Include="OrchardCore.Module.Targets" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.ContentManagement" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.Media.Abstractions" Version="3.0.1" />
+		<PackageReference Include="OrchardCore.DisplayManagement" Version="3.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

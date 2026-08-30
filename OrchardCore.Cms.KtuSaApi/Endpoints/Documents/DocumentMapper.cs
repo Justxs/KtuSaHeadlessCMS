@@ -15,14 +15,14 @@ public static class DocumentMapper
             IEnumerable<ContentItem> documents,
             IMediaFileStore mediaFileStore)
         {
-            var category = item.As<CategoryPart>();
+        var category = item.GetOrCreate<CategoryPart>();
             return new DocumentCategoryResponse
             {
                 Category = language.Resolve(category.TitleLt, category.TitleEn),
                 Documents =
                 [
                     .. documents
-                        .Where(d => d.As<ContainedPart>()?.ListContentItemId == item.ContentItemId)
+            .Where(d => d.GetOrCreate<ContainedPart>().ListContentItemId == item.ContentItemId)
                         .Select(d => d.ToResponse(language, mediaFileStore))
                 ]
             };
@@ -30,7 +30,7 @@ public static class DocumentMapper
 
         public DocumentResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var document = item.As<DocumentPart>();
+        var document = item.GetOrCreate<DocumentPart>();
             return new DocumentResponse
             {
                 Title = language.Resolve(document.TitleLt, document.TitleEn),

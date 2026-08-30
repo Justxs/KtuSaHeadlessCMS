@@ -12,7 +12,7 @@ public static class SaUnitMapper
     {
         public SaUnitResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var saUnitPart = item.As<SaUnitPart>();
+        var saUnitPart = item.GetOrCreate<SaUnitPart>();
             return new SaUnitResponse
             {
                 CoverUrl = saUnitPart.UnitPhoto.ToPublicUrl(mediaFileStore),

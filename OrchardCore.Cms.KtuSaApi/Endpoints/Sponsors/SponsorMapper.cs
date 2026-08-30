@@ -11,7 +11,7 @@ public static class SponsorMapper
     {
         public SponsorResponse ToResponse(IMediaFileStore mediaFileStore)
         {
-            var part = item.As<SponsorPart>();
+        var part = item.GetOrCreate<SponsorPart>();
             return new SponsorResponse
             {
                 Id = item.ContentItemId,

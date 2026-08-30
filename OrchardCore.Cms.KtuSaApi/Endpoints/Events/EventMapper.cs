@@ -12,7 +12,7 @@ public static class EventMapper
     {
         public EventPreviewResponse ToPreviewResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var part = item.As<EventPart>();
+        var part = item.GetOrCreate<EventPart>();
             return new EventPreviewResponse
             {
                 Id = item.ContentItemId,
@@ -26,7 +26,7 @@ public static class EventMapper
             List<string> organisers,
             IMediaFileStore mediaFileStore)
         {
-            var part = item.As<EventPart>();
+        var part = item.GetOrCreate<EventPart>();
             return new EventContentResponse
             {
                 Id = item.ContentItemId,

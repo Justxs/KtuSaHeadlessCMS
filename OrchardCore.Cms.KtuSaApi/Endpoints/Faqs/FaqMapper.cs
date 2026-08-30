@@ -12,7 +12,7 @@ public static class FaqMapper
     {
         public FaqResponse ToFaqResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var part = item.As<FaqPart>();
+        var part = item.GetOrCreate<FaqPart>();
             return new FaqResponse
             {
                 Id = item.ContentItemId,

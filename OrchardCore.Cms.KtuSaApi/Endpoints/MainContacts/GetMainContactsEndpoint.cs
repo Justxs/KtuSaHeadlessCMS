@@ -27,7 +27,7 @@ public class GetMainContactsEndpoint(IRepository repository)
     {
         var contacts = await repository.GetAllAsync(MainContact);
 
-        var contact = contacts.FirstOrDefault(item => item.As<AddressPart>().SaUnit == req.SaUnit.ToString());
+        var contact = contacts.FirstOrDefault(item => item.GetOrCreate<AddressPart>().SaUnit == req.SaUnit.ToString());
 
         if (contact is null)
         {

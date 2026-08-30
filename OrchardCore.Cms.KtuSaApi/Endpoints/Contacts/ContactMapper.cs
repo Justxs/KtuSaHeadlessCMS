@@ -13,10 +13,10 @@ public static class ContactMapper
         public ContactResponse ToResponse(Language language, IEnumerable<ContentItem> positions,
             IMediaFileStore mediaFileStore)
         {
-            var memberPart = item.As<MemberPart>();
+        var memberPart = item.GetOrCreate<MemberPart>();
             var positionItem = positions
                 .FirstOrDefault(p => memberPart.Position.ContentItemIds.Contains(p.ContentItemId));
-            var positionPart = positionItem?.As<PositionPart>();
+        var positionPart = positionItem?.GetOrCreate<PositionPart>();
 
             return new ContactResponse
             {

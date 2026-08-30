@@ -39,7 +39,7 @@ public class GetContactsEndpoint(IRepository repository, IMediaFileStore mediaFi
         var language = req.Language;
 
         var response = contacts
-            .Where(item => item.As<MemberPart>().SaUnit.ContentItemIds.Contains(saUnit.ContentItemId))
+            .Where(item => item.GetOrCreate<MemberPart>().SaUnit.ContentItemIds.Contains(saUnit.ContentItemId))
             .Select(item => item.ToResponse(language, positions, mediaFileStore))
             .OrderBy(contact => contact.Index)
             .ToList();

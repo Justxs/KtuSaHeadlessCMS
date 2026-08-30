@@ -88,7 +88,7 @@ public class WidgetMigrations(IContentDefinitionManager contentDefinitionManager
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(ParagraphWidget, type => type
             .Stereotype("Widget")
-            .DisplayedAs("Paragraph")
+            .WithDisplayName("Paragraph")
             .WithDescription("A block of text")
             .WithPart(nameof(ParagraphWidgetPart)));
     }
@@ -108,7 +108,7 @@ public class WidgetMigrations(IContentDefinitionManager contentDefinitionManager
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(ImageWidget, type => type
             .Stereotype("Widget")
-            .DisplayedAs("Image")
+            .WithDisplayName("Image")
             .WithDescription("A standalone image block")
             .WithPart(nameof(ImageWidgetPart)));
     }
@@ -127,7 +127,7 @@ public class WidgetMigrations(IContentDefinitionManager contentDefinitionManager
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(VideoWidget, type => type
             .Stereotype("Widget")
-            .DisplayedAs("Video")
+            .WithDisplayName("Video")
             .WithDescription("An embedded video block")
             .WithPart(nameof(VideoWidgetPart)));
     }
@@ -147,7 +147,7 @@ public class WidgetMigrations(IContentDefinitionManager contentDefinitionManager
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(PdfDocumentWidget, type => type
             .Stereotype("Widget")
-            .DisplayedAs("PDF Document")
+            .WithDisplayName("PDF Document")
             .WithDescription("An embedded PDF document block")
             .WithPart(nameof(PdfDocumentWidgetPart)));
     }
@@ -167,7 +167,7 @@ public class WidgetMigrations(IContentDefinitionManager contentDefinitionManager
 
         await contentDefinitionManager.AlterTypeDefinitionAsync(ImageCarouselWidget, type => type
             .Stereotype("Widget")
-            .DisplayedAs("Image Carousel")
+            .WithDisplayName("Image Carousel")
             .WithDescription("A carousel of multiple images")
             .WithPart(nameof(ImageCarouselWidgetPart)));
     }

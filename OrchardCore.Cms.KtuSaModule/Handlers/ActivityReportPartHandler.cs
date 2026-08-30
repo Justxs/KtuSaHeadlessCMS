@@ -19,7 +19,7 @@ public class ActivityReportPartHandler(IContentManager contentManager) : Content
     private async Task SetDisplayTextAsync(ContentItem contentItem, ActivityReportPart instance)
     {
         var saUnit = await contentManager.GetAsync(instance.SaUnit.ContentItemIds.First());
-        var saUnitName = saUnit.As<SaUnitPart>().UnitName;
+        var saUnitName = saUnit.GetOrCreate<SaUnitPart>().UnitName;
 
         contentItem.DisplayText = $"{saUnitName} {instance.From:yyyy-MM-dd} - {instance.To:yyyy-MM-dd}";
     }

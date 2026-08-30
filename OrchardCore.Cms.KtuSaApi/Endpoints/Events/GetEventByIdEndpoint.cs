@@ -35,9 +35,9 @@ public class GetEventByIdEndpoint(IRepository repository, IMediaFileStore mediaF
         }
 
         var language = req.Language;
-        var part = eventItem.As<EventPart>();
+        var part = eventItem.GetOrCreate<EventPart>();
         var saUnits = await repository.GetByIdsAsync(part.OrganisersField.ContentItemIds);
-        var organisers = saUnits.Select(unit => unit.As<SaUnitPart>().UnitName).ToList();
+        var organisers = saUnits.Select(unit => unit.GetOrCreate<SaUnitPart>().UnitName).ToList();
 
         await Send.OkAsync(eventItem.ToContentResponse(language, organisers, mediaFileStore), ct);
     }

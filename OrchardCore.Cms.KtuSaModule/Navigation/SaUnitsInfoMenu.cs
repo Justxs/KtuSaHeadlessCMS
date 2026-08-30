@@ -28,7 +28,7 @@ public class SaUnitsInfoMenu(
 
             foreach (var saUnit in saUnits)
             {
-                var unitName = saUnit.As<SaUnitPart>().UnitName;
+                var unitName = saUnit.GetOrCreate<SaUnitPart>().UnitName;
                 var parsedSaUnit = Enum.Parse<SaUnit>(unitName, true);
                 var unitDisplayName = unitName.Replace("_", " ");
 

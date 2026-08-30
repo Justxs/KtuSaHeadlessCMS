@@ -12,8 +12,8 @@ public static class ArticleMapper
     {
         public ArticlePreviewResponse ToPreviewResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var cardPart = item.As<CardPart>();
-            var articlePart = item.As<ArticlePart>();
+        var cardPart = item.GetOrCreate<CardPart>();
+        var articlePart = item.GetOrCreate<ArticlePart>();
             return new ArticlePreviewResponse
             {
                 Id = item.ContentItemId,
@@ -26,8 +26,8 @@ public static class ArticleMapper
 
         public ArticleContentResponse ToContentResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var cardPart = item.As<CardPart>();
-            var articlePart = item.As<ArticlePart>();
+        var cardPart = item.GetOrCreate<CardPart>();
+        var articlePart = item.GetOrCreate<ArticlePart>();
             var blocks = item.ToContentBlocks(language, mediaFileStore);
             var combinedHtml = item.GetCombinedHtml(language);
             return new ArticleContentResponse

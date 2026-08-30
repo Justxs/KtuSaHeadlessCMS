@@ -12,7 +12,7 @@ public static class ActivityReportMapper
     {
         public ActivityReportResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var part = item.As<ActivityReportPart>();
+        var part = item.GetOrCreate<ActivityReportPart>();
             return new ActivityReportResponse
             {
                 Id = item.ContentItemId,

@@ -35,11 +35,11 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
             var saUnit = await repository.GetSaUnitByNameAsync(req.SaUnit.Value);
             if (saUnit is not null)
                 query = query.Where(item =>
-                    item.As<EventPart>().OrganisersField.ContentItemIds.Contains(saUnit.ContentItemId));
+                item.GetOrCreate<EventPart>().OrganisersField.ContentItemIds.Contains(saUnit.ContentItemId));
         }
 
         var response = query
-            .OrderByDescending(item => item.As<EventPart>().StartDate)
+            .OrderByDescending(item => item.GetOrCreate<EventPart>().StartDate)
             .Select(item => item.ToPreviewResponse(language, mediaFileStore))
             .ToList();
 

@@ -128,7 +128,7 @@ public class SaUnitMigrations(
         var saUnitItem = await contentManager.NewAsync(ContentTypeConstants.SaUnit);
         saUnitItem.DisplayText = saUnit.ToString().Replace("_", " ");
 
-        var saUnitPart = saUnitItem.As<SaUnitPart>();
+        var saUnitPart = saUnitItem.GetOrCreate<SaUnitPart>();
 
         saUnitPart.UnitName = saUnit.ToString();
 

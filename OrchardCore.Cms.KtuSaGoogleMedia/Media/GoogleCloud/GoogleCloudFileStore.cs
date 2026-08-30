@@ -415,11 +415,13 @@ public sealed class GoogleCloudFileStore(
         if (!string.IsNullOrWhiteSpace(options.CredentialsJson))
         {
             var credentialJson = options.CredentialsJson.Replace("\\n", "\n");
-            return StorageClient.Create(GoogleCredential.FromJson(credentialJson));
+            return StorageClient.Create(
+                CredentialFactory.FromJson<ServiceAccountCredential>(credentialJson).ToGoogleCredential());
         }
 
         if (options.HasServiceAccountFields())
-            return StorageClient.Create(GoogleCredential.FromJson(options.BuildServiceAccountJson()));
+            return StorageClient.Create(
+                CredentialFactory.FromJson<ServiceAccountCredential>(options.BuildServiceAccountJson()).ToGoogleCredential());
 
         return options.UseApplicationDefaultCredentials
             ? StorageClient.Create()

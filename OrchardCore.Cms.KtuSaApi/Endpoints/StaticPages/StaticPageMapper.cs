@@ -12,7 +12,7 @@ public static class StaticPageMapper
     {
         public StaticPageResponse ToResponse(Language language, IMediaFileStore mediaFileStore)
         {
-            var part = item.As<StaticPagePart>();
+        var part = item.GetOrCreate<StaticPagePart>();
             return new StaticPageResponse
             {
                 Title = language.Resolve(part.TitleLt, part.TitleEn),

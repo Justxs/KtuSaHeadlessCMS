@@ -181,8 +181,8 @@ public class ContactMigrations(
 
         foreach (var contentItem in contentItems)
         {
-            var contactPart = contentItem.As<ContactPart>();
-            var memberPart = contentItem.As<MemberPart>();
+            var contactPart = contentItem.GetOrCreate<ContactPart>();
+            var memberPart = contentItem.GetOrCreate<MemberPart>();
 
             if (contactPart == null || memberPart == null) continue;
 
@@ -200,8 +200,8 @@ public class ContactMigrations(
         var mainContactItem = await contentManager.NewAsync(MainContact);
         mainContactItem.DisplayText = saUnit.ToString();
 
-        var contactPart = mainContactItem.As<ContactPart>();
-        var addressPart = mainContactItem.As<AddressPart>();
+        var contactPart = mainContactItem.GetOrCreate<ContactPart>();
+        var addressPart = mainContactItem.GetOrCreate<AddressPart>();
 
         contactPart.PhoneNumber = "+37012345678";
         contactPart.Email = "info@example.com";

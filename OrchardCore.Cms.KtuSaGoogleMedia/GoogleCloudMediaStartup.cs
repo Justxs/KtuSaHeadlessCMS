@@ -72,15 +72,16 @@ public sealed class GoogleCloudMediaStartup(
             var logger = serviceProvider.GetRequiredService<ILogger<DefaultMediaFileStore>>();
             var cdnBaseUrl = ResolveCdnBaseUrl(mediaOptions.CdnBaseUrl, googleOptions);
 
-            var requestBasePath =
-                "/" + fileStore.Combine(shellSettings.RequestUrlPrefix, mediaOptions.AssetsRequestPath);
-            if (ShouldUseRootRelativePublicPaths(cdnBaseUrl, googleOptions))
-                requestBasePath = "/" + fileStore.Combine(shellSettings.RequestUrlPrefix, string.Empty);
+            var usesDirectGoogleCloudUrls = ShouldUseRootRelativePublicPaths(cdnBaseUrl, googleOptions);
+            var requestBasePath = usesDirectGoogleCloudUrls
+                ? string.Empty
+                : "/" + fileStore.Combine(shellSettings.RequestUrlPrefix, mediaOptions.AssetsRequestPath);
 
             var httpContext = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
             var originalPathBase =
                 httpContext?.Features.Get<ShellContextFeature>()?.OriginalPathBase ?? PathString.Empty;
-            if (originalPathBase.HasValue) requestBasePath = fileStore.Combine(originalPathBase.Value, requestBasePath);
+            if (!usesDirectGoogleCloudUrls && originalPathBase.HasValue)
+                requestBasePath = fileStore.Combine(originalPathBase.Value, requestBasePath);
 
             return new DefaultMediaFileStore(
                 fileStore,
@@ -112,7 +113,7 @@ public sealed class GoogleCloudMediaStartup(
     private static bool TryBindFromConfiguration(IConfiguration configuration, GoogleCloudMediaStorageOptions options)
     {
         var section = configuration.GetSection(GoogleCloudMediaStorageOptions.SectionName);
-        if (!section.Exists()) return true;
+        if (!section.Exists()) return false;
         section.Bind(options);
 
         return true;
@@ -120,11 +121,20 @@ public sealed class GoogleCloudMediaStartup(
 
     private static string ResolveCdnBaseUrl(string currentCdnBaseUrl, GoogleCloudMediaStorageOptions options)
     {
-        if (!string.IsNullOrWhiteSpace(options.PublicBaseUrl)) return options.PublicBaseUrl.TrimEnd('/');
-
-        return !string.IsNullOrWhiteSpace(currentCdnBaseUrl)
+        var baseUrl = !string.IsNullOrWhiteSpace(options.PublicBaseUrl)
+            ? options.PublicBaseUrl
+            : !string.IsNullOrWhiteSpace(currentCdnBaseUrl)
             ? currentCdnBaseUrl
             : $"https://storage.googleapis.com/{options.BucketName}";
+
+        baseUrl = baseUrl.TrimEnd('/');
+        var basePath = (options.BasePath ?? string.Empty).Trim('/');
+
+        if (string.IsNullOrEmpty(basePath) ||
+            baseUrl.EndsWith("/" + basePath, StringComparison.OrdinalIgnoreCase))
+            return baseUrl;
+
+        return $"{baseUrl}/{basePath}";
     }
 
     private static bool ShouldUseRootRelativePublicPaths(string cdnBaseUrl, GoogleCloudMediaStorageOptions options)
@@ -142,7 +152,7 @@ public sealed class GoogleCloudMediaStartup(
             .Trim('/')
             .Split('/', StringSplitOptions.RemoveEmptyEntries);
 
-        return pathSegments.Length == 1 &&
+        return pathSegments.Length >= 1 &&
                pathSegments[0].Equals(options.BucketName, StringComparison.OrdinalIgnoreCase);
     }
 }
