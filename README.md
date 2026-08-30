@@ -50,7 +50,7 @@ This repository is a multi-project Orchard Core solution:
    - for local development without Google Cloud: set `OrchardCore_Media_GoogleCloudStorage.RequireGoogleCloudStorage` to `false`
 4. Restore and build:
    - `dotnet restore`
-   - `dotnet build KtuSaHeadlessCMS.sln`
+   - `dotnet build KtuSaHeadlessCMS.slnx`
 5. Run:
    - `dotnet run --project KtuSaHeadlessCMS/KtuSaHeadlessCMS.csproj`
 6. Open the site in browser:
@@ -89,7 +89,7 @@ Important sections:
 Useful commands:
 
 - Build full solution:
-  - `dotnet build KtuSaHeadlessCMS.sln`
+  - `dotnet build KtuSaHeadlessCMS.slnx`
 - Build API module only:
   - `dotnet build OrchardCore.Cms.KtuSaApi/OrchardCore.Cms.KtuSaApi.csproj`
 - Build content module only:

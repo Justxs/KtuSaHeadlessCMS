@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="KtuSaHeadlessCMS/KtuSaHeadlessCMS.csproj" />
+  <Project Path="OrchardCore.Cms.KtuSaApi/OrchardCore.Cms.KtuSaApi.csproj" />
+  <Project Path="OrchardCore.Cms.KtuSaGoogleMedia/OrchardCore.Cms.KtuSaGoogleMedia.csproj" />
+  <Project Path="OrchardCore.Cms.KtuSaModule/OrchardCore.Cms.KtuSaModule.csproj" />
+  <Project Path="OrchardCore.KtuSaTheme/OrchardCore.KtuSaTheme.csproj" />
+</Solution>
