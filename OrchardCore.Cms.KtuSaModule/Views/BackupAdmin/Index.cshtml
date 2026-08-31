@@ -1,0 +1,167 @@
+@using OrchardCore.Cms.KtuSaModule.Models.Backup
+@model DatabaseBackupStatus
+
+@functions {
+    static string Size(long bytes)
+    {
+        string[] units = ["B", "KB", "MB", "GB"];
+        double value = bytes;
+        var unit = 0;
+
+        while (value >= 1024 && unit < units.Length - 1)
+        {
+            value /= 1024;
+            unit++;
+        }
+
+        return $"{value:0.#} {units[unit]}";
+    }
+}
+
+<h1>Database backup</h1>
+
+@if (TempData["BackupStatusMessage"] is string statusMessage)
+{
+    var success = TempData["BackupStatusSuccess"] is true;
+    <div class="alert @(success ? "alert-success" : "alert-danger")" role="alert">
+        @statusMessage
+    </div>
+}
+
+@if (!Model.IsSupported)
+{
+    <div class="alert alert-warning" role="alert">
+        @Model.UnsupportedReason
+    </div>
+    return;
+}
+
+@if (Model.PendingRestore is not null)
+{
+    <div class="card border-warning mb-4">
+        <div class="card-header bg-warning text-dark fw-bold">
+            A restore is waiting to be applied
+        </div>
+        <div class="card-body">
+            <p>
+                <strong>@Model.PendingRestore.FileName</strong>
+                &mdash; @Size(Model.PendingRestore.SizeBytes),
+                uploaded @Model.PendingRestore.UploadedUtc.ToString("yyyy-MM-dd HH:mm") UTC
+                by @Model.PendingRestore.UploadedBy.
+            </p>
+            <p class="mb-3">
+                It has been checked and will replace the live database the next time the CMS starts.
+                Nothing has changed yet. The database it replaces is kept as a snapshot, so this is reversible.
+            </p>
+            <div class="d-flex gap-2 flex-wrap">
+                <form asp-action="Apply" method="post"
+                      onsubmit="return confirm('Restart the CMS now and replace the live database with the uploaded backup?');">
+                    <button type="submit" class="btn btn-warning">Apply now and restart</button>
+                </form>
+                <form asp-action="Discard" method="post"
+                      onsubmit="return confirm('Discard the uploaded backup? The live database is not affected.');">
+                    <button type="submit" class="btn btn-outline-secondary">Discard upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="card mb-4">
+    <div class="card-header fw-bold">Download a backup</div>
+    <div class="card-body">
+        <p>
+            Takes a consistent copy of the live database while the site keeps running, and sends it to
+            your computer. Everything is in it: articles, events, contacts, documents, users and roles.
+        </p>
+        <dl class="row mb-3">
+            <dt class="col-sm-3">Current size</dt>
+            <dd class="col-sm-9">@Size(Model.DatabaseSizeBytes)</dd>
+            <dt class="col-sm-3">Last written</dt>
+            <dd class="col-sm-9">
+                @(Model.DatabaseModifiedUtc?.ToString("yyyy-MM-dd HH:mm") + " UTC" ?? "unknown")
+            </dd>
+        </dl>
+        <div class="alert alert-secondary" role="alert">
+            The file contains user accounts and password hashes. Store it somewhere private, and do not
+            commit it to a repository.
+        </div>
+        <form asp-action="Download" method="post">
+            <button type="submit" class="btn btn-primary">Download backup</button>
+        </form>
+    </div>
+</div>
+
+<div class="card mb-4 border-danger">
+    <div class="card-header fw-bold text-danger">Restore from a backup</div>
+    <div class="card-body">
+        <p>
+            Uploading replaces <strong>everything</strong> &mdash; all content, users and roles &mdash;
+            with the contents of the file. Anything published since that backup was taken is lost.
+        </p>
+        <p>
+            The upload is checked first and then staged. It is applied when the CMS restarts, because a
+            database in use cannot be swapped underneath the running site. The database it replaces is
+            saved as a snapshot below.
+        </p>
+        <p class="text-muted">
+            Media files are not part of this. Images and PDFs live in Google Cloud Storage and are
+            unaffected by a restore, so a restored article can still point at a file you deleted since.
+        </p>
+
+        <form asp-action="Upload" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="backupFile">Backup file (.db)</label>
+                <input class="form-control" type="file" id="backupFile" name="backupFile" accept=".db" required>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="confirmed" name="confirmed" value="true" required>
+                <label class="form-check-label" for="confirmed">
+                    I understand this replaces all content and users in the CMS.
+                </label>
+            </div>
+            <button type="submit" class="btn btn-danger">Upload backup</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header fw-bold">Snapshots taken before a restore</div>
+    <div class="card-body">
+        @if (Model.Snapshots.Count == 0)
+        {
+            <p class="mb-0 text-muted">None yet. One is created automatically each time a restore is applied.</p>
+        }
+        else
+        {
+            <p>
+                Each of these is the database as it was immediately before a restore. Download one and
+                upload it again to undo that restore. The five most recent are kept.
+            </p>
+            <table class="table table-sm align-middle mb-0">
+                <thead>
+                <tr>
+                    <th scope="col">Taken</th>
+                    <th scope="col">Size</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var snapshot in Model.Snapshots)
+                {
+                    <tr>
+                        <td>@snapshot.CreatedUtc.ToString("yyyy-MM-dd HH:mm") UTC</td>
+                        <td>@Size(snapshot.SizeBytes)</td>
+                        <td class="text-end">
+                            <form asp-action="Snapshot" method="post">
+                                <input type="hidden" name="id" value="@snapshot.Id">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Download</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
