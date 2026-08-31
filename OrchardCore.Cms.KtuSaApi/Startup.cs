@@ -29,6 +29,11 @@ public sealed class Startup : StartupBase
             c.Errors.UseProblemDetails();
         });
         routes.MapOpenApi();
-        routes.MapScalarApiReference();
+        routes.MapScalarApiReference(options =>
+        {
+            options
+                .WithTitle("KTU SA API Documentation")
+                .WithOpenApiRoutePattern("/openapi/ktu-sa-api.json");
+        });
     }
 }
