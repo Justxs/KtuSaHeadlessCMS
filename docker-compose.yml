@@ -1,0 +1,35 @@
+name: ktu-sa-cms
+
+services:
+  cms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ktu-sa-cms:latest
+    restart: unless-stopped
+    # Bound to localhost: a reverse proxy on the host terminates TLS and
+    # forwards to this port. Drop the 127.0.0.1 prefix only if the container
+    # is meant to be reachable directly.
+    ports:
+      - '127.0.0.1:8080:8080'
+    env_file:
+      - .env.production
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: '8080'
+      # Honour X-Forwarded-Proto/For from the reverse proxy. Without this the
+      # app sees plain HTTP and UseHttpsRedirection loops.
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: 'true'
+    volumes:
+      # The SQLite database, Data Protection keys and OpenID certificates.
+      # Losing this directory means losing the site.
+      - app_data:/app/App_Data
+    healthcheck:
+      test: ['CMD', 'curl', '--fail', '--silent', 'http://localhost:8080/api/sponsors']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+
+volumes:
+  app_data:

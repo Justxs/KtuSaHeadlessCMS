@@ -1,4 +1,5 @@
 using FastEndpoints;
+using OrchardCore.Cms.KtuSaApi.Endpoints.Shared;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Cms.KtuSaModule.Models.Parts;
 using OrchardCore.ContentManagement;
@@ -8,8 +9,10 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Events;
 
 public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
-    : Endpoint<GetEventsRequest, List<EventPreviewResponse>>
+    : Endpoint<GetEventsRequest, PagedResponse<EventPreviewResponse>>
 {
+    private const int DefaultPageSize = 9;
+
     public override void Configure()
     {
         Get("api/events");
@@ -18,10 +21,11 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
             .WithTags("Events")
             .WithSummary("List event previews")
             .WithDescription(
-                "Returns published event previews ordered by start date descending. " +
+                "Returns a page of published event previews ordered by start date descending. " +
                 "Use query parameter language=en (default) or language=lt. " +
-                "Optionally filter results by saUnit.")
-            .Produces<List<EventPreviewResponse>>(200)
+                "Optionally filter results by saUnit. " +
+                "Use page and pageSize to page through the results; pageSize defaults to 9 and is capped at 100.")
+            .Produces<PagedResponse<EventPreviewResponse>>(200)
             .ProducesProblem(400));
     }
 
@@ -38,10 +42,12 @@ public class GetEventsEndpoint(IRepository repository, IMediaFileStore mediaFile
                 item.GetOrCreate<EventPart>().OrganisersField.ContentItemIds.Contains(saUnit.ContentItemId));
         }
 
-        var response = query
+        var events = query
             .OrderByDescending(item => item.GetOrCreate<EventPart>().StartDate)
             .Select(item => item.ToPreviewResponse(language, mediaFileStore))
             .ToList();
+
+        var response = PagedResponse.Create(events, req.Page, req.PageSize, DefaultPageSize);
 
         await Send.OkAsync(response, ct);
     }

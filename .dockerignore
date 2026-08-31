@@ -1,0 +1,21 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.git/
+**/.github/
+.gitignore
+.gitattributes
+
+# Local Orchard state: SQLite database, Data Protection keys, OpenID
+# certificates, logs. Never bake this into an image.
+**/App_Data/
+
+# Local secrets.
+**/appsettings.json
+**/appsettings.Development.json
+
+docs/
+README.md
+Dockerfile
+.dockerignore
+docker-compose.yml

@@ -145,5 +145,10 @@ public class Startup : StartupBase
         services.AddScoped<IDataMigration, DocumentMigrations>();
         services.AddScoped<IPermissionProvider, DocumentsPermissions>();
         services.AddScoped<INavigationProvider, DocumentsMenu>();
+
+        // Database backup and restore
+        services.AddScoped<IDatabaseBackupService, DatabaseBackupService>();
+        services.AddScoped<IPermissionProvider, BackupPermissions>();
+        services.AddScoped<INavigationProvider, BackupMenu>();
     }
 }

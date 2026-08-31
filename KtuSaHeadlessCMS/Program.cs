@@ -1,7 +1,14 @@
+using OrchardCore.Cms.KtuSaModule.Services;
 using OrchardCore.Cms.KtuSaModule.Settings;
 using OrchardCore.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+
+// Must run before Orchard opens any tenant database: a SQLite file cannot be
+// replaced while it is in use, so a backup uploaded in the admin panel is only
+// staged there and swapped in here.
+PendingRestoreApplier.Apply(Path.Combine(builder.Environment.ContentRootPath, "App_Data"));
 
 builder.Host.UseNLogHost();
 builder.Services.AddOrchardCms();

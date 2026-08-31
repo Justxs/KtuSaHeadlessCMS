@@ -1,4 +1,4 @@
-@model dynamic
+﻿@model dynamic
 @using Microsoft.Extensions.Options
 @using OrchardCore.Media
 @inject IOptions<MediaOptions> MediaOptions
@@ -9,7 +9,7 @@
     bool allowNewRootFolders = Model.AllowNewRootFolders;
 }
 
-<div id="mediaApp" class="media-app-redesign" style="display:none;" v-on:dragover="handleScrollWhileDrag($event)">
+<div id="mediaApp" class="media-app-redesign d-none" v-on:dragover="handleScrollWhileDrag($event)">
     <div id="customdropzone">
         <div class="d-flex flex-column align-items-center justify-content-center h-100 gap-2">
             <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>

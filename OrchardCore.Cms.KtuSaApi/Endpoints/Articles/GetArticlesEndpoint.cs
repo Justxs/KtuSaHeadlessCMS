@@ -1,4 +1,5 @@
 using FastEndpoints;
+using OrchardCore.Cms.KtuSaApi.Endpoints.Shared;
 using OrchardCore.Cms.KtuSaModule.Interfaces;
 using OrchardCore.Media;
 using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
@@ -6,8 +7,10 @@ using static OrchardCore.Cms.KtuSaModule.Constants.ContentTypeConstants;
 namespace OrchardCore.Cms.KtuSaApi.Endpoints.Articles;
 
 public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFileStore)
-    : Endpoint<GetArticlesRequest, List<ArticlePreviewResponse>>
+    : Endpoint<GetArticlesRequest, PagedResponse<ArticlePreviewResponse>>
 {
+    private const int DefaultPageSize = 9;
+
     public override void Configure()
     {
         Get("api/articles");
@@ -16,9 +19,11 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
             .WithTags("Articles")
             .WithSummary("List article previews")
             .WithDescription(
-                "Returns published article previews ordered by creation date descending. " +
-                "Use query parameter language=en (default) or language=lt. Optional query parameter limit caps the number of returned items.")
-            .Produces<List<ArticlePreviewResponse>>(200)
+                "Returns a page of published article previews ordered by creation date descending. " +
+                "Use query parameter language=en (default) or language=lt. " +
+                "Use page and pageSize to page through the results; pageSize defaults to 9 and is capped at 100. " +
+                "Optional query parameter limit caps the total number of articles considered before paging.")
+            .Produces<PagedResponse<ArticlePreviewResponse>>(200)
             .ProducesProblem(400));
     }
 
@@ -27,12 +32,14 @@ public class GetArticlesEndpoint(IRepository repository, IMediaFileStore mediaFi
         var query = await repository.GetAllAsync(Article);
         var language = req.Language;
 
-        IEnumerable<ArticlePreviewResponse> response = query
+        IEnumerable<ArticlePreviewResponse> articles = query
             .Select(item => item.ToPreviewResponse(language, mediaFileStore))
             .OrderByDescending(item => item.CreatedDate);
 
-        if (req.Limit is not null) response = response.Take(req.Limit.Value);
+        if (req.Limit is not null) articles = articles.Take(req.Limit.Value);
 
-        await Send.OkAsync([.. response], ct);
+        var response = PagedResponse.Create([.. articles], req.Page, req.PageSize, DefaultPageSize);
+
+        await Send.OkAsync(response, ct);
     }
 }

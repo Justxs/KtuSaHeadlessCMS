@@ -2,6 +2,9 @@
 
 Headless CMS for KTU Student Association content, built with Orchard Core and custom modules for content modeling, API delivery, admin tooling, and Google Cloud media storage.
 
+- For content editors: **[User Guide](docs/user-guide/README.md)** — how to use the admin panel, with screenshots.
+- For whoever runs it: **[Deployment Guide](docs/DEPLOYMENT.md)** — Azure App Service, Docker on a Linux server, backups, and the migration between them.
+
 ## What This Project Contains
 
 This repository is a multi-project Orchard Core solution:
